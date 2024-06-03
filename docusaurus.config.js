@@ -60,8 +60,8 @@ const config = {
       navbar: {
         title: "RADfish Docs",
         logo: {
-          alt: "My Site Logo",
-          src: "img/logo.svg",
+          alt: "RADFish Logo",
+          src: "img/radfish-logo.png",
         },
         items: [
           {

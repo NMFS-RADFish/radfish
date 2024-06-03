@@ -6,6 +6,8 @@ import Layout from "@theme/Layout";
 import Heading from "@theme/Heading";
 import styles from "./index.module.css";
 
+import HomepageFeatures from "../components/HomepageFeatures";
+
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
@@ -18,7 +20,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/intro"
+            to="/docs/category/getting-started"
           >
             RADFish Tutorial - 5min ⏱️
           </Link>
@@ -36,6 +38,7 @@ export default function Home() {
       description="Description will go into a meta tag in <head />"
     >
       <HomepageHeader />
+      <HomepageFeatures />
     </Layout>
   );
 }
