@@ -16,12 +16,12 @@ const config = {
   url: "https://NMFS-RADFish.github.io",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/documentation-new/",
+  baseUrl: "/documentation/",
   trailingSlash: false,
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "NMFS-RADFish", // Usually your GitHub org/user name.
-  projectName: "documentation-new", // Usually your repo name.
+  projectName: "documentation", // Usually your repo name.
 
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
@@ -70,7 +70,7 @@ const config = {
             label: "Guide",
           },
           {
-            href: "https://github.com/nmfs-radfish/documentation-new",
+            href: "https://github.com/nmfs-radfish/documentation",
             label: "GitHub",
             position: "right",
           },
