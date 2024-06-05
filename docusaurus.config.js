@@ -78,21 +78,7 @@ const config = {
       },
       footer: {
         style: "dark",
-        links: [
-          {
-            title: "Docs",
-            items: [
-              {
-                label: "Guide",
-                to: "/docs/intro",
-              },
-            ],
-          },
-          {
-            title: "Community",
-            items: [],
-          },
-        ],
+        links: [],
         copyright: `Copyright © ${new Date().getFullYear()} RADFish. Built with love by Sudokrew.`,
       },
       prism: {
