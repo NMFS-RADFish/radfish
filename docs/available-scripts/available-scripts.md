@@ -32,31 +32,25 @@ my-coolapp
 ├── node_modules/
 ├── package-lock.json
 ├── package.json
-├── noaaAssets/
 ├── public
 │   ├── favicon.ico
 │   ├── index.html
 │   ├── logo192.png
 │   ├── logo512.png
 │   ├── manifest.json
+│   ├── mock-service-worker.js
 │   └── robots.txt
+├── mocks/
+    ├── browser.js
+    ├── handlers.js
 └── src
     ├── serviceWorker.js
     ├── pages/
-				├── createFishEntryForm.js
-				├── viewFishEntries.js
-    ├── components/
-				├── RADFishForm.js
-				├── RADFishLayout.js
-				├── RADFishHeader.js
-				├── RADFishInput.js
-				├── RADFishSelect.js
-    ├── App.css
-    ├── App.css
-    ├── App.js
-    ├── App.test.js
+		├── Home.jsx
+    ├── styles/
+		├── theme.css
+    ├── App.jsx
     ├── index.css
-    ├── index.js
-    ├── logo.svg
-    └── setupTests.js
+    ├── indexjsx
+    ├── service-worker.js
 ```
