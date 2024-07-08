@@ -29,11 +29,9 @@ If you need another component for your application support, please see `CONTRIBU
 
 If you wanted to build a `TextInput` component into an existing form, you can use the `@trussworks` [storybook reference](https://trussworks.github.io/react-uswds/?path=/docs/components-text-input--default-text-input) related to component props that are available.
 
-However, this component should be imported from `react-radfish`. Since `react-radfish` extends the `@trussworks` library, you should have all the functionality from the underlying component:
-
 ```jsx
 
-import { TextInput, Label } from "../react-radfish";
+import { TextInput, Label } from "@trussworks/react-uswds";
 
 <Label htmlFor="fullName">Full Name</Label>
 <TextInput
