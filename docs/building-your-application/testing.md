@@ -48,7 +48,7 @@ Unit tests focus on testing individual components or functions in isolation.
 
 ### **Writing Browser Tests**
 
-Browser testing involves testing the application in a web browser environment. Tools like [Puppeteer](https://pptr.dev/) can be used alongside Jest. Please note Puppeteer does not come included by default in the RADFish framework.
+Browser testing involves testing the application in a web browser environment. Tools like [Puppeteer](https://pptr.dev/) can be used alongside Vitest. Please note Puppeteer does not come included by default in the RADFish framework.
 
 1. **Basic Browser Test**:
 
