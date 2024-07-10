@@ -65,13 +65,15 @@ const SimplifiedForm = () => {
 };
 ```
 
-This will ensure that the state that is managed in context will be passed correctly to the child form that you are building, and should behave in a similar way. You can access the form data within the FormWrapper and can console.log, debug, or otherwise pass this data to the context's children as you application needs.
+**_Flexibility and Debugging:_**
 
-Flexibility and Debugging: Utilizing this context gives developers the flexibility to easily access, log, or debug the form data captured upon submission. This aids in maintaining the integrity of the data collected and ensures that it aligns with the application's needs.
+This method allows developers to implement form state within the scope of a single file, making it simpler to build out forms for different use cases. If certain repeatable patterns arise, they can be broken out into a separate context provider if needed, or alternatively get passed in as props to child components.
+
+This approach provides better encapsulation and modularity, allowing for more straightforward debugging and maintenance of form-related logic.
 
 **TableState**
 
-At a high level, we handle state management for tables in a similar way. We use a React context provider to wrap whichever table needs state to be managed. For instance, within the boilerplate repository, you can see how `DemoTable` is wrapper by `TableWrapper`
+At a high level, we handle state management for tables in a similar way, although we are leveraging React Context to abstract and many of the implementation details of more complex state management away from the component. We do this by using a React context provider to wrap whichever table needs state to be managed. For instance, within the boilerplate repository, you can see how `DemoTable` is wrapper by `TableWrapper`
 
 ```jsx
 <TableWrapper>
