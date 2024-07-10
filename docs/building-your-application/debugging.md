@@ -2,11 +2,9 @@
 sidebar_position: 11
 ---
 
-# Monitoring/Debugging
+# Debugging
 
-Monitoring and debugging play pivotal roles in the development of Progressive Web Applications (PWAs) by enabling developers to track real-time performance, identify/fix bugs, optimize code, and enhance overall user experience.
-
-**Debugging**
+Debugging plays pivotal roles in the development of Progressive Web Applications (PWAs) by enabling developers to track real-time performance, identify/fix bugs, optimize code, and enhance overall user experience.
 
 There are several common strategies for debugging a web application during development. These include but are not limited to:
 
@@ -16,5 +14,3 @@ There are several common strategies for debugging a web application during devel
 - Using an HTTP client like Postman to test API calls: [See Postman documentation](https://learning.postman.com/docs/introduction/overview/)
 
 Note that you can use postman in conjunction with the Mock Service Worker that is bundled with RadFish in order to emulate a backend server response pattern.
-
-**Monitoring [TODO]**

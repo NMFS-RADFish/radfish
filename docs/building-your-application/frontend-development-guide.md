@@ -20,8 +20,6 @@ The purpose of this document is to serve as a technical guide to building fronte
 - [What unique considerations need to be made when building a frontend application for NOAA?](https://www.notion.so/DRAFT-Work-in-progress-RADFish-Frontend-Application-Development-Guide-dc3c5589b019458e8b5ab3f4293ec183?pvs=21)
   - Offline use out at sea in absence of a network connection
   - Multi-entry forms for bulk entering of fish data
-  - Region-specific behavior
-  - Region-specific data points
 - [Development Standards](https://www.notion.so/DRAFT-Work-in-progress-RADFish-Frontend-Application-Development-Guide-dc3c5589b019458e8b5ab3f4293ec183?pvs=21)
   - USWDS
   - NOAA Branding Guidelines and Style Guide
@@ -35,8 +33,6 @@ The purpose of this document is to serve as a technical guide to building fronte
   - API Authentication/Integration
   - Testing
   - Building and Optimization
-  - Deployment
-  - Monitoring/Debugging
   - Maintenance and Updates
 
 ---
@@ -103,31 +99,4 @@ PWAs leverage service workers, which are scripts that run in the background inde
 
 See more about service workers [here](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
 
-**Multi-entry forms for bulk entering of fish data**
-
-### **Multi-entry Forms for Bulk Entering of Fish Data**
-
-When developing web applications for NOAA, one of the requirements often encountered is the need to enter multiple sets of data efficiently. This is particularly relevant for commercial fishers, fishery observers, and other stakeholders who need to report large volumes of fish catch data. Implementing multi-entry forms in our applications streamlines this process, making data entry more efficient and user-friendly.
-
-**What is Multi-entry Data Submission?**
-
-Multi-entry data submission refers to the capability of a form to accept and process multiple data entries in a single submission. Instead of entering data one piece at a time, users can input various data sets at once, which is essential for bulk data like fish catch reports where users need to enter different types of fish, quantities, and related details rapidly.
-
-**Why Implement Multi-entry in NOAA Apps?**
-
-The nature of data collection in marine and environmental sciences often involves gathering extensive datasets that include various metrics and parameters. For users in the field or at sea, time and connectivity can be limited. Multi-entry forms address these challenges by:
-
-- **Enhancing Efficiency:** Users save time by entering multiple data sets in one go, rather than submitting forms individually.
-- **Reducing Errors:** Bulk data entry reduces the chances of errors that might occur when entering large volumes of data repeatedly.
-- **Improving User Experience:** Streamlining the data entry process makes the application more user-friendly, particularly for users who regularly report large sets of data.
-
-**How is Multi-entry Implemented in NOAA Apps?**
-
-To facilitate multi-entry data submission, we leverage the concept of form state management within the React ecosystem, specifically using the Context API for global state management across the application. This approach allows us to maintain a cohesive and accessible state for all form inputs, validations, and submissions, making it easier to manage complex data entry requirements.
-
-- **FormWrapper Component:** We use a **`FormWrapper`** component that acts as a higher-order component around our forms. This wrapper manages the form's state, including input fields, validations, and the submission process. It's designed to be modular and extensible, making it suitable for various forms across the application.
-- **Bulk Data Handling:** The **`FormWrapper`** includes functionality to handle the submission of multiple entries, updating the application's URL with query parameters representing the bulk data entered. This feature is particularly useful for multi-step forms or when users need to review their data before final submission.
-- **Computed Fields:** For entries that require calculations based on user input (e.g., computing the total price based on the number of fish and species), we implement computed input configurations. These configurations use callbacks to calculate values dynamically, ensuring that our forms can automatically update with computed data as users enter their information.
-- **Validation and Submission:** The **`FormWrapper`** also handles input validation and form submission. By centralizing validation logic within the wrapper, we can ensure consistent and accurate data validation across all forms. The submission process is tailored to support multi-entry data, allowing users to submit bulk information efficiently.
-
-In summary, implementing multi-entry forms in NOAA's web applications significantly enhances the data entry process for users, making it more efficient and user-friendly. By leveraging React's Context API and a well-structured **`FormWrapper`** component, we can manage complex data entry requirements, including bulk submissions and computed values, ensuring a seamless experience for users reporting fish data.
+Note that during development, you can serve a production build in order to validate certain offline behavior `npm run build && npm run serve`. This is the recommended approach for testing offline-first features.

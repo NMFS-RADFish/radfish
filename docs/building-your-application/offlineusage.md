@@ -235,3 +235,11 @@ The `useOfflineStorage` hook provides four functions:
 ## Error Handling
 
 If you try to use the `useOfflineStorage` hook outside of an `OfflineStorageWrapper`, it will throw an error. Always make sure to use `useOfflineStorage` within a component that's wrapped with `OfflineStorageWrapper`.
+
+## Testing during development
+
+As a developer, you will often run into an issue where you are developing an "offline-first" feature that needs to be tested before pushed and merged into the `main` branch. For instance, you may be developing a `Toast` message that notifies the user whenever they go offline. If you are simply running the local vite server, and you go offline to test your feature, you'll notice that the page breaks on page refresh. This is because the `serviceWorker` is not being used until the production build is created. In order to do this, you need to bundle the application and serve it locally in order to simulate a production environment:
+
+`npm run build && npm run serve`
+
+This will bundle the application and serve it, so that when you turn your browser offline, the cached static assets will remain, and your application will not break when the page is refreshed.
