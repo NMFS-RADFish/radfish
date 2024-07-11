@@ -1,4 +1,4 @@
-# React RADFish Components
+# React RADFish Component and Usage
 
 ### Building your first page and form
 
@@ -14,11 +14,9 @@ For reference on the full `react-uswds` library, you can reference the deployed 
 
 If you wanted to build a `TextInput` component into an existing form, you can use the `@trussworks` [storybook reference](https://trussworks.github.io/react-uswds/?path=/docs/components-text-input--default-text-input) related to component props that are available.
 
-However, this component should be imported from `react-radfish`. Since `react-radfish` extends the `@trussworks` library, you should have all the functionality from the underlying component:
-
 ```jsx
 
-import { TextInput, Label } from "../react-radfish";
+import { TextInput, Label } from "@trussworks/react-uswds";
 
 <Label htmlFor="fullName">Full Name</Label>
 <TextInput
@@ -34,53 +32,14 @@ import { TextInput, Label } from "../react-radfish";
 />
 ```
 
-### Setting the layout of the application
+### Forms
 
-#### Layout Component ([Layout.js](src/components/Layout.js))
+Controlled forms are a key aspect of any NOAA application, and is used to collect data relevant to that application in the context of the user. This could be intaking data related to trip reports, admin applications, or similar types of scope.
 
-The **`Layout`** component is a wrapper component used to structure the main layout of a React application. It leverages components from the **`@trussworks/react-uswds`** package, specifically [GridContainer](https://trussworks.github.io/react-uswds/?path=/docs/components-grid--default-container), to provide a grid-based layout. The component also includes a **`HeaderNav`** component for navigation purposes.
+For more specific information regarding how to build a form, you can reference the [State Management]() portion of this documentation.
 
-**Usage**
+### Tables
 
-To use the **`Layout`** component, wrap it around the main content of your application. The children of the **`Layout`** component are placed inside a **`GridContainer`**, which provides a responsive grid layout.
+Tables are also a key component type for all NOAA applications. These components are usually meant for visualizing data in a user friendly manner. However, there are cases where having this data also be writable (ie: submittable) to a backend. Utilizing caching strategies with IndexedDB is an effective way to ensure that these types of components remain fully functional when offline.
 
-```jsx
-import Layout from "./components/Layout";
-
-const App = () => {
-  return (
-    <Layout>
-      <main>{/* Your main content goes here */}</main>
-    </Layout>
-  );
-};
-
-export default App;
-```
-
-#### HeaderNav Component ([HeaderNav.js](src/components/HeaderNav.js))
-
-The **`HeaderNav`** component is a customizable navigation header. It uses the **`Header`**, **`NavMenuButton`**, **`PrimaryNav`**, and **`Search`** components from [`@trussworks/react-uswds`](https://trussworks.github.io/react-uswds/?path=/docs/components-header--basic-header). The component is designed to be responsive and includes a toggle-able navigation menu for smaller screens.
-
-The **`HeaderNav`** component is integrated into the **`Layout`** component. It accepts navigation links as the children elements, which are rendered as part of the primary navigation. Below is an example of how it is used within the `Layout` component.
-
-**Usage**
-
-```jsx
-import HeaderNav from "./HeaderNav";
-
-const Layout = () => {
-  return (
-    <>
-      <HeaderNav>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        {/* Additional navigation links */}
-      </HeaderNav>
-      <GridContainer>{children}</GridContainer>;
-    </>
-  );
-};
-
-export default Layout;
-```
+FOrm more specific information regarding how to build a table, you can reference the [State Management]() portion of this documentation.
