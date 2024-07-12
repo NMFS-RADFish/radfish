@@ -1,8 +1,8 @@
 ---
-sidebar_position: 8
+sidebar_position: 3
 ---
 
-# API Service
+# Integrating with Backend Services
 
 The **`RadfishAPIService`** is a class designed to facilitate interactions with a backend API. It simplifies making HTTP requests (GET, POST, PUT, DELETE) by encapsulating them into easy-to-use class methods. This service handles the construction of requests, including headers and query parameters, and processes responses.
 

@@ -8,7 +8,7 @@ Examples are small, scoped projects that are meant to demonstrate how to impleme
 
 These examples are meant to be a reference for any RADFish project. While these examples can certainly be used as a starting point to build out a new RADFish application, we still suggest starting with a fresh `react-javascript` template (see below).
 
-You can visualize the source code for each example at the open source repository for the overall RADFish [boilerplate](https://github.com/NMFS-RADFish/boilerplate/tree/main/examples). Each of these examples can be cloned and run separately as you are working with each from the RADFish CLI. To learn more about how to run these scripts, please reference the [running examples](#) section of this documentation
+You can visualize the source code for each example at the open source repository for the overall RADFish [boilerplate](https://github.com/NMFS-RADFish/boilerplate/tree/main/examples). Each of these examples can be cloned and run separately as you are working with each from the RADFish CLI. To learn more about how to run these scripts, please reference the [running examples](../examples/templates_examples.md) section of this documentation
 
 # What are Templates
 

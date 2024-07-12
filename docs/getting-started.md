@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 # Getting Started
@@ -83,3 +83,5 @@ Runs any configured application test code.
 ## `npm run build`
 
 Prepares a build
+
+Now that you are up and running, see the [Components & Usage](./building-your-application/patterns/components.md) section to start building out your first pages!
