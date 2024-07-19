@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # Starting from a boilerplate
@@ -10,7 +10,7 @@ Examples are small, scoped projects that are meant to demonstrate how to impleme
 
 These examples are meant to be a reference for any RADFish project. While these examples can certainly be used as a starting point to build out a new RADFish application, we still suggest starting with a fresh `react-javascript` template (see below).
 
-You can visualize the source code for each example at the open source repository for the overall RADFish [boilerplate](https://github.com/NMFS-RADFish/boilerplate/tree/main/examples). Each of these examples can be cloned and run separately as you are working with each from the RADFish CLI. To learn more about how to run these scripts, please reference the [running examples](../examples/templates_examples.md) section of this documentation
+You can visualize the source code for each example at the open source repository for the overall RADFish [boilerplate](https://github.com/NMFS-RADFish/boilerplate/tree/main/examples). Each of these examples can be cloned and run separately as you are working with each from the RADFish CLI. To learn more about how to run these scripts, please reference the [running examples](./available-scripts/running-example.md) section of this documentation
 
 Below are a list of pre-built examples that you can use as a starting point for your application. With exception of the `Main` example, these are all scoped to one core feature. Whereas the `Main` example encapsulates many of these features into a more fully built example. Note that the `Main` example may be more complex than you may like if you are just familiarizing yourself with the RADFish ecosystem.
 
@@ -32,6 +32,6 @@ Templates are meant to be a clean starting point for a new RADFish project. Thes
 
 The template will come pre-configured with everything you need to get up and running to start coding your new project as quickly as possible. This will include the core modules of RADFish, including service-worker configuration, application routing, and offline storage.
 
-If you want to create a new project based from the `react-javascript` library, you can execute the following RADFish CLI command: `npx @nmfs-radfish/create-radfish-app my-app --template templates/react-javascript`
+If you want to create a new project based from the `react-javascript` library, you can execute the following RADFish CLI command, similar to how you run examples: `npx @nmfs-radfish/create-radfish-app my-app --template templates/react-javascript`
 
 This will create a new RADFish project named `my-app` in your current working directory. Happy hacking!
