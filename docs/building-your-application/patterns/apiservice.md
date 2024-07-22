@@ -105,3 +105,7 @@ Responses and errors from the API are returned as promises.
 By using **`RadfishAPIService`**, developers can streamline API interactions, making their code more readable and maintainable while handling various aspects of HTTP communication in a centralized manner.
 
 ---
+
+# React Query
+
+TODO
