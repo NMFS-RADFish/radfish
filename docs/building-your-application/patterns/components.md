@@ -46,4 +46,4 @@ For more specific information regarding how to build a form, you can reference t
 
 Tables are also a key component type for all NOAA applications. These components are usually meant for visualizing data in a user friendly manner. However, there are cases where having this data also be writable (ie: submittable) to a backend. Utilizing caching strategies with IndexedDB is an effective way to ensure that these types of components remain fully functional when offline.
 
-FOrm more specific information regarding how to build a table, you can reference the [State Management](./state-management.md) portion of this documentation.
+Form more specific information regarding how to build a table, you can reference the [State Management](./state-management.md) portion of this documentation.
