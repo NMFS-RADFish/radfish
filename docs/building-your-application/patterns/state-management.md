@@ -122,7 +122,7 @@ Similar to how state is passed into the children components from context, these 
 
 A key consideration for any NOAA application, is for it to be able to be fully functional offline without a network connection. Fishermen are often on ships far away from network connection, and need to reliably store data to be uploaded to NOAA services when the app comes back online. For this reason, building with “offline first” considerations is of vital importance to NOAA web application development.
 
-Progressive Web Applications (or PWAs) offer a robust solution for offline use at sea, by combining the benefits of a familiar app-like experience, offline access, and efficient data management. These features make PWSs well-suited for maritime environments, where connectivity is often limited or intermittent.
+Progressive Web Applications (or PWAs) offer a robust solution for offline use at sea, by combining the benefits of a familiar app-like experience, offline access, and efficient data management. These features make PWAs well-suited for maritime environments, where connectivity is often limited or intermittent.
 
 PWAs leverage service workers, which are scripts that run in the background independantly of the main application. Service workers enable offline functionality by caching important static resources, such as HTML, CSS, and JavaScript files. This allows the PWA to continue functioning event when there’s no network connectivity.
 
