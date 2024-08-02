@@ -8,10 +8,10 @@ Create RadFish App is an officially supported way to create single-page React ap
 
 # Quick Start
 
-After installing the command line tool, run the commands:
+Run the commands:
 
 ```bash
-npx create-radfish-app my-app
+npx @nmfs-radfish/create-radfish-app my-app
 cd my-app
 npm start
 ```
@@ -31,13 +31,7 @@ Before you start, make sure you have the following installed:
 ### npx
 
 ```json
-npx create-radfish-app my-pwa
-```
-
-### npm
-
-```json
-npm init radfish-app my-pwa
+npx @nmfs-radfish/create-radfish-app my-pwa
 ```
 
 ## Output
