@@ -10,22 +10,22 @@ The purpose of this document is to serve as a technical guide to building fronte
 
 ### Outline
 
-- [Problem Definition / What kind of NOAA applications are there and how are they used?](https://www.notion.so/DRAFT-Work-in-progress-RADFish-Frontend-Application-Development-Guide-dc3c5589b019458e8b5ab3f4293ec183?pvs=21)
+- [Problem Definition / What kind of NOAA applications are there and how are they used?](#problem-definition)
   - Commercial Fishers reporting **fish catch data**
     - Description of this use case
   - Fish Dealers and Processors reporting **fish purchase data**
     - Description of this use case
   - Fishery Observers reporting **fishery stats data**
     - Description of this use case
-- [What unique considerations need to be made when building a frontend application for NOAA?](https://www.notion.so/DRAFT-Work-in-progress-RADFish-Frontend-Application-Development-Guide-dc3c5589b019458e8b5ab3f4293ec183?pvs=21)
+- [What unique considerations need to be made when building a frontend application for NOAA?](#what-unique-considerations-need-to-be-made-when-building-a-frontend-application-for-noaa)
   - Offline use out at sea in absence of a network connection
   - Multi-entry forms for bulk entering of fish data
-- [Development Standards](https://www.notion.so/DRAFT-Work-in-progress-RADFish-Frontend-Application-Development-Guide-dc3c5589b019458e8b5ab3f4293ec183?pvs=21)
+- [Development Standards](http://localhost:3000/documentation/docs/building-your-application/development-standards)
   - USWDS
   - NOAA Branding Guidelines and Style Guide
   - 508 Compliance
   - 18F Software Development Standards
-- [Development Lifecycle](https://www.notion.so/DRAFT-Work-in-progress-RADFish-Frontend-Application-Development-Guide-dc3c5589b019458e8b5ab3f4293ec183?pvs=21)
+- Development Lifecycle
   - Project Setup
   - Development of Application Components
   - Routing and Navigation
