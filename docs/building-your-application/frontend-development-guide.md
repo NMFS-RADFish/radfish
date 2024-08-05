@@ -20,7 +20,7 @@ The purpose of this document is to serve as a technical guide to building fronte
 - [What unique considerations need to be made when building a frontend application for NOAA?](#what-unique-considerations-need-to-be-made-when-building-a-frontend-application-for-noaa)
   - Offline use out at sea in absence of a network connection
   - Multi-entry forms for bulk entering of fish data
-- [Development Standards](http://localhost:3000/documentation/docs/building-your-application/development-standards)
+- [Development Standards](https://nmfs-radfish.github.io/documentation/docs/building-your-application/development-standards)
   - USWDS
   - NOAA Branding Guidelines and Style Guide
   - 508 Compliance
