@@ -8,7 +8,7 @@ Debugging plays pivotal roles in the development of Progressive Web Applications
 
 There are several common strategies for debugging a web application during development. These include but are not limited to:
 
-- Adding breakpoints in code editor: [See vscode documentation](https://www.notion.so/Code-Style-Guide-65a23205922c409098ee7efbe1189773?pvs=21)
+- Adding breakpoints in code editor: [See vscode documentation](https://code.visualstudio.com/docs/editor/debugging#_breakpoints)
 - Adding logs to the development console: [See MDN documentation](https://developer.mozilla.org/en-US/blog/learn-javascript-console-methods/)
 - Using the network console: [See Chrome DevTools documentation](https://developer.chrome.com/docs/devtools/network)
 - Using an HTTP client like Postman to test API calls: [See Postman documentation](https://learning.postman.com/docs/introduction/overview/)
