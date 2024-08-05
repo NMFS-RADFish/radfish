@@ -9,9 +9,9 @@ In today's world, users expect web applications to be responsive and reliable, e
 
 On-device storage is the practice of storing data directly on a user's device, allowing web applications to function independently of network connectivity. This approach is critical for several reasons:
 
-- Uninterrupted User Experience: Users can continue to interact with the application without any disruptions, regardless of their connectivity status.
-- Data Availability: Essential data remains accessible, enabling users to perform tasks and access information when they need it most.
-- Improved Performance: By reducing the reliance on network requests, on-device storage can lead to faster data retrieval and smoother application performance.
+- **Uninterrupted User Experience:** Users can continue to interact with the application without any disruptions, regardless of their connectivity status.
+- **Data Availability:** Essential data remains accessible, enabling users to perform tasks and access information when they need it most.
+- **Improved Performance:** By reducing the reliance on network requests, on-device storage can lead to faster data retrieval and smoother application performance.
 
 ## Types of On-Device Storage
 
@@ -32,6 +32,8 @@ Limitations of LocalStorage:
 String-Only Storage: Only string data types can be stored, necessitating the serialization of more complex data structures.
 Synchronous Nature: Operations are blocking, which can impact performance for larger datasets.
 IndexedDB
+
+### IndexedDB
 
 For more complex and large-scale storage needs, IndexedDB is a powerful alternative. IndexedDB is an asynchronous, low-level API designed to store significant amounts of structured data, including files and blobs. It supports transactions, allowing for reliable data handling and advanced querying capabilities.
 
