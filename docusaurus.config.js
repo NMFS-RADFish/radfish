@@ -40,7 +40,7 @@ const config = {
       ({
         docs: {
           sidebarPath: "./sidebars.js",
-       },
+        },
         theme: {
           customCss: "./src/css/custom.css",
         },
