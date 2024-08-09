@@ -8,7 +8,7 @@ Create RadFish App is an officially supported way to create single-page React ap
 
 # Quick Start
 
-Run the commands:
+**Option 1:** To scaffold an app, run the commands:
 
 ```bash
 npx @nmfs-radfish/create-radfish-app my-app
@@ -18,9 +18,19 @@ npm start
 
 Then open [http://localhost:3000/](http://localhost:3000/) to see your app.
 
+**Option 2:** If you would like to scaffold from 1 example, please see [Running an Example](./building-your-application/available-scripts/running-example.md)
+
+**Option 3:** You can also clone the boilerplate repo to get all the examples. Then run `npm i` followed by `npm start` from the example directory you want to run.
+
+**To show help:**
+
+```bash
+npx @nmfs-radfish/create-radfish-app my-app --help
+```
+
 # Creating an PWA
 
-## Prerequisites
+### Prerequisites
 
 Before you start, make sure you have the following installed:
 
