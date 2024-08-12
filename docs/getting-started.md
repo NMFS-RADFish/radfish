@@ -20,7 +20,14 @@ Then open [http://localhost:3000/](http://localhost:3000/) to see your app.
 
 **Option 2:** If you would like to scaffold from 1 example, please see [Running an Example](./building-your-application/available-scripts/running-example.md)
 
-**Option 3:** You can also clone the boilerplate repo to get all the examples. Then run `npm i` followed by `npm start` from the example directory you want to run.
+**Option 3:** You can also clone the [boilerplate repo](https://github.com/NMFS-RADFish/boilerplate) to get all the examples. 
+
+Then:
+```bash
+cd boilerplate/examples/[example you want to run]
+npm i
+npm start
+```
 
 **To show help:**
 
@@ -28,7 +35,7 @@ Then open [http://localhost:3000/](http://localhost:3000/) to see your app.
 npx @nmfs-radfish/create-radfish-app my-app --help
 ```
 
-# Creating an PWA
+# Creating a PWA
 
 ### Prerequisites
 
