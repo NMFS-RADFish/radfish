@@ -75,7 +75,7 @@ const config = {
       footer: {
         style: "dark",
         links: [],
-        copyright: `Copyright © ${new Date().getFullYear()} RADFish. Built with love by Sudokrew.`,
+        copyright: `Copyright © ${new Date().getFullYear()} RADFish.`,
       },
       prism: {
         theme: prismThemes.github,
