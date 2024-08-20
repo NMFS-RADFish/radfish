@@ -11,8 +11,19 @@ import HomepageFeatures from "../components/HomepageFeatures";
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <header className={clsx("hero hero--primary", styles.heroBanner)}>
-      <div className="container">
+    <header
+      className={clsx("hero hero--primary", styles.heroBanner)}
+      style={{
+        height: "39.5vh",
+        backgroundImage: "url(img/hero-homepage.jpg)",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+      }}
+    >
+      <div
+        className="container"
+      >
         <Heading as="h1" className="hero__title">
           {siteConfig.title}
         </Heading>
