@@ -17,12 +17,12 @@ function HomepageHeader() {
           {siteConfig.title}
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/getting-started"
-          >
-            Get started with RADFish
+        <div className="buttons">
+          <Link className="button button--primary" to="/docs/getting-started">
+            Get started
+          </Link>
+          <Link className="button button--secondary" to="#">
+            About RADFish
           </Link>
         </div>
       </div>
