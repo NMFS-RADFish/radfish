@@ -21,7 +21,7 @@ function HomepageHeader() {
           <Link className="button button--primary" to="/docs/getting-started">
             Get started
           </Link>
-          <Link className="button button--secondary" to="#">
+          <Link className="button button--secondary" to="/docs/about">
             About RADFish
           </Link>
         </div>
