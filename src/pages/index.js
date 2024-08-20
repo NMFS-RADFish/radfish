@@ -14,11 +14,10 @@ function HomepageHeader() {
     <header
       className={clsx("hero hero--primary", styles.heroBanner)}
       style={{
-        height: "39.5vh",
-        backgroundImage: "url(img/hero-homepage.jpg)",
+        height: "65vh",
+        backgroundImage: "url(img/hero-banner.jpeg)",
         backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
+        backgroundPosition: "bottom",
       }}
     >
       <div
