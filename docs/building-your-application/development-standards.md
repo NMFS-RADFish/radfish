@@ -18,12 +18,11 @@ For reference on the full `react-uswds` library, you can reference the deployed 
 
 The benefit of referencing and leveraging `react-radfish` when building applications is to increase developer velocity, design consistency, and ensures that front-end development is happening in compliance with government regulation. The storybook above provides examples of a wide variety of compliant components that can be used to build apps for a wide variety of use cases.
 
+<!--
 <aside>
-🚨 Note: Whenever possible, you should use components from `react-radfish` rather than importing components directly from `@trussworks/react-uswds`. This ensure that the component you are using have the correctly styles and theme applied.
-
 If you need another component for your application support, please see `CONTRIBUTING` section (In progress)
-
 </aside>
+-->
 
 **Example**
 
