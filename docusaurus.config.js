@@ -63,7 +63,19 @@ const config = {
             type: "docSidebar",
             sidebarId: "tutorialSidebar",
             position: "left",
-            label: "Guide",
+            label: "Developer Documentation",
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "designSystemSidebar",
+            position: "left",
+            label: "Design System",
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "aboutSidebar",
+            position: "left",
+            label: "About",
           },
           {
             href: "https://github.com/nmfs-radfish/documentation",
