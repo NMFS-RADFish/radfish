@@ -31,7 +31,7 @@ function HomepageHeader() {
           <Link className="button button--primary" to="/docs/getting-started">
             Get started
           </Link>
-          <Link className="button button--secondary" to="/docs/about">
+          <Link className="button button--secondary" to="/docs/about/what-is-radfish">
             About RADFish
           </Link>
         </div>
