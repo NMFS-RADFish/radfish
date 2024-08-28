@@ -21,12 +21,17 @@ function HomepageHeader() {
       }}
     >
       <div className="container">
-        <Heading as="h1" className="hero__title">
+        <Heading as="h1" className={clsx("hero__title", styles.heroTextColor)}>
           {siteConfig.title}
         </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p className={clsx("hero__subtitle", styles.heroTextColor)}>
+          {siteConfig.tagline}
+        </p>
         <div className="buttons">
-          <Link className="button button--primary" to="/docs/getting-started">
+          <Link
+            className={clsx("button button--primary", styles.heroButton)}
+            to="/docs/getting-started"
+          >
             Get started
           </Link>
           <Link
