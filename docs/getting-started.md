@@ -42,8 +42,8 @@ npx @nmfs-radfish/create-radfish-app my-app --help
 
 Before you start, make sure you have the following installed:
 
-- [ ] Node.js (v18.0.0 or later)
-- [ ] npm (v8.6.0 or later)
+- [ ] Node.js (v20.17.0 or later)
+- [ ] npm (v10.8.2 or later)
 - [ ] git (v2.0 or later)
 
 ### npx
