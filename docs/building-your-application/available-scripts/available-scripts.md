@@ -21,36 +21,33 @@ Runs the production bundle (created in command above) and serves static files, s
 # Scaffold project
 
 ```
-npx @nfms-radfish/cli init my-coolapp
+npx @nmfs-radfish/create-radfish-app my-app
 ```
 
 After creation, your project should look like this:
 
 ```
-my-coolapp
-├── README.md
+my-app
+├── babel.config.js
+├── index.html
+├── mocks
+│   ├── browser.js
+│   └── handlers.js
 ├── node_modules/
 ├── package-lock.json
 ├── package.json
 ├── public
-│   ├── favicon.ico
-│   ├── index.html
-│   ├── logo192.png
-│   ├── logo512.png
+│   ├── icons
 │   ├── manifest.json
-│   ├── mock-service-worker.js
+│   ├── mockServiceWorker.js
+│   ├── noaafavicon.png
 │   └── robots.txt
-├── mocks/
-    ├── browser.js
-    ├── handlers.js
-└── src
-    ├── serviceWorker.js
-    ├── pages/
-		├── Home.jsx
-    ├── styles/
-		├── theme.css
-    ├── App.jsx
-    ├── index.css
-    ├── indexjsx
-    ├── service-worker.js
+├── src
+│   ├── App.jsx
+│   ├── index.css
+│   ├── index.jsx
+│   ├── pages
+│   ├── service-worker.js
+│   └── styles
+└── vite.config.js
 ```

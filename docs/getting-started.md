@@ -56,30 +56,28 @@ npx @nmfs-radfish/create-radfish-app my-pwa
 
 ```bash
 my-app
-├── .eslintrc
-├── .prettierrc
-├── README.md
+├── babel.config.js
+├── index.html
+├── mocks
+│   ├── browser.js
+│   └── handlers.js
 ├── node_modules/
 ├── package-lock.json
 ├── package.json
 ├── public
-│   ├── favicon.ico
-│   ├── index.html
+│   ├── icons
 │   ├── manifest.json
+│   ├── mockServiceWorker.js
 │   ├── noaafavicon.png
 │   └── robots.txt
-└── src
-    ├── App.css
-    ├── App.js
-    ├── assets
-    ├── components
-    ├── index.css
-    ├── index.js
-    ├── logo.svg
-    ├── reportWebVitals.js
-    ├── service-worker.js
-    ├── serviceWorkerRegistration.js
-    └── setupTests.js
+├── src
+│   ├── App.jsx
+│   ├── index.css
+│   ├── index.jsx
+│   ├── pages
+│   ├── service-worker.js
+│   └── styles
+└── vite.config.js
 ```
 
 ## Folder Structure Explanation
