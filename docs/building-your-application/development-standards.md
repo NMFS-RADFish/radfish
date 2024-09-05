@@ -72,7 +72,7 @@ You will notice, that the components above do not have any `className` assigned,
 1. If you need to add additional styles to a particular component, you can do so by adding another `className` **after** the component has been imported from `react-radfish`
 
 ```jsx
-import { Label } from "../react-radfish";
+import { Label } from "@nmfs-radfish/react-radfish";
 
 <Label htmlFor="fullName" className="your-custom-class">
   Full Name
