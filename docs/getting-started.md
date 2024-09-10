@@ -6,6 +6,14 @@ sidebar_position: 1
 
 Create RadFish App is an officially supported way to create single-page React applications. It offers a modern build setup with no configuration.
 
+### Prerequisites
+
+Before you start, make sure you have the following installed:
+
+- [x] Node.js (v20.17.0 or later)
+- [x] npm (v10.8.2 or later)
+- [x] git (v2.0 or later)
+
 # Quick Start
 
 **Option 1:** To scaffold an app, run the commands:
@@ -15,44 +23,9 @@ npx @nmfs-radfish/create-radfish-app my-app
 cd my-app
 npm start
 ```
-
 Then open [http://localhost:3000/](http://localhost:3000/) to see your app.
 
-**Option 2:** If you would like to scaffold from 1 example, please see [Running an Example](./building-your-application/available-scripts/running-example.md)
-
-**Option 3:** You can also clone the [boilerplate repo](https://github.com/NMFS-RADFish/boilerplate) to get all the examples.
-
-Then:
-
-```bash
-cd boilerplate/examples/[example you want to run]
-npm i
-npm start
-```
-
-**To show help:**
-
-```bash
-npx @nmfs-radfish/create-radfish-app my-app --help
-```
-
-# Creating a PWA
-
-### Prerequisites
-
-Before you start, make sure you have the following installed:
-
-- [ ] Node.js (v20.17.0 or later)
-- [ ] npm (v10.8.2 or later)
-- [ ] git (v2.0 or later)
-
-### npx
-
-```json
-npx @nmfs-radfish/create-radfish-app my-pwa
-```
-
-## Output
+### Output
 
 ```bash
 my-app
@@ -78,6 +51,24 @@ my-app
 │   ├── service-worker.js
 │   └── styles
 └── vite.config.js
+```
+
+**Option 2:** If you would like to scaffold from 1 example, please see [Running an Example](./building-your-application/available-scripts/running-example.md). The list of examples can be found at [Starting from a boilerplate](./building-your-application/templates_examples/#examples)
+
+**Option 3:** You can also clone the [boilerplate repo](https://github.com/NMFS-RADFish/boilerplate) to get all the examples.
+
+Then:
+
+```bash
+cd boilerplate/examples/[example you want to run]
+npm i
+npm start
+```
+
+**To show help:**
+
+```bash
+npx @nmfs-radfish/create-radfish-app --help
 ```
 
 ## Folder Structure Explanation

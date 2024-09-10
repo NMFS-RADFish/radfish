@@ -6,7 +6,7 @@ sidebar_position: 5
 
 ## Building your first page and form
 
-When building applications with React, there is an existing component library, [react-uswds](https://trussworks.github.io/react-uswds/?path=/story/welcome--welcome) that our project extends for the purposes of building any Radfish application. These components maintain all functionality of `react-uswds` components, but are branded with NOAA themes and styles. These components live in `react-radfish` directory, and allow for development in a modern React environment with NOAA look and feel.
+When building applications with React, there is an existing component library, [react-uswds](https://trussworks.github.io/react-uswds/?path=/docs/welcome--docs) that our project extends for the purposes of building any Radfish application. These components maintain all functionality of `react-uswds` components, but are branded with NOAA themes and styles. These components live in `react-radfish` directory, and allow for development in a modern React environment with NOAA look and feel.
 
 For reference on the full `react-uswds` library, you can reference the deployed storybook:
 
@@ -16,7 +16,7 @@ For reference on the full `react-uswds` library, you can reference the deployed 
 
 **Example**
 
-If you wanted to build a `TextInput` component into an existing form, you can use the `@trussworks` [storybook reference](https://trussworks.github.io/react-uswds/?path=/docs/components-text-input--default-text-input) related to component props that are available.
+If you wanted to build a `TextInput` component into an existing form, you can use the `@trussworks` [storybook reference](https://trussworks.github.io/react-uswds/?path=/docs/components-text-input--docs) related to component props that are available.
 
 ```jsx
 

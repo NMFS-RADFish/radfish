@@ -10,7 +10,7 @@ For NOAA applications, tooling that supports full-featured web forms is a must. 
 
 Setting up a project properly will improve developer velocity over the course of the project. In addition to this, it will limit maintenance overhead, especially if the project is setup using a standard environment and set of tools that are familiar to other NOAA developers.
 
-To setup a new NOAA web app project, we recommend following the instructions outlined in our [“Getting Started”](https://github.com/NMFS-RADFish/cli) documentation.
+To setup a new NOAA web app project, we recommend following the instructions outlined in our [Getting Started](../getting-started) documentation.
 
 ## React Components
 
