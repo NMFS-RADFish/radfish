@@ -31,7 +31,6 @@ Limitations of LocalStorage:
 - **Storage Capacity:** Typically limited to around 5MB, which may not be sufficient for all applications.
 String-Only Storage: Only string data types can be stored, necessitating the serialization of more complex data structures.
 Synchronous Nature: Operations are blocking, which can impact performance for larger datasets.
-IndexedDB
 
 ### IndexedDB
 
