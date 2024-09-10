@@ -175,7 +175,7 @@ This underlying code listens for changes surfaced from the `navigator` API, and 
 
 It is important to fetch and cache required data needed to basic app functionality while the application is online. This can be done by fetching the required data from an API, and storing that data into IndexedDB. To see a basic example of how this can be done, you can run the `server-sync` example from the CLI:
 
-`npx @nmfs-radfish/create-radfish-app my-server-sync --example server-sync`
+`npx @nmfs-radfish/create-radfish-app my-app --example server-sync`
 
 This example fetches several JSON arrays from our Mock API, then stores and caches it in IndexedDB. The application then can reference the data in IndexedDB without needing to have any network connection. Keep in mind that it is up to the developer to decide when and how to invalidate this IndexedDB cache in according to their application's needs.
 
