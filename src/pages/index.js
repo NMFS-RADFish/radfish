@@ -15,23 +15,29 @@ function HomepageHeader() {
       className={clsx("hero hero--primary", styles.heroBanner)}
       style={{
         height: "65vh",
-        backgroundImage: "url(img/hero-banner.jpeg)",
+        backgroundImage: "url(img/hero-banner.webp)",
         backgroundSize: "cover",
         backgroundPosition: "bottom",
       }}
     >
-      <div
-        className="container"
-      >
-        <Heading as="h1" className="hero__title">
+      <div className="container">
+        <Heading as="h1" className={clsx("hero__title", styles.heroTextColor)}>
           {siteConfig.title}
         </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p className={clsx("hero__subtitle", styles.heroTextColor)}>
+          {siteConfig.tagline}
+        </p>
         <div className="buttons">
-          <Link className="button button--primary" to="/docs/getting-started">
+          <Link
+            className={clsx("button button--primary", styles.heroButton)}
+            to="/docs/getting-started"
+          >
             Get started
           </Link>
-          <Link className="button button--secondary" to="/docs/about">
+          <Link
+            className="button button--secondary"
+            to="/docs/about/what-is-radfish"
+          >
             About RADFish
           </Link>
         </div>
