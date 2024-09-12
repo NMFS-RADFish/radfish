@@ -10,14 +10,16 @@
   overflow: hidden;
 }
 
+[data-theme="dark"] .heroTextColor {
+  color: white;
+}
+
+[data-theme="dark"] .heroButton {
+  background-color: #205493;
+}
+
 @media screen and (max-width: 996px) {
   .heroBanner {
     padding: 2rem;
   }
-}
-
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }

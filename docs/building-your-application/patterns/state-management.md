@@ -29,7 +29,7 @@ The potential downside of this approach is that each form will have it's own sta
 
 For an example on best practices for implementing this type of form state management, you can run any of several example implementations with the RADFish CLI:
 
-`npx @nmfs-radfish/create-radfish-app my-app --template examples/computed-form-fields`
+`npx @nmfs-radfish/create-radfish-app my-app --example computed-form-fields`
 
 Below is a simplified code snippet on how to set this form state management up in a React component:
 
@@ -175,7 +175,7 @@ This underlying code listens for changes surfaced from the `navigator` API, and 
 
 It is important to fetch and cache required data needed to basic app functionality while the application is online. This can be done by fetching the required data from an API, and storing that data into IndexedDB. To see a basic example of how this can be done, you can run the `server-sync` example from the CLI:
 
-`npx @nmfs-radfish/create-radfish-app my-app --template examples/server-sync`
+`npx @nmfs-radfish/create-radfish-app my-app --example server-sync`
 
 This example fetches several JSON arrays from our Mock API, then stores and caches it in IndexedDB. The application then can reference the data in IndexedDB without needing to have any network connection. Keep in mind that it is up to the developer to decide when and how to invalidate this IndexedDB cache in according to their application's needs.
 
@@ -197,7 +197,7 @@ Step-by-step instructions to configure offline storage:
       4. `VITE_INDEXED_DB_SCHEMA`
 2. **In the `src/hooks/useOfflineStorage.js` file, initialize one of the following Storage Method instances, and pass the appropriate environment variables using `import.meta.env.REPLACE_WITH_KEY_NAME` as parameters:**
 
-   1. `**LocalStorageMethod**` — Requires one parameter, the key name for localStorage.
+   1. `LocalStorageMethod` — Requires one parameter, the key name for localStorage.
 
       ```jsx
       const storageMethod = new LocalStorageMethod(
@@ -205,7 +205,7 @@ Step-by-step instructions to configure offline storage:
       );
       ```
 
-   2. `**IndexedDBStorageMethod**` — Requires four parameters, the db name, db version, db table name, db schema.
+   2. `IndexedDBStorageMethod` — Requires four parameters, the db name, db version, db table name, db schema.
 
       ```jsx
       const storageMethod = new IndexedDBStorageMethod(
