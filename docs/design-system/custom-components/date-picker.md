@@ -160,6 +160,10 @@ export default StyledForm;
 
 The DatePicker component ensures accessibility by using the native HTML input element, which is inherently 508 compliant. It supports keyboard navigation, allowing users to interact with the date picker without a mouse. Additionally, the component is fully compatible with screen readers, providing clear labels and descriptive hints through proper ARIA attributes. This ensures that all users, including those with disabilities, can effectively utilize the DatePicker in forms and data entry interfaces.
 
+### Native DatePicker vs. Trussworks DatePicker
+
+The RADFish DatePicker offers flexibility by supporting both controlled and uncontrolled modes. In controlled mode, developers manage the value via React state, allowing for precise control over the input. In uncontrolled mode, the browser manages the form state, simplifying development for straightforward use cases. On the other hand, the Trussworks date picker only supports uncontrolled behavior, which limits flexibility in scenarios where managing the input programmatically is required. This makes the native picker a more versatile choice for a wider range of applications, offering developers greater control when needed.
+
 ### Conclusion
 
 The DatePicker component is a versatile and accessible tool for capturing date information within NOAA web applications. Its customizable props, ease of integration, and adherence to accessibility standards make it an essential component for building user-friendly forms and data entry interfaces. By following the best practices and examples provided, developers can efficiently incorporate the DatePicker into their projects, enhancing both functionality and user experience.
