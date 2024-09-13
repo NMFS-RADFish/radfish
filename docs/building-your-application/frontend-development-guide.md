@@ -4,6 +4,8 @@ sidebar_position: 1
 
 # How RADFish Can Help You
 
+The purpose of RADFish
+
 ### **Purpose**
 
 The purpose of this document is to serve as a technical guide to building frontend applications within the NOAA ecosystem. The goal of this guide is to enable NOAA developers to quickly build a NOAA web application frontend that mirrors the aesthetic and UX of other NOAA applications. In addition to this high level goal, by following this guide, developers will not have to decide which tech stack or developer environment configuration to use and they will be able to build a frontend experience that meets the performance, behavior, compliance, and branding requirements of NOAA.
