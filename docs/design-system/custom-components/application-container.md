@@ -27,20 +27,17 @@ This feature is provided **out of the box** and requires no additional setup fro
 To use the `Application` component, wrap it around your app in the entry file (e.g., `index.js` or `index.jsx`):
 
 ```jsx
-import React from "react";
-import ReactDOM from "react-dom/client";
 import { Application } from "@nmfs-radfish/react-radfish";
-import App from "./App";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+function App () {
+  return (
+    <Application>
+      { /* Your application code */ }
+    </Application>
+  );
+}
 
-root.render(
-    <React.StrictMode>
-      <Application>
-        <App />
-      </Application>
-    </React.StrictMode>
-);
+export default App;
 ```
 
 ### Extending Functionality with Hooks
