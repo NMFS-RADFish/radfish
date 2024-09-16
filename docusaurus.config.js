@@ -61,19 +61,19 @@ const config = {
         items: [
           {
             type: "docSidebar",
-            sidebarId: "tutorialSidebar",
+            sidebarId: "developerDocumentation",
             position: "left",
             label: "Developer Documentation",
           },
           {
             type: "docSidebar",
-            sidebarId: "designSystemSidebar",
+            sidebarId: "designSystem",
             position: "left",
             label: "Design System",
           },
           {
             type: "docSidebar",
-            sidebarId: "aboutSidebar",
+            sidebarId: "about",
             position: "left",
             label: "About",
           },
