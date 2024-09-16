@@ -45,6 +45,6 @@ root.render(
 
 ### Extending Functionality with Hooks
 
-While the `Application` component provides **out-of-the-box** functionality for network status notifications, you can also use our custom hooks—`useToasts` and `useOfflineStatus`—independently for more control over toast messages and offline status in other parts of your application.
+While the `Application` component provides **out-of-the-box** functionality for network status notifications, you can also use RADFish's custom hooks—`useToasts` and `useOfflineStatus`—independently for more control over toast messages and offline status in other parts of your application.
 
 For more information on how to use these hooks, refer to the [RADFish Custom Hooks Documentation](link-to-hooks-documentation).
