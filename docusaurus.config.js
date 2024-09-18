@@ -11,6 +11,7 @@ const config = {
   title: "RADFish Documentation",
   tagline: "Frontend Development Tooling for NOAA Developers",
   favicon: "img/favicon.ico",
+  staticDirectories: ['static'],
 
   // Set the production url of your site here
   url: "https://NMFS-RADFish.github.io",
