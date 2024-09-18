@@ -4,8 +4,6 @@ sidebar_position: 1
 
 # DatePicker
 
-**DatePicker Component**
-
 The `DatePicker` component is a reusable form input designed to capture date-related information from users. It provides a consistent and accessible user interface element for selecting dates, ensuring seamless integration within NOAA web applications.
 
 ## **Features**
