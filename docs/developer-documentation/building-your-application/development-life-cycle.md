@@ -4,6 +4,8 @@ sidebar_position: 3
 
 # Project Setup
 
+Setting up web projects with RADFish.
+
 When setting up a web application within the NOAA ecosystem, it’s imperative that you setup your project properly in order to make life easier as development progresses. A strong setup includes proper development standards ie: File structure, linting, core frameworks, build tooling, etc.
 
 For NOAA applications, tooling that supports full-featured web forms is a must. There are also branding/style guidelines and compliance regulations that must be adhered too. All of this must be considered when setting up a new project.
