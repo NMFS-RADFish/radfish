@@ -32,7 +32,7 @@ The `DatePicker` component is a reusable form input designed to capture date-rel
 Import the `DatePicker` component into your desired file:
 
 ```jsx
-import { DatePicker } from "./path-to-DatePicker";
+import { DatePicker } from "@nmfs-radfish/react-radfish";
 ```
 
 Usage examples
@@ -68,7 +68,7 @@ Using a different input type and setting a default value
 
 ```jsx
 import React from "react";
-import { DatePicker } from "./path-to-DatePicker";
+import { DatePicker } from "@nmfs-radfish/react-radfish";
 
 const AppointmentForm = () => {
   return (
@@ -95,7 +95,7 @@ Managing the DatePicker value through React state:
 
 ```jsx
 import React, { useState } from "react";
-import { DatePicker } from "./path-to-DatePicker";
+import { DatePicker } from "@nmfs-radfish/react-radfish";
 
 const ControlledForm = () => {
   const [selectedDate, setSelectedDate] = useState("");
@@ -133,7 +133,7 @@ Applying custom CSS classes to the DatePicker
 
 ```jsx
 import React from "react";
-import { DatePicker } from "./path-to-DatePicker";
+import { DatePicker } from "@nmfs-radfish/react-radfish";
 
 const StyledForm = () => {
   return (
@@ -158,9 +158,9 @@ export default StyledForm;
 
 The DatePicker component ensures accessibility by using the native HTML input element, which is inherently 508 compliant. It supports keyboard navigation, allowing users to interact with the date picker without a mouse. Additionally, the component is fully compatible with screen readers, providing clear labels and descriptive hints through proper ARIA attributes. This ensures that all users, including those with disabilities, can effectively utilize the DatePicker in forms and data entry interfaces.
 
-### Native DatePicker vs. Trussworks DatePicker
+### RADFish DatePicker vs. Trussworks DatePicker
 
-The RADFish DatePicker offers flexibility by supporting both controlled and uncontrolled modes. In controlled mode, developers manage the value via React state, allowing for precise control over the input. In uncontrolled mode, the browser manages the form state, simplifying development for straightforward use cases. On the other hand, the Trussworks date picker only supports uncontrolled behavior, which limits flexibility in scenarios where managing the input programmatically is required. This makes the native picker a more versatile choice for a wider range of applications, offering developers greater control when needed.
+The RADFish DatePicker offers flexibility by supporting both controlled and uncontrolled modes. In controlled mode, developers manage the value via React state, allowing for precise control over the input. In uncontrolled mode, the browser manages the form state, simplifying development for straightforward use cases. On the other hand, the Trussworks date picker only supports uncontrolled behavior, which limits flexibility in scenarios where managing the input programmatically is required. This makes the RADFish DatePicker a more versatile choice for a wider range of applications, offering developers greater control when needed.
 
 ### Conclusion
 
