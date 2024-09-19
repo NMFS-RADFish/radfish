@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Table
 
-The `<Table>` component is a flexible and customizable table designed for displaying tabular data.
+The Table component is a flexible and customizable table designed for displaying tabular data.
 
 ## Features
 
