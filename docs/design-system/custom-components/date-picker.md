@@ -35,7 +35,7 @@ Import the `DatePicker` component into your desired file:
 import { DatePicker } from "@nmfs-radfish/react-radfish";
 ```
 
-Usage examples
+## Usage examples
 
 ### 1. Basic Usage
 
