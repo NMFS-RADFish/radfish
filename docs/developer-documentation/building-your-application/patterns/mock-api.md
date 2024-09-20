@@ -1,5 +1,6 @@
 ---
 sidebar_position: 4
+description: Simulate backend responses to unblock your development
 ---
 
 # Mock API

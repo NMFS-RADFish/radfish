@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+description: Modules to build a RADFish app in React
 ---
 
 # `react-radfish`

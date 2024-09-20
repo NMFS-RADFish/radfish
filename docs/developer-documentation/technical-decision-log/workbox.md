@@ -1,5 +1,6 @@
 ---
 sidebar_position: 10
+description: Service worker management for improved caching
 ---
 
 # Workbox

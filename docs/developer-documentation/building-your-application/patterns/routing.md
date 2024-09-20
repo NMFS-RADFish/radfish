@@ -1,5 +1,6 @@
 ---
 sidebar_position: 9
+description: Manage app routes with React Router
 ---
 
 # Routing
@@ -57,7 +58,7 @@ This setup provides a navigation link to the home page.
 
 ### Example Code
 
-You can view the full example of the routing setup in the `App.jsx` file in the GitHub repository: [github/boilerplate/templates/react-javascript/src/App.jsx](https://github.com/your-repository/boilerplate/templates/react-javascript/src/App.jsx)
+You can view the full example of the routing setup in the `App.jsx` file in the GitHub repository: [github/boilerplate/templates/react-javascript/src/App.jsx](https://github.com/NMFS-RADFish/boilerplate/blob/main/templates/react-javascript/src/App.jsx)
 
 ```jsx
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";

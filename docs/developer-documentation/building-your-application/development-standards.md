@@ -1,10 +1,9 @@
 ---
 sidebar_position: 4
+description: USWDS, NOAA branding and Styling, and 508 compliance
 ---
 
 # Development Standards
-
-## NOAA development standards, branding, and 508 compliance
 
 **USWDS**
 
