@@ -1,6 +1,6 @@
 ---
 sidebar_position: 10
-description: Streamlines service worker management for improved caching
+description: Service worker management for improved caching
 ---
 
 # Workbox

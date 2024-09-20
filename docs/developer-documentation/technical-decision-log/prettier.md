@@ -1,6 +1,6 @@
 ---
 sidebar_position: 7
-description: Ensures consistent code quality and style across the project
+description: Ensures consistent code quality and style
 ---
 
 # Prettier/ESLint

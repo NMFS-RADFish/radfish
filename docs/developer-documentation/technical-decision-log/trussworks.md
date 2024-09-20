@@ -1,6 +1,6 @@
 ---
 sidebar_position: 5
-description: Trussworks adheres to US Web Design Standards
+description: Adherence to US Web Design Standards
 ---
 
 # Trussworks Component Library
