@@ -53,7 +53,7 @@ my-app
 └── vite.config.js
 ```
 
-**Option 2:** If you would like to scaffold from 1 example, please see [Running an Example](./building-your-application/available-scripts/running-example.md). The list of examples can be found at [Starting from a boilerplate](./building-your-application/templates_examples/#examples)
+**Option 2:** If you would like to scaffold from 1 example, please see [Running an Example](./building-your-application/available-scripts/running-example.md). The list of examples can be found at [Examples and Templates](/docs/developer-documentation/examples-and-templates)
 
 **Option 3:** You can also clone the [boilerplate repo](https://github.com/NMFS-RADFish/boilerplate) to get all the examples.
 
