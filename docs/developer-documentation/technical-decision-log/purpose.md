@@ -1,10 +1,9 @@
 ---
 sidebar_position: 1
+description: Provides clarity around technical decisions
 ---
 
 # Purpose
-
-Provides clarity around technical decisions.
 
 In order to provide transparency and clarity around the technical decisions we have made, we wanted to provide a technical decision justification for the chosen technologies and frameworks of RADFish.
 

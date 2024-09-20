@@ -1,5 +1,6 @@
 ---
 sidebar_position: 8
+description: Accessible and easy to adopt for government contractors
 ---
 
 # JavaScript w/JS Docs

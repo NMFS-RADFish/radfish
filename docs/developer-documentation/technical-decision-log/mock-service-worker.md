@@ -1,5 +1,6 @@
 ---
 sidebar_position: 6
+description: RADFish's offline functionality requires service mocking
 ---
 
 # Mock Service Worker

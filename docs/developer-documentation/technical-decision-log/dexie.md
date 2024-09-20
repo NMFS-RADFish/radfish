@@ -1,5 +1,6 @@
 ---
 sidebar_position: 9
+description: Simplifies working with IndexedDB for offline data storage
 ---
 
 # Dexie for Offline Data

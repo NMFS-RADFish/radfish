@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+description: An overview of managing application state effectively
 ---
 
 # State Management
@@ -12,9 +13,9 @@ In the world of NOAA web app development, we frequently deal with various forms 
 
 Our applications are not just repositories of static data; they are dynamic platforms where data constantly evolves. State management is essential for several reasons:
 
-Stay Updated: It allows us to display the most up-to-date information to our users, ensuring accuracy and reliability.
-Work Offline: It enables our apps to function even in the absence of an internet connection, storing data locally and syncing it back to our servers once a connection is re-established.
-Be Fast and Responsive: It helps our apps to react swiftly to user interactions and data changes, providing a smooth and efficient user experience.
+- **Stay Updated**: It allows us to display the most up-to-date information to our users, ensuring accuracy and reliability.
+- **Work Offline**: It enables our apps to function even in the absence of an internet connection, storing data locally and syncing it back to our servers once a connection is re-established.
+- **Be Fast and Responsive**: It helps our apps to react swiftly to user interactions and data changes, providing a smooth and efficient user experience.
 A Simple Way to Manage State: Using React Context
 
 For sharing and managing state across different parts of our applications, we use a feature called React Context. This is akin to creating a communal space where any component of our app can easily access or update shared information, eliminating the complexity of passing data through multiple layers.
