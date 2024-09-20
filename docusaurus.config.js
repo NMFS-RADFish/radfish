@@ -17,7 +17,7 @@ const config = {
   url: "https://NMFS-RADFish.github.io",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/documentation/",
+  baseUrl: "/radfish/",
   trailingSlash: false,
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -40,8 +40,10 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          routeBasePath: "/",
           sidebarPath: "./sidebars.js",
         },
+        blog: false,
         theme: {
           customCss: "./src/css/custom.css",
         },
