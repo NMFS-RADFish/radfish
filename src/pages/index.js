@@ -30,7 +30,7 @@ function HomepageHeader() {
         <div className="buttons">
           <Link
             className={clsx("button button--primary", styles.heroButton)}
-            to="/docs/getting-started"
+            to="/docs/developer-documentation/getting-started"
           >
             Get started
           </Link>
