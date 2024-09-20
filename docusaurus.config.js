@@ -79,7 +79,7 @@ const config = {
             label: "About",
           },
           {
-            href: "https://github.com/nmfs-radfish/documentation",
+            href: "https://github.com/NMFS-RADFish",
             label: "GitHub",
             position: "right",
           },
