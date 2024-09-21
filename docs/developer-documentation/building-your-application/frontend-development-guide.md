@@ -1,10 +1,9 @@
 ---
 sidebar_position: 1
+description: The purpose of RADFish
 ---
 
 # How RADFish Can Help You
-
-The purpose of RADFish.
 
 ### **Purpose**
 

@@ -1,5 +1,6 @@
 ---
 sidebar_position: 6
+description: Handle navigation patterns in your application
 ---
 
 # Navigation

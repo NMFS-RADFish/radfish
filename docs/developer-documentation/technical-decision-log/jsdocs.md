@@ -1,5 +1,6 @@
 ---
 sidebar_position: 8
+description: Accessible and easy to adopt
 ---
 
 # JavaScript w/JS Docs

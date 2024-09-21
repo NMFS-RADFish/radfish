@@ -1,5 +1,6 @@
 ---
 sidebar_position: 7
+description: Ensure code quality with Vitest and React Testing Library
 ---
 
 # Testing
@@ -70,7 +71,7 @@ Vitest and React Testing Library is included in the RADFish framework by default
 
 ### **Debugging Broken or Failed Tests**
 
-1. **Review Test Output**: Viteest provides detailed error messages. Analyze them to understand the failure.
+1. **Review Test Output**: Vitest provides detailed error messages. Analyze them to understand the failure.
 2. **Use `console.log`**: Temporarily add **`console.log`** statements within your test to inspect values.
 3. **Check for Async Issues**: Ensure promises are resolved and state updates are completed.
 

@@ -1,5 +1,6 @@
 ---
 sidebar_position: 3
+description: Use any network library to handle HTTP requests
 ---
 
 # Integrating with Backend Services

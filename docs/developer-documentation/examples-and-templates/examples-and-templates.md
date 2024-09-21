@@ -4,8 +4,6 @@ sidebar_position: 2
 
 # Examples and Templates
 
-RADFish boilerplate guide for starting React projects.
-
 ## Examples
 
 Examples are small, scoped projects that are meant to demonstrate how to implement core pieces of functionality within the RADFish ecosystem. Each example includes a detailed `README.md` file about the purpose of each example, and the reasoning behind the design pattern, and the best practices utilized in each.
