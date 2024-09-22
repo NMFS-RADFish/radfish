@@ -44,7 +44,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   transition: transform 0.2s ease-in-out;
-  height: 200px; /* Set a fixed height for the cards */
+  height: 300px; /* Set a fixed height for the cards */
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Ensure content is spaced out within the fixed height */
