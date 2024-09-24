@@ -172,6 +172,105 @@ ${content}`,
       },
     ],
     [
+      "docusaurus-plugin-remote-content",
+      {
+        // On Device Storage
+        // Remote content configuration to fetch repo README.md for 
+        // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/on-device-storage#readme
+        name: "on-device-storage", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
+        outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
+        documents: ["on-device-storage/README.md"], // the file to download
+        modifyContent(filename, content) {
+          return {
+            filename: readmeToNamedMd(filename),
+            content: `---
+description: This example includes how to setup and use the on-device storage using IndexedDB and Dexie.js.
+title: On Device Storage
+id: on-device-storage
+---
+
+${content}`,
+          };
+        },
+      },
+    ],
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        // Multistep Form
+        // Remote content configuration to fetch repo README.md for 
+        // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/multistep-form#readme
+        name: "multistep-form", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
+        outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
+        documents: ["multistep-form/README.md"], // the file to download
+        modifyContent(filename, content) {
+          return {
+            filename: readmeToNamedMd(filename),
+            content: `---
+description: This example includes an example on how to build a form that includes multiple "steps"
+title: Multistep Form
+id: multistep-form 
+---
+
+${content}`,
+          };
+        },
+      },
+    ],
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        // ServerSync
+        // Remote content configuration to fetch repo README.md for 
+        // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/server-sync#readme
+        name: "server-sync", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
+        outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
+        documents: ["server-sync/README.md"], // the file to download
+        modifyContent(filename, content) {
+          return {
+            filename: readmeToNamedMd(filename),
+            content: `---
+description: The ServerSync component is responsible for synchronizing data between a client application and a remote server.
+title: ServerSync
+id: server-sync 
+---
+
+${content}`,
+          };
+        },
+      },
+    ],
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        // React Query
+        // Remote content configuration to fetch repo README.md for 
+        // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/react-query#readme
+        name: "react-query", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
+        outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
+        documents: ["react-query/README.md"], // the file to download
+        modifyContent(filename, content) {
+          return {
+            filename: readmeToNamedMd(filename),
+            content: `---
+description: This example shows you how you could use the React Query library to manage state in your application.
+title: React Query
+id: react-query 
+---
+
+${content}`,
+          };
+        },
+      },
+    ],
     [
       "docusaurus-plugin-remote-content",
       {
