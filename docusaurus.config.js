@@ -171,32 +171,7 @@ ${content}`,
         },
       },
     ],
-// on-device-storage README.md has syntax error that is causing parser to fail.
-//
-//     [
-//       "docusaurus-plugin-remote-content",
-//       {
-//         // Remote content configuration to fetch repo README.md for 
-//         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/on-device-storage#readme
-//         name: "on-device-storage", // used by CLI, must be path safe
-//         sourceBaseUrl:
-//           "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
-//         outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
-//         documents: ["on-device-storage/README.md"], // the file to download
-//         modifyContent(filename, content) {
-//           return {
-//             filename: readmeToNamedMd(filename),
-//             content: `---
-// description: This example includes how to setup and use the on-device storage using IndexedDB and Dexie.js.
-// title: On Device Storage
-// id: on-device-storage
-// ---
-
-// ${content}`,
-//           };
-//         },
-//       },
-//     ],
+    [
     [
       "docusaurus-plugin-remote-content",
       {
