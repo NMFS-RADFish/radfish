@@ -54,6 +54,7 @@ const config = {
     [
       "docusaurus-plugin-remote-content",
       {
+        // Computed Form Fields
         // Remote content configuration to fetch repo README.md for 
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/computed-form-fields#readme
         name: "computed-form-fields", // used by CLI, must be path safe
@@ -78,6 +79,7 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
+        // Conditional Form Fields
         // Remote content configuration to fetch repo README.md for 
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/conditional-form-fields#readme
         name: "conditional-form-fields", // used by CLI, must be path safe
@@ -102,6 +104,7 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
+        // Field Validators
         // Remote content configuration to fetch repo README.md for 
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/field-validators#readme
         name: "field-validators", // used by CLI, must be path safe
@@ -126,6 +129,7 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
+        // Network Status
         // Remote content configuration to fetch repo README.md for 
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/network-status#readme
         name: "network-status", // used by CLI, must be path safe
@@ -150,6 +154,7 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
+        // Mock API
         // Remote content configuration to fetch repo README.md for 
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/mock-api#readme
         name: "mock-api", // used by CLI, must be path safe
@@ -274,6 +279,7 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
+        // Persisted Form
         // Remote content configuration to fetch repo README.md for 
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/persisted-form#readme
         name: "persisted-form", // used by CLI, must be path safe
@@ -298,6 +304,7 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
+        // Simple Table
         // Remote content configuration to fetch repo README.md for 
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/simple-table#readme
         name: "simple-table", // used by CLI, must be path safe
