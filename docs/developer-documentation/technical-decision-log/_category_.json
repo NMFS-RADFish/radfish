@@ -2,6 +2,7 @@
   "label": "RADFish Technical Decision Log",
   "position": 5,
   "link": {
-    "type": "generated-index"
+    "type": "generated-index",
+    "slug": "developer-documentation/technical-decision-log"
   }
 }
