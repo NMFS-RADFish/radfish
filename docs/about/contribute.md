@@ -14,13 +14,13 @@ This project is driven by a community of developers, users, and contributors. We
 
 ## 2. Report Bugs
 
-If you encounter any bugs, glitches, or unexpected behavior while using our software, we encourage you to report them.
+If you encounter any bugs, glitches, or unexpected behavior while using RADFish, we encourage you to report them.
 
 ### How to Report a Bug
 
 1. Search through the [existing issues](link to issues page) to ensure the bug hasn’t already been reported.
-2. If it's a new bug, create a new issue using our Bug Report Template.
-3. Provide as much detail as possible, including the steps to reproduce the bug, the version of the software, and any error messages.
+2. If it's a new bug, create a new issue using our Bug Report Template (below).
+3. Provide as much detail as possible, including the steps to reproduce the bug, the version of RADFish, and any error messages.
 
 ### Template Bug Report
 
@@ -43,13 +43,13 @@ When reporting a bug, please use the following template to ensure we can diagnos
 
 - Operating System: [e.g. Windows, macOS]
 - Browser/Environment: [e.g. Chrome, Firefox]
-- Version of Software: [e.g. 1.0.0]
+- Version of RADFish: [e.g. 1.0.0]
 
 **Additional Context:** Add any other context about the problem here.
 
 ## 3. Documentation and Examples
 
-Our documentation is an essential part of helping new users and contributors understand the project. If you notice missing, outdated, or unclear information in the documentation, please help us improve it.
+Our documentation is an essential part of helping new users and contributors understand RADFish. If you notice missing, outdated, or unclear information in the documentation, please help us improve it.
 
 ### Help us Improve the Documentation
 
@@ -59,7 +59,7 @@ Our documentation is an essential part of helping new users and contributors und
 
 ## 4. Feature Requests
 
-We welcome feature requests! If you have an idea for a new feature that would improve the project, we encourage you to share it with us.
+We welcome feature requests! If you have an idea for a new feature in RADFish that would improve the project, we encourage you to share it with us.
 
 ### How to Submit a Feature Request
 
