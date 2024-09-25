@@ -54,6 +54,7 @@ const config = {
     [
       "docusaurus-plugin-remote-content",
       {
+        // Computed Form Fields
         // Remote content configuration to fetch repo README.md for 
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/computed-form-fields#readme
         name: "computed-form-fields", // used by CLI, must be path safe
@@ -78,6 +79,7 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
+        // Conditional Form Fields
         // Remote content configuration to fetch repo README.md for 
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/conditional-form-fields#readme
         name: "conditional-form-fields", // used by CLI, must be path safe
@@ -102,6 +104,7 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
+        // Field Validators
         // Remote content configuration to fetch repo README.md for 
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/field-validators#readme
         name: "field-validators", // used by CLI, must be path safe
@@ -126,6 +129,7 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
+        // Network Status
         // Remote content configuration to fetch repo README.md for 
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/network-status#readme
         name: "network-status", // used by CLI, must be path safe
@@ -150,6 +154,7 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
+        // Mock API
         // Remote content configuration to fetch repo README.md for 
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/mock-api#readme
         name: "mock-api", // used by CLI, must be path safe
@@ -171,35 +176,110 @@ ${content}`,
         },
       },
     ],
-// on-device-storage README.md has syntax error that is causing parser to fail.
-//
-//     [
-//       "docusaurus-plugin-remote-content",
-//       {
-//         // Remote content configuration to fetch repo README.md for 
-//         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/on-device-storage#readme
-//         name: "on-device-storage", // used by CLI, must be path safe
-//         sourceBaseUrl:
-//           "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
-//         outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
-//         documents: ["on-device-storage/README.md"], // the file to download
-//         modifyContent(filename, content) {
-//           return {
-//             filename: readmeToNamedMd(filename),
-//             content: `---
-// description: This example includes how to setup and use the on-device storage using IndexedDB and Dexie.js.
-// title: On Device Storage
-// id: on-device-storage
-// ---
-
-// ${content}`,
-//           };
-//         },
-//       },
-//     ],
     [
       "docusaurus-plugin-remote-content",
       {
+        // On Device Storage
+        // Remote content configuration to fetch repo README.md for 
+        // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/on-device-storage#readme
+        name: "on-device-storage", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
+        outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
+        documents: ["on-device-storage/README.md"], // the file to download
+        modifyContent(filename, content) {
+          return {
+            filename: readmeToNamedMd(filename),
+            content: `---
+description: This example includes how to setup and use the on-device storage using IndexedDB and Dexie.js.
+title: On Device Storage
+id: on-device-storage
+---
+
+${content}`,
+          };
+        },
+      },
+    ],
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        // Multistep Form
+        // Remote content configuration to fetch repo README.md for 
+        // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/multistep-form#readme
+        name: "multistep-form", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
+        outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
+        documents: ["multistep-form/README.md"], // the file to download
+        modifyContent(filename, content) {
+          return {
+            filename: readmeToNamedMd(filename),
+            content: `---
+description: This example includes an example on how to build a form that includes multiple "steps"
+title: Multistep Form
+id: multistep-form 
+---
+
+${content}`,
+          };
+        },
+      },
+    ],
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        // ServerSync
+        // Remote content configuration to fetch repo README.md for 
+        // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/server-sync#readme
+        name: "server-sync", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
+        outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
+        documents: ["server-sync/README.md"], // the file to download
+        modifyContent(filename, content) {
+          return {
+            filename: readmeToNamedMd(filename),
+            content: `---
+description: The ServerSync component is responsible for synchronizing data between a client application and a remote server.
+title: ServerSync
+id: server-sync 
+---
+
+${content}`,
+          };
+        },
+      },
+    ],
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        // React Query
+        // Remote content configuration to fetch repo README.md for 
+        // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/react-query#readme
+        name: "react-query", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
+        outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
+        documents: ["react-query/README.md"], // the file to download
+        modifyContent(filename, content) {
+          return {
+            filename: readmeToNamedMd(filename),
+            content: `---
+description: This example shows you how you could use the React Query library to manage state in your application.
+title: React Query
+id: react-query 
+---
+
+${content}`,
+          };
+        },
+      },
+    ],
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        // Persisted Form
         // Remote content configuration to fetch repo README.md for 
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/persisted-form#readme
         name: "persisted-form", // used by CLI, must be path safe
@@ -224,6 +304,7 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
+        // Simple Table
         // Remote content configuration to fetch repo README.md for 
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/simple-table#readme
         name: "simple-table", // used by CLI, must be path safe
