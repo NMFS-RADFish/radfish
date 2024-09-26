@@ -6,6 +6,8 @@
 
 /* You can override the default Infima variables here. */
 :root {
+  --radfish-primary-blue: #205493;
+
   --ifm-color-primary: #205493;
   --ifm-color-primary-dark: #1d4c84;
   --ifm-color-primary-darker: #1b477d;
@@ -33,6 +35,7 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
 
 .buttons {
   display: flex;
