@@ -42,7 +42,7 @@
 }
 
 .button {
-  border: 1.5px solid #000000;
+  border: 1.5px solid black;
   border-radius: 0;
   font-weight: 600;
 }
