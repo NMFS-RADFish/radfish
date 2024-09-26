@@ -10,8 +10,6 @@
   width: 200px;
 }
 
-/* new changes */
-
 .hero {
   background-color: var(--ifm-color-secondary);
   padding: 80px 0;
@@ -45,11 +43,10 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   transition: transform 0.2s ease-in-out;
-  height: 300px; /* Set a fixed height for the cards */
+  height: 300px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Ensure content is spaced out within the fixed height */
-  color: #000;
+  justify-content: space-between;
 }
 
 .card:hover {
@@ -65,10 +62,10 @@
 .card__body {
   font-size: 1.1rem;
   color: #666;
-  flex-grow: 1; /* Allow the body to take up any remaining space */
-  overflow: hidden; /* Prevent text overflow */
-  text-overflow: ellipsis; /* Add ellipsis to long content */
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* Limit the number of lines (optional) */
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
