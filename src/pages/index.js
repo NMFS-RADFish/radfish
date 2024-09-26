@@ -11,23 +11,18 @@ import HomepageFeatures from "../components/HomepageFeatures";
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <header
-      className={clsx("hero hero--primary", styles.heroBanner)}
-      style={{
-        height: "65vh",
-        backgroundImage: "url(img/hero-banner.webp)",
-        backgroundSize: "cover",
-        backgroundPosition: "bottom",
-      }}
-    >
-      <div className="container">
-        <Heading as="h1" className={clsx("hero__title", styles.heroTextColor)}>
+    <header className={clsx("hero", styles.heroBanner)}>
+      <div className={clsx("container", styles.heroContainer)}>
+        <Heading
+          as="h1"
+          className={clsx(styles.heroHeading, styles.heroTextColor)}
+        >
           {siteConfig.title}
         </Heading>
-        <p className={clsx("hero__subtitle", styles.heroTextColor)}>
+        <p className={clsx(styles.heroSubHeading, styles.heroTextColor)}>
           {siteConfig.tagline}
         </p>
-        <div className="buttons">
+        <div className={clsx("buttons", styles.heroButtons)}>
           <Link
             className={clsx("button button--primary", styles.heroButton)}
             to="/developer-documentation/getting-started"
