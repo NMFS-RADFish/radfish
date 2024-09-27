@@ -1,5 +1,6 @@
 ---
 sidebar_position: 6
+description: Handle navigation patterns in your application
 ---
 
 # Navigation
@@ -7,7 +8,6 @@ sidebar_position: 6
 A NOAA application can often have various, application specific needs for routing and navigation between internal pages. It may also need to follow certain domain specific rules when needed (ie, be hosted on a subdomain route of an existing application). For the purposes of this documentation, we will focus primarily on the situation where an application is hosted on it’s own domain, and from the root directory of that application’s codebase.
 
 It is important for NOAA to maintain a similar navigation style between it’s collection of applications in order to provide a familiar interface for users that may be switching between applications. Styles of navigation elements should be consistent across various platforms, and each application should have at the bare minimum, routes to the suggested pages that the USWDS guidelines suggest in the [templates](https://designsystem.digital.gov/templates/) portion of their Design System Documentation. This will allow a foundational application structure that is both repeatable and familiar to users.
-\*\*
 
 Generally speaking, navigation items should always be at the highest vertical “layer” of the application, and should always overlap any other components, with exception of full page modals. For instance, if a navigation item expands downwards, it should not be layered beneath a hero image or some other component. This would make the Navigation inaccessible and not comply with 508 compliance regulations.
 

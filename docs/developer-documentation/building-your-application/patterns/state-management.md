@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+description: An overview of managing application state effectively
 ---
 
 # State Management
@@ -12,9 +13,9 @@ In the world of NOAA web app development, we frequently deal with various forms 
 
 Our applications are not just repositories of static data; they are dynamic platforms where data constantly evolves. State management is essential for several reasons:
 
-Stay Updated: It allows us to display the most up-to-date information to our users, ensuring accuracy and reliability.
-Work Offline: It enables our apps to function even in the absence of an internet connection, storing data locally and syncing it back to our servers once a connection is re-established.
-Be Fast and Responsive: It helps our apps to react swiftly to user interactions and data changes, providing a smooth and efficient user experience.
+- **Stay Updated**: It allows us to display the most up-to-date information to our users, ensuring accuracy and reliability.
+- **Work Offline**: It enables our apps to function even in the absence of an internet connection, storing data locally and syncing it back to our servers once a connection is re-established.
+- **Be Fast and Responsive**: It helps our apps to react swiftly to user interactions and data changes, providing a smooth and efficient user experience.
 A Simple Way to Manage State: Using React Context
 
 For sharing and managing state across different parts of our applications, we use a feature called React Context. This is akin to creating a communal space where any component of our app can easily access or update shared information, eliminating the complexity of passing data through multiple layers.
@@ -25,7 +26,7 @@ For sharing and managing state across different parts of our applications, we us
 
 Our approach to managing form state is straightforward yet effective. Each form should maintain it's own state within the component itself. Note, that this is the recommended approach for managing a form's state, rather that reaching for a centralized state machine (think React Context or Redux) as it is more straightforward to implement without any excess layers of abstraction.
 
-The potential downside of this approach is that each form will have it's own state management implemented independantly, which could lead to less DRY code. This is an acceptable tradeoff in most cases, but if you notice that certain patterns should be shared among different components, you will either need to pass these state values as props to child components, or wrap the related components in a `ContextProvider` and expose them via the `useContext` hook. See more about how to use React Context [here](https://react.dev/reference/react/useContext)
+The potential downside of this approach is that each form will have it's own state management implemented independantly, which could lead to less DRY code. This is an acceptable tradeoff in most cases, but if you notice that certain patterns should be shared among different components, you will either need to pass these state values as props to child components, or wrap the related components in a `ContextProvider` and expose them via the `useContext` hook. See more about how to use React Context [here](https://react.dev/reference/react/useContext).
 
 For an example on best practices for implementing this type of form state management, you can run any of several example implementations with the RADFish CLI:
 
@@ -126,7 +127,7 @@ Progressive Web Applications (or PWAs) offer a robust solution for offline use a
 
 PWAs leverage service workers, which are scripts that run in the background independantly of the main application. Service workers enable offline functionality by caching important static resources, such as HTML, CSS, and JavaScript files. This allows the PWA to continue functioning event when there’s no network connectivity.
 
-**See more about service workers [here](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)**
+**See more about service workers [here](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)**.
 
 Service workers are integrated into the RADFish application by default. After scaffolding the application you will notice the following files:
 
@@ -143,9 +144,9 @@ And the service workers is integrated into the React app in the app’s `index.j
 serviceWorkerRegistration.register();
 ```
 
-This will register the React application as a PWA, which can be downloaded from the browser. For more information on how to download the PWA onto your device, see [this blog article](https://aureatelabs.com/blog/install-pwa-to-device/)
+This will register the React application as a PWA, which can be downloaded from the browser. For more information on how to download the PWA onto your device, see [this blog article](https://aureatelabs.com/blog/install-pwa-to-device/).
 
-Additionally, you can query for whether or not the RADFish application is online or offline by leveraging the [navigator API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator)
+Additionally, you can query for whether or not the RADFish application is online or offline by leveraging the [navigator API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator).
 
 > Note, that this service worker is preconfigured when using the boilerplate `react-javascript` template
 

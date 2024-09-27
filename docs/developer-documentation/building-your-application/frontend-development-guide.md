@@ -1,10 +1,9 @@
 ---
 sidebar_position: 1
+description: The purpose of RADFish
 ---
 
 # How RADFish Can Help You
-
-The purpose of RADFish.
 
 ### **Purpose**
 
@@ -22,7 +21,7 @@ The purpose of this document is to serve as a technical guide to building fronte
 - [What unique considerations need to be made when building a frontend application for NOAA?](#what-unique-considerations-need-to-be-made-when-building-a-frontend-application-for-noaa)
   - Offline use out at sea in absence of a network connection
   - Multi-entry forms for bulk entering of fish data
-- [Development Standards](https://nmfs-radfish.github.io/documentation/docs/building-your-application/development-standards)
+- [Development Standards](/radfish/developer-documentation/building-your-application/development-standards)
   - USWDS
   - NOAA Branding Guidelines and Style Guide
   - 508 Compliance
@@ -99,6 +98,6 @@ Progressive Web Applications (or PWAs) offer a robust solution for offline use a
 
 PWAs leverage service workers, which are scripts that run in the background independently of the main application. Service workers enable offline functionality by caching important static resources, such as HTML, CSS, and JavaScript files. This allows the PWA to continue functioning event when there’s no network connectivity.
 
-See more about service workers [here](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
+See more about service workers [here](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API).
 
 Note that during development, you can serve a production build in order to validate certain offline behavior `npm run build && npm run serve`. This is the recommended approach for testing offline-first features.

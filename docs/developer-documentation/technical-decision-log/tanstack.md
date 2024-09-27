@@ -1,5 +1,6 @@
 ---
 sidebar_position: 11
+description: Offers flexible state management
 ---
 
 # Tanstack for State Management

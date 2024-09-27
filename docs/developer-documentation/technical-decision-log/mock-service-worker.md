@@ -1,5 +1,6 @@
 ---
 sidebar_position: 6
+description: Required for offline functionality
 ---
 
 # Mock Service Worker
