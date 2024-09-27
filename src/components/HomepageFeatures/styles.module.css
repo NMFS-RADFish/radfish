@@ -19,7 +19,7 @@
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #000;
+  color: black;
 }
 
 .heroSubtitle {
@@ -35,18 +35,23 @@
   color: #666;
 }
 
+.cardContainerRow {
+  gap: 15px;
+}
+
 .card {
   border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: white;
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   transition: transform 0.2s ease-in-out;
-  height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  color: black;
+  height: 100%;
 }
 
 .card:hover {
@@ -68,4 +73,10 @@
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+
+@media screen and (min-width: 996px) {
+  .cardContainerRow {
+    gap: 0;
+  }
 }

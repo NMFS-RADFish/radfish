@@ -90,7 +90,7 @@ export default function HomepageFeatures() {
       <RADFishHero />
       <section className={styles.features}>
         <div className="container">
-          <div className="row">
+          <div className={clsx("row", styles.cardContainerRow)}>
             {FeatureList.map((props, idx) => (
               <Feature key={idx} {...props} />
             ))}
