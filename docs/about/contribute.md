@@ -16,7 +16,7 @@ If you encounter any bugs, glitches, or unexpected behavior while using our soft
 
 ### How to Report a Bug:
 
-- Search through the [Project Roadmap](https://github.com/orgs/NMFS-RADFish/projects/2) or the Issues Log for that respective repo to ensure the bug hasn’t already been reported.
+- Search through the [Project Roadmap](https://github.com/orgs/NMFS-RADFish/projects/3) or the Issues Log for that respective repo to ensure the bug hasn’t already been reported.
 - If it's a new bug, create a new issue using our **Bug Report Template**.
 - Provide as much detail as possible, including the steps to reproduce the bug, the version of the software, and any error messages.
 
