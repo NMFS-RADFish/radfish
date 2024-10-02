@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## 1\. What is a Project Roadmap?
 
-The RADfish [Project Roadmap](https://github.com/orgs/NMFS-RADFish/projects/2).
+The RADfish [Project Roadmap](https://github.com/orgs/NMFS-RADFish/projects/2/views/3).
 
 In the context of open-source projects like RADFish, a project roadmap is a high-level strategic guide that outlines the major features, improvements, and goals that the project intends to achieve over time. It serves as a visual timeline that highlights the project’s direction and provides insights into what the community can expect in future releases. The roadmap not only details upcoming work but also helps to set expectations, prioritize tasks, and track progress against defined goals.
 
