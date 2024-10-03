@@ -97,44 +97,7 @@ Updates data in the storage with the matching `criteria`.
 
 ## **Usage**
 
-Example usage when using IndexedDB
-
-**Survey.jsx**
-```jsx
-import { useState } from 'react';
-import { useOfflineStorage } from "@nmfs-radfish/react-radfish";
-
-function SurveyComponent() {
-  const { createOfflineData, findOfflineData } = useOfflineStorage();
-
-  const sampleCatch = {
-    id: "uuid-5678",
-    speciesId: "uuid-1234",
-    numberOfFish: 250,
-    weight: 900.5
-  };
-
-  let [allCatches, setCatches] = useState([]);
-
-  const createNewCatch = async () => {
-    await createOfflineData("catches", sampleCatch);
-  };
-
-  const fetchAllCatches = async () => {
-    const catches = await findOfflineData("catches");
-    setCatches(catches);
-  };
-
-  return (
-    <div>
-      <button onClick={createNewCatch}>Create New Catch</button>
-      <button onClick={fetchAllCatches}>Fetch All Catches</button>
-    </div>
-  );
-}
-
-export default SurveyComponent;
-```
+Example usage when using IndexedDB:
 
 App.jsx
 ```jsx
