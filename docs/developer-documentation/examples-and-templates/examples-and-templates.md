@@ -12,9 +12,8 @@ These examples are meant to be a reference for any RADFish project. While these 
 
 You can visualize the source code for each example at the open source repository for the overall RADFish [boilerplate](https://github.com/NMFS-RADFish/boilerplate/tree/main/examples). Each of these examples can be cloned and run separately as you are working with each from the RADFish CLI. To learn more about how to run these scripts, please reference the [running examples](./building-your-application/available-scripts/running-example) section of this documentation
 
-Below are a list of pre-built examples that you can use as a starting point for your application. With exception of the `Main` example, these are all scoped to one core feature. Whereas the `Main` example encapsulates many of these features into a more fully built example. Note that the `Main` example may be more complex than you may like if you are just familiarizing yourself with the RADFish ecosystem.
+Below are a list of pre-built examples that you can use as a starting point for your application. These examples are scoped to one core feature.
 
-1. [Main](https://github.com/NMFS-RADFish/boilerplate/blob/main/examples/main/README.md)
 1. [Computed Form Fields](https://github.com/NMFS-RADFish/boilerplate/blob/main/examples/computed-form-fields/README.md)
 1. [Conditional Form Fields](https://github.com/NMFS-RADFish/boilerplate/blob/main/examples/conditional-form-fields/README.md)
 1. [Field Validators](https://github.com/NMFS-RADFish/boilerplate/blob/main/examples/field-validators/README.md)

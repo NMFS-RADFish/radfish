@@ -8,18 +8,76 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  background-color: var(--radfish-primary-blue);
+  height: 65vh;
 }
 
-[data-theme="dark"] .heroTextColor {
+.heroBanner::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../static/img/hero-banner.webp");
+  background-size: cover;
+  background-position: bottom;
+  opacity: 0.4;
+}
+
+.heroContainer {
+  position: relative;
+  z-index: 1;
+}
+
+.heroHeading {
+  font-size: 2.5rem;
+}
+
+.heroSubHeading {
+  font-size: 1.2rem;
+}
+
+.heroTextColor {
   color: white;
+}
+
+.heroButtons {
+  flex-direction: column;
 }
 
 [data-theme="dark"] .heroButton {
   background-color: #205493;
+  color: white;
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
+@media screen and (min-width: 600px) {
+  .heroHeading {
+    font-size: 3.2rem;
+  }
+  .heroSubHeading {
+    font-size: 1.6rem;
+  }
+  .heroButtons {
+    flex-direction: row;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .heroHeading {
+    font-size: 4rem;
+  }
+  .heroSubHeading {
+    font-size: 1.8rem;
+  }
+}
+
+@media screen and (min-width: 996px) {
+  .heroHeading {
+    font-size: 5.5rem;
+  }
+  .heroSubHeading {
+    font-size: 2rem;
   }
 }
