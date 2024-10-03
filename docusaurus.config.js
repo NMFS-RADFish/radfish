@@ -330,12 +330,12 @@ ${content}`,
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      image: "img/radfish-logo.png",
+      image: "img/radfish-logo.webp",
       navbar: {
         title: "RADFish Docs",
         logo: {
           alt: "RADFish Logo",
-          src: "img/radfish-logo.png",
+          src: "img/radfish-logo.webp",
         },
         items: [
           {
