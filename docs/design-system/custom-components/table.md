@@ -45,6 +45,7 @@ For more details on available Trussworks props, refer to the [Trussworks Table D
 | **`sortable`**  | `boolean`  | If `true`, the column is sortable.                                                             |
 | **`render`**    | `function` | (Optional) A function that returns a JSX element to customize how the column data is rendered. |
 | **`className`** | `string`   | (Optional) A custom className for additional styling of individual columns.                    |
+| **`hidden`** | `boolean`   | If `true`, the column will be hidden from table.                    |
 
 ## Pagination Options Object Properties
 
