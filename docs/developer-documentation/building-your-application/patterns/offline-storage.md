@@ -45,11 +45,11 @@ new IndexedDBStorageMethod(
 
 The `@nmfs-radfish/react-radfish` package exposes the an `OfflineStorageWrapper` component that creates a storage model available to that React context.
 
-You can then use the `useOfflineStorage` hook to interact directly with the storage model.
-
 ## **`useOfflineStorage` Hooks API**
 
-The `useOfflineStorage` hook returns an object with the following methods:
+You can then use the `useOfflineStorage` hook to interact directly with the storage model.
+
+The hook returns an object with the following methods:
 
 ### `createOfflineData`
 
@@ -101,7 +101,7 @@ Example usage when using IndexedDB:
 
 App.jsx
 ```jsx
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "@nmfs-radfish/react-radfish";
 import { useOfflineStorage, OfflineStorageWrapper } from "@nmfs-radfish/react-radfish";
 
@@ -114,7 +114,7 @@ const offlineStorageConfig = {
   },
 };
 
-const App = () => {
+const Catches = () => {
   const { createOfflineData, findOfflineData } = useOfflineStorage();
 
   let [allCatches, setCatches] = useState([]);
@@ -133,17 +133,26 @@ const App = () => {
 
   useEffect(() => {
     fetchCatches();
-  }, [])
+  }, []);
 
   return (
-    <OfflineStorageWrapper config={offlineStorageConfig}>
+    <div>
       <button onClick={createNewCatch}>Generate new catch</button>
-      <Table data={allCatches} columns={
-        [
+      <Table 
+        data={allCatches} 
+        columns={[
           { key: "id", label: "ID" },
           { key: "numberOfFish", label: "Count", sortable: true },
-        ]
-      } />
+        ]} 
+      />
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <OfflineStorageWrapper config={offlineStorageConfig}>
+      <Catches />
     </OfflineStorageWrapper>
   );
 };
