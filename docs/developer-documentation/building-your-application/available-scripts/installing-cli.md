@@ -1,22 +1,20 @@
 # Installing the CLI
 
-<aside>
-🚧 This documentation currently reflects **alpha** development. These instructions will be updated with future releases.
+The RADFish CLI is available as an npm package, making the installation process much simpler. Follow these steps to install and use the CLI:
 
-</aside>
+## Install the CLI
 
-# Configure npm with GitHub registry
+To install the RADFish CLI globally on your system, run the following command:
 
-Follow the [official documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#installing-a-package) to configure the `@nmfs-radfish` namespace to create your access token with `read:packages` scope.
-
-## Update your .npmrc file
-
-Your **.npmrc** file will need to be updated to include these two lines.
-
-1. Replace `TOKEN` with your actual access token that has at least `read:packages` scope.
-2. Declare that the `@nmfs-radfish` namespace be directed to GitHub Packages registry.
-
+```bash
+npm install -g @nmfs-radfish/create-radfish-app
 ```
-//npm.pkg.github.com/:_authToken=TOKEN
-@nmfs-radfish:registry=https://npm.pkg.github.com
+
+To verify the installation, you can run:
+
+```bash
+npx @nmfs-radfish/create-radfish-app --version
 ```
+
+This should display the version number of the installed CLI.
+
