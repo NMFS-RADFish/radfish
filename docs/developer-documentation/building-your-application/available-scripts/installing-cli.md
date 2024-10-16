@@ -13,7 +13,7 @@ npm install -g @nmfs-radfish/create-radfish-app
 To verify the installation, you can run:
 
 ```bash
-npx @nmfs-radfish/create-radfish-app --version
+create-radfish-app --version
 ```
 
 This should display the version number of the installed CLI.
