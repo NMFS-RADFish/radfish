@@ -72,52 +72,6 @@ This method allows developers to implement form state within the scope of a sing
 
 This approach provides better encapsulation and modularity, allowing for more straightforward debugging and maintenance of form-related logic.
 
-**TableState**
-
-At a high level, we handle state management for tables in a similar way, although we are leveraging React Context to abstract and many of the implementation details of more complex state management away from the component. We do this by using a React context provider to wrap whichever table needs state to be managed. For instance, within the boilerplate repository, you can see how `DemoTable` is wrapper by `TableWrapper`
-
-```jsx
-<TableWrapper>
-  <DemoTable />
-</TableWrapper>
-```
-
-By doing this, `DemoTable` can now utilize the `useTableState` hook, that provides the component with all of the state, event handlers, sorting functionality, as well as other pieces of functionality that may be needed for the application’s needs.
-
-More specifically, RADFish leverages a React Library called [Tanstack Table](https://tanstack.com/table/latest/docs/framework/react/react-table) which makes it simple to handle traditionally tricky table interactions like sorting, filtering, and data fetching. Tanstack Table manages a lot of the heavy lifting with regards to re-rendering, and provides an easy to use interface to make static tables dynamic and interactive.
-
-We suggest looking closely at the official Tanstack Table documentation to get familiar with how the library works. But, in the context of the boilerplate repo, we’ve provided a simple interface in `TableWrapper` that leverages the `useReactTable` hook.
-
-This hook gives access to the data from the table, along with the data structures and many of the event handlers that a developer may need for their form:
-
-```jsx
-import {
-  createColumnHelper,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-
-/**
- * React Table instance. Initializes the table with the data being managed in TableWrapper state
- * Columns are set to the memoized value returned from the useMemo hook above
- * state and helper methods are to provide helper methods to render data, and re-render based on sorting functionality
- */
-const table = useReactTable({
-  data,
-  columns,
-  state: {
-    sorting,
-  },
-  onSortingChange: setSorting,
-  getCoreRowModel: getCoreRowModel(),
-  getSortedRowModel: getSortedRowModel(),
-});
-```
-
-Similar to how state is passed into the children components from context, these handlers can also be passed into the child `Table` component, doesn’t need to implement all of these details on it’s own. You can see that the `DemoTable` component is mostly just responsible for rendering out components, and isn’t responsible for managing a lot of these details.
-
----
 
 # Offline / Online State Management
 
@@ -287,7 +241,7 @@ export default MyComponent;
 **1. Wrap your component with `OfflineStorageWrapper`:**
 
 ```jsx
-import { OfflineStorageWrapper } from "./path-to-OfflineStorageWrapper";
+import { OfflineStorageWrapper } from "@nmfs-radfish/react-radfish";
 
 <OfflineStorageWrapper config={config}>
   <YourComponent />
@@ -324,7 +278,7 @@ const config = {
 **2. Use the useOfflineStorage hook in child components:**
 
 ```jsx
-import { useOfflineStorage } from "./path-to-OfflineStorageWrapper";
+import { useOfflineStorage } from "@nmfs-radfish/react-radfish";
 
 function YourComponent() {
   const {
