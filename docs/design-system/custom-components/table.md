@@ -72,7 +72,7 @@ import { Table } from "@nmfs-radfish/react-radfish";
     { key: "name", label: "Name", sortable: true },
     { key: "age", label: "Age", sortable: true, hidden: false },
   ]}
-/>;
+/>
 ```
 
 ![Table Example Screenshot](/img/example-table-simple.png)
@@ -96,7 +96,7 @@ import { Table } from "@nmfs-radfish/react-radfish";
     currentPage: 1,
     onPageChange: (newPage) => console.log(`Page changed to ${newPage}`),
   }}
-/>;
+/>
 ```
 
 ![Table Example Screenshot](/img/example-table-pagination.png)
