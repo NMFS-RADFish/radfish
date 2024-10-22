@@ -30,7 +30,7 @@ Once the development server starts, visit http://localhost:3000/ in your browser
 
 ### Option 2: Scaffold a new app from an example
 
-Select an [example](/radfish/developer-documentation/examples-and-templates) and run  [the command](./building-your-application/available-scripts/running-example.md) using the `--example` tag. 
+Select an [example](/radfish/developer-documentation/examples-and-templates) and run [the command](./building-your-application/available-scripts/running-example.md) using the `--example` tag.
 
 ```bash
 npx @nmfs-radfish/create-radfish-app my-app --example multistep-form
@@ -64,6 +64,18 @@ The `--help` flag is a common option that displays helpful information about a c
 npx @nmfs-radfish/create-radfish-app --help
 ```
 
+### Upgrading package versions in your app
+
+1. In the root of your project run:
+    ```bash
+    npm update
+    ```
+
+2. Check for Changes:
+    ```bash
+    npm test
+    ```
+Please visit [updgrading](./upgrading.md) for more information. 
 # Scripts
 
 **`npm start`**
