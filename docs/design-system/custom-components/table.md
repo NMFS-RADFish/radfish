@@ -28,6 +28,7 @@ For a practical implementation, refer to the [Simple Table Example](https://gith
 | **`data`**              | `Array<Object>` | The array of objects representing your table's data. Each object should have keys matching the `key` values in `columns`. |
 | **`columns`**           | `Array<Object>` | Defines the structure and configuration of the table columns.                                                             |
 | **`paginationOptions`** | `Object`        | Provides options for handling pagination, such as `pageSize`, `currentPage`, `totalRows`, and `onPageChange`.             |
+| **`onRowClick`**        | `function`      | A callback function triggered when a table row is clicked.                                                                |
 | **`className`**         | `string`        | An optional `className` for custom styling.                                                                               |
 
 #### Trussworks Table Props
@@ -45,7 +46,7 @@ For more details on available Trussworks props, refer to the [Trussworks Table D
 | **`sortable`**  | `boolean`  | If `true`, the column is sortable.                                                             |
 | **`render`**    | `function` | (Optional) A function that returns a JSX element to customize how the column data is rendered. |
 | **`className`** | `string`   | (Optional) A custom className for additional styling of individual columns.                    |
-| **`hidden`** | `boolean`   | If `true`, the column will be hidden from table.                    |
+| **`hidden`**    | `boolean`  | If `true`, the column will be hidden from table.                                               |
 
 ## Pagination Options Object Properties
 
@@ -130,6 +131,39 @@ import { Table } from "@nmfs-radfish/react-radfish";
 ```
 
 ![Table Example Screenshot](/img/example-table-render-property.png)
+
+### onRowClick Prop
+
+```jsx
+<Table
+  data={[
+    { id: 1, name: "Alice", age: 32, image: "https://picsum.photos/150/75" },
+    { id: 2, name: "Bob", age: 28, image: "https://picsum.photos/150/75" },
+  ]}
+  columns={[
+    { key: "name", label: "Name", sortable: true },
+    { key: "age", label: "Age", sortable: true, hidden: false },
+    {
+      key: "image",
+      label: "Image",
+      sortable: false,
+      render: (row) => (
+        <img src={row.image} alt={row.species} height={75} width={150} />
+      ),
+    },
+  ]}
+  paginationOptions={{
+    pageSize: 5,
+    currentPage: 1,
+    onPageChange: (newPage) => console.log(`Page changed to ${newPage}`),
+  }}
+  onRowClick={(row) => {
+    console.log("Row clicked:", row);
+  }}
+/>
+```
+
+![Table Example Screenshot](/img/example-table-onClickRow.gif)
 
 ## Trussworks Table Props
 
