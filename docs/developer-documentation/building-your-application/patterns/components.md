@@ -47,13 +47,13 @@ Tables are also a key component type for all NOAA applications. These components
 
 For more specific information regarding how to build a table, you can reference the [State Management](./state-management.md) portion of this documentation.
 
-### Styling Methodology: BEM
+## Styling Methodology: BEM
 
 In our **examples** and **templates**, we follow the **BEM (Block Element Modifier)** methodology for organizing CSS classes. BEM helps create a structured and scalable CSS architecture, making it easier to understand where CSS classes belong and how they relate to components. It also promotes consistency and readability, especially in larger codebases.
 
 For more information on BEM and how it works, you can visit the official BEM documentation: [https://getbem.com](https://getbem.com).
 
-#### Why We Use BEM:
+### Why We Use BEM:
 
 - **Clarity**: BEM conventions make it clear how styles are applied across different parts of a component.
 - **Modularity**: It encourages the separation of styling concerns, making components more modular and reusable.
