@@ -22,7 +22,7 @@ The `DatePicker` component is a reusable form input designed to capture date-rel
 | `id`           | `string` | **—**       | Yes      | The unique identifier for the input element.                                               |
 | `name`         | `string` | **—**       | Yes      | The name attribute for the input, used in form submissions.                                |
 | `defaultValue` | `string` | `undefined` | No       | The initial value of the input when the component is first rendered.                       |
-| `hintText`     | `string` | `undefined` | No       | Supplemental text that provides additional guidance or information about the input field.  |
+| `hint`     | `string` | `undefined` | No       | Supplemental text that provides additional guidance or information about the input field.  |
 | `label`        | `string` | **—**       | Yes      | The text label associated with the input field.                                            |
 | `className`    | `string` | `""`        | No       | Additional CSS classes to apply to the root element for custom styling.                    |
 | `...props`     | `object` | `-`         | No       | Any other valid HTML input attributes (e.g., `onChange`, `disabled`, etc.)                 |
