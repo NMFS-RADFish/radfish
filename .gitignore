@@ -21,3 +21,4 @@ yarn-error.log*
 
 # Remote Content
 /docs/**/examples/**/*.md
+/docs/**/examples/**/*.png
