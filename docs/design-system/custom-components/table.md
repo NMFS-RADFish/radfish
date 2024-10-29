@@ -165,7 +165,7 @@ import { Table } from "@nmfs-radfish/react-radfish";
 
 ![Table Example Screenshot](/img/example-table-onClickRow.gif)
 
-## Trussworks Table Props
+### Trussworks Table Props
 
 ```jsx
 <Table
