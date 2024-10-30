@@ -108,8 +108,8 @@ import { Table } from "@nmfs-radfish/react-radfish";
 ```jsx
 <Table
   data={[
-    { id: 1, name: "Alice", age: 32, image: "https://picsum.photos/150/75" },
-    { id: 2, name: "Bob", age: 28, image: "https://picsum.photos/150/75" },
+    { id: 1, name: "Alice", age: 32, image: "example-img.png" },
+    { id: 2, name: "Bob", age: 28, image: "example-img.png" },
   ]}
   columns={[
     { key: "name", label: "Name", sortable: true },
@@ -138,8 +138,8 @@ import { Table } from "@nmfs-radfish/react-radfish";
 ```jsx
 <Table
   data={[
-    { id: 1, name: "Alice", age: 32, image: "https://picsum.photos/150/75" },
-    { id: 2, name: "Bob", age: 28, image: "https://picsum.photos/150/75" },
+    { id: 1, name: "Alice", age: 32, image: "example-img.png" },
+    { id: 2, name: "Bob", age: 28, image: "example-img.png" },
   ]}
   columns={[
     { key: "name", label: "Name", sortable: true },
@@ -196,8 +196,8 @@ import { Table } from "@nmfs-radfish/react-radfish";
 ```jsx
 <Table
   data={[
-    { id: 1, name: "Alice", age: 32, image: "https://picsum.photos/150/75" },
-    { id: 2, name: "Bob", age: 28, image: "https://picsum.photos/150/75" },
+    { id: 1, name: "Alice", age: 32, image: "example-img.png" },
+    { id: 2, name: "Bob", age: 28, image: "example-img.png" },
   ]}
   columns={[
     { key: "name", label: "Name", sortable: true },
