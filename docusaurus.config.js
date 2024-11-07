@@ -54,19 +54,21 @@ const config = {
     [
       "docusaurus-plugin-remote-content",
       {
-          // options here
-          name: "computed-form-fields-image-content", // used by CLI, must be path safe
-          sourceBaseUrl: "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/computed-form-fields/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
-          outDir: "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
-          documents: ["computed-form-fields.png"], // the file names to download
-          requestConfig: { responseType: "arraybuffer" }
+        // options here
+        name: "computed-form-fields-image-content", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/computed-form-fields/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
+        outDir:
+          "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
+        documents: ["computed-form-fields.png"], // the file names to download
+        requestConfig: { responseType: "arraybuffer" },
       },
     ],
     [
       "docusaurus-plugin-remote-content",
       {
         // Computed Form Fields
-        // Remote content configuration to fetch repo README.md for 
+        // Remote content configuration to fetch repo README.md for
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/computed-form-fields#readme
         name: "computed-form-fields", // used by CLI, must be path safe
         sourceBaseUrl:
@@ -90,19 +92,21 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
-          // options here
-          name: "conditional-form-fields-image-content", // used by CLI, must be path safe
-          sourceBaseUrl: "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/conditional-form-fields/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
-          outDir: "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
-          documents: ["conditional-form-fields.png"], // the file names to download
-          requestConfig: { responseType: "arraybuffer" }
+        // options here
+        name: "conditional-form-fields-image-content", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/conditional-form-fields/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
+        outDir:
+          "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
+        documents: ["conditional-form-fields.png"], // the file names to download
+        requestConfig: { responseType: "arraybuffer" },
       },
     ],
     [
       "docusaurus-plugin-remote-content",
       {
         // Conditional Form Fields
-        // Remote content configuration to fetch repo README.md for 
+        // Remote content configuration to fetch repo README.md for
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/conditional-form-fields#readme
         name: "conditional-form-fields", // used by CLI, must be path safe
         sourceBaseUrl:
@@ -126,19 +130,21 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
-          // options here
-          name: "field-validators-image-content", // used by CLI, must be path safe
-          sourceBaseUrl: "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/field-validators/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
-          outDir: "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
-          documents: ["field-validators.png"], // the file names to download
-          requestConfig: { responseType: "arraybuffer" }
+        // options here
+        name: "field-validators-image-content", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/field-validators/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
+        outDir:
+          "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
+        documents: ["field-validators.png"], // the file names to download
+        requestConfig: { responseType: "arraybuffer" },
       },
     ],
     [
       "docusaurus-plugin-remote-content",
       {
         // Field Validators
-        // Remote content configuration to fetch repo README.md for 
+        // Remote content configuration to fetch repo README.md for
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/field-validators#readme
         name: "field-validators", // used by CLI, must be path safe
         sourceBaseUrl:
@@ -162,19 +168,21 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
-          // options here
-          name: "network-status-image-content", // used by CLI, must be path safe
-          sourceBaseUrl: "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/network-status/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
-          outDir: "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
-          documents: ["network-status.png"], // the file names to download
-          requestConfig: { responseType: "arraybuffer" }
+        // options here
+        name: "network-status-image-content", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/network-status/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
+        outDir:
+          "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
+        documents: ["network-status.png"], // the file names to download
+        requestConfig: { responseType: "arraybuffer" },
       },
     ],
     [
       "docusaurus-plugin-remote-content",
       {
         // Network Status
-        // Remote content configuration to fetch repo README.md for 
+        // Remote content configuration to fetch repo README.md for
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/network-status#readme
         name: "network-status", // used by CLI, must be path safe
         sourceBaseUrl:
@@ -198,19 +206,21 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
-          // options here
-          name: "mock-api-image-content", // used by CLI, must be path safe
-          sourceBaseUrl: "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/mock-api/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
-          outDir: "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
-          documents: ["mock-api.png"], // the file names to download
-          requestConfig: { responseType: "arraybuffer" }
+        // options here
+        name: "mock-api-image-content", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/mock-api/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
+        outDir:
+          "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
+        documents: ["mock-api.png"], // the file names to download
+        requestConfig: { responseType: "arraybuffer" },
       },
     ],
     [
       "docusaurus-plugin-remote-content",
       {
         // Mock API
-        // Remote content configuration to fetch repo README.md for 
+        // Remote content configuration to fetch repo README.md for
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/mock-api#readme
         name: "mock-api", // used by CLI, must be path safe
         sourceBaseUrl:
@@ -234,19 +244,21 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
-          // options here
-          name: "on-device-storage-image-content", // used by CLI, must be path safe
-          sourceBaseUrl: "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/on-device-storage/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
-          outDir: "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
-          documents: ["on-device-storage.png"], // the file names to download
-          requestConfig: { responseType: "arraybuffer" }
+        // options here
+        name: "on-device-storage-image-content", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/on-device-storage/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
+        outDir:
+          "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
+        documents: ["on-device-storage.png"], // the file names to download
+        requestConfig: { responseType: "arraybuffer" },
       },
-    ],    
+    ],
     [
       "docusaurus-plugin-remote-content",
       {
         // On Device Storage
-        // Remote content configuration to fetch repo README.md for 
+        // Remote content configuration to fetch repo README.md for
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/on-device-storage#readme
         name: "on-device-storage", // used by CLI, must be path safe
         sourceBaseUrl:
@@ -270,19 +282,21 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
-          // options here
-          name: "multistep-form-image-content", // used by CLI, must be path safe
-          sourceBaseUrl: "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/multistep-form/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
-          outDir: "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
-          documents: ["multistep.png"], // the file names to download
-          requestConfig: { responseType: "arraybuffer" }
+        // options here
+        name: "multistep-form-image-content", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/multistep-form/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
+        outDir:
+          "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
+        documents: ["multistep.png"], // the file names to download
+        requestConfig: { responseType: "arraybuffer" },
       },
     ],
     [
       "docusaurus-plugin-remote-content",
       {
         // Multistep Form
-        // Remote content configuration to fetch repo README.md for 
+        // Remote content configuration to fetch repo README.md for
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/multistep-form#readme
         name: "multistep-form", // used by CLI, must be path safe
         sourceBaseUrl:
@@ -306,19 +320,21 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
-          // options here
-          name: "server-sync-image-content", // used by CLI, must be path safe
-          sourceBaseUrl: "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/server-sync/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
-          outDir: "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
-          documents: ["server-sync.png"], // the file names to download
-          requestConfig: { responseType: "arraybuffer" }
+        // options here
+        name: "server-sync-image-content", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/server-sync/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
+        outDir:
+          "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
+        documents: ["server-sync.png"], // the file names to download
+        requestConfig: { responseType: "arraybuffer" },
       },
-    ],    
+    ],
     [
       "docusaurus-plugin-remote-content",
       {
         // ServerSync
-        // Remote content configuration to fetch repo README.md for 
+        // Remote content configuration to fetch repo README.md for
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/server-sync#readme
         name: "server-sync", // used by CLI, must be path safe
         sourceBaseUrl:
@@ -342,19 +358,21 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
-          // options here
-          name: "react-query-image-content", // used by CLI, must be path safe
-          sourceBaseUrl: "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/react-query/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
-          outDir: "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
-          documents: ["react-query.png"], // the file names to download
-          requestConfig: { responseType: "arraybuffer" }
+        // options here
+        name: "react-query-image-content", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/react-query/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
+        outDir:
+          "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
+        documents: ["react-query.png"], // the file names to download
+        requestConfig: { responseType: "arraybuffer" },
       },
-    ],    
+    ],
     [
       "docusaurus-plugin-remote-content",
       {
         // React Query
-        // Remote content configuration to fetch repo README.md for 
+        // Remote content configuration to fetch repo README.md for
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/react-query#readme
         name: "react-query", // used by CLI, must be path safe
         sourceBaseUrl:
@@ -378,19 +396,21 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
-          // options here
-          name: "persisted-form-image-content", // used by CLI, must be path safe
-          sourceBaseUrl: "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/persisted-form/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
-          outDir: "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
-          documents: ["persisted-form.png"], // the file names to download
-          requestConfig: { responseType: "arraybuffer" }
+        // options here
+        name: "persisted-form-image-content", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/persisted-form/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
+        outDir:
+          "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
+        documents: ["persisted-form.png"], // the file names to download
+        requestConfig: { responseType: "arraybuffer" },
       },
-    ],    
+    ],
     [
       "docusaurus-plugin-remote-content",
       {
         // Persisted Form
-        // Remote content configuration to fetch repo README.md for 
+        // Remote content configuration to fetch repo README.md for
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/persisted-form#readme
         name: "persisted-form", // used by CLI, must be path safe
         sourceBaseUrl:
@@ -414,19 +434,21 @@ ${content}`,
     [
       "docusaurus-plugin-remote-content",
       {
-          // options here
-          name: "simple-table-image-content", // used by CLI, must be path safe
-          sourceBaseUrl: "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/simple-table/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
-          outDir: "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
-          documents: ["simple-table.png"], // the file names to download
-          requestConfig: { responseType: "arraybuffer" }
+        // options here
+        name: "simple-table-image-content", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/simple-table/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
+        outDir:
+          "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
+        documents: ["simple-table.png"], // the file names to download
+        requestConfig: { responseType: "arraybuffer" },
       },
     ],
     [
       "docusaurus-plugin-remote-content",
       {
         // Simple Table
-        // Remote content configuration to fetch repo README.md for 
+        // Remote content configuration to fetch repo README.md for
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/simple-table#readme
         name: "simple-table", // used by CLI, must be path safe
         sourceBaseUrl:
@@ -536,9 +558,9 @@ ${content}`,
 
 export default config;
 
-// This function path stub to a README.md file 
+// This function path stub to a README.md file
 // and returns the .md renamed as the parent folder.
 // eg. "network-status/README.md" --> "network-status.md"
 function readmeToNamedMd(filename) {
   return filename.split("/")[0].concat(".md");
-};
+}
