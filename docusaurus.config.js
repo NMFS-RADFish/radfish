@@ -447,6 +447,44 @@ ${content}`,
         },
       },
     ],
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        // options here
+        name: "form-structure-image-content", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/form-structure/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
+        outDir:
+          "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
+        documents: ["form-structure.png"], // the file names to download
+        requestConfig: { responseType: "arraybuffer" },
+      },
+    ],
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        // Structured Form
+        // Remote content configuration to fetch repo README.md for
+        // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/form-structure#readme
+        name: "form-structure", // used by CLI, must be path safe
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
+        outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
+        documents: ["form-structure/README.md"], // the file to download
+        modifyContent(filename, content) {
+          return {
+            filename: readmeToNamedMd(filename),
+            content: `---
+description: This example demonstrates how build a non-trivial form using Trussworks components.
+title: Form Structure
+id: form-structure
+---
+
+${content}`,
+          };
+        },
+      },
+    ],
   ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
