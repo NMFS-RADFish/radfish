@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 2
 description: USWDS, NOAA branding and Styling, and 508 compliance
 ---
 
