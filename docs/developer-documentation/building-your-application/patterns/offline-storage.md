@@ -29,9 +29,9 @@ new LocalStorageMethod(
 When using IndexedDB, we additionally need to provide a schema version and model structures. These are used to manage future data migrations.
 
 ```js
-import { IndexedDBStorageMethod } from '@nmfs-radfish/radfish';
+import { IndexedDBMethod } from '@nmfs-radfish/radfish';
 
-new IndexedDBStorageMethod(
+new IndexedDBMethod(
   "survey-app-storage",
   "1.0.0",
   {
