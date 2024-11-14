@@ -10,7 +10,7 @@ RADFish application users can be out at sea for an extended period of time and m
 
 ## Storage Models
 
-The `@nmfs-radfish/radfish`package provides two storage methods available `LocalStorageMethod` and `IndexedDBStorageMethod`.
+The `@nmfs-radfish/radfish`package provides two storage methods available `LocalStorageMethod` and `IndexedDBMethod`.
 
 ### LocalStorage
 
