@@ -17,6 +17,7 @@ Below are a list of pre-built examples that you can use as a starting point for 
 1. [Computed Form Fields](https://github.com/NMFS-RADFish/boilerplate/blob/main/examples/computed-form-fields/README.md)
 1. [Conditional Form Fields](https://github.com/NMFS-RADFish/boilerplate/blob/main/examples/conditional-form-fields/README.md)
 1. [Field Validators](https://github.com/NMFS-RADFish/boilerplate/blob/main/examples/field-validators/README.md)
+1. [Form Structure](https://github.com/NMFS-RADFish/boilerplate/blob/main/examples/form-structure/README.md)
 1. [Mock API](https://github.com/NMFS-RADFish/boilerplate/blob/main/examples/mock-api/README.md)
 1. [Multistep Form](https://github.com/NMFS-RADFish/boilerplate/blob/main/examples/multistep-form/README.md)
 1. [Network Status](https://github.com/NMFS-RADFish/boilerplate/blob/main/examples/network-status/README.md)
@@ -41,7 +42,7 @@ Note: The `react-javascript` template is the default, so running `npx @nmfs-radf
 
 Once you scaffold a new template radfish app, you will be given the following file structure:
 
-``` bash
+```bash
 my-app
 ├── babel.config.js
 ├── index.html
@@ -62,10 +63,10 @@ my-app
 │   ├── index.css
 │   ├── index.jsx
 │   ├── pages
-│       └── Home.jsx 
+│       └── Home.jsx
 │   ├── service-worker.js
 │   └── styles
-│       └── theme.css 
+│       └── theme.css
 └── vite.config.js
 ```
 
@@ -90,7 +91,6 @@ Contains files related to mocking API requests for development and testing purpo
 - **`mocks/browser.js`** Sets up and configures the mock service worker for the browser environment. It intercepts network requests during development to simulate API responses without needing a real backend.
 
 - **`mocks/handlers.js`** Defines request handlers for the mock service worker. Each handler specifies how to respond to certain API requests, allowing you to test different scenarios and data flows.
-
 
 #### public/
 

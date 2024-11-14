@@ -29,6 +29,7 @@ For a practical implementation, refer to the [Simple Table Example](https://gith
 | **`columns`**           | `Array<Object>` | Defines the structure and configuration of the table columns.                                                             |
 | **`paginationOptions`** | `Object`        | Provides options for handling pagination, such as `pageSize`, `currentPage`, `totalRows`, and `onPageChange`.             |
 | **`onRowClick`**        | `function`      | A callback function triggered when a table row is clicked.                                                                |
+| **`defaultSort`**       | `Array<Object>` | Sets the default sorting for the table, with each object specifying a key for the column and direction ("asc" or "desc"). |
 | **`className`**         | `string`        | An optional `className` for custom styling.                                                                               |
 
 #### Trussworks Table Props
@@ -107,8 +108,8 @@ import { Table } from "@nmfs-radfish/react-radfish";
 ```jsx
 <Table
   data={[
-    { id: 1, name: "Alice", age: 32, image: "https://picsum.photos/150/75" },
-    { id: 2, name: "Bob", age: 28, image: "https://picsum.photos/150/75" },
+    { id: 1, name: "Alice", age: 32, image: "example-img.png" },
+    { id: 2, name: "Bob", age: 28, image: "example-img.png" },
   ]}
   columns={[
     { key: "name", label: "Name", sortable: true },
@@ -137,8 +138,8 @@ import { Table } from "@nmfs-radfish/react-radfish";
 ```jsx
 <Table
   data={[
-    { id: 1, name: "Alice", age: 32, image: "https://picsum.photos/150/75" },
-    { id: 2, name: "Bob", age: 28, image: "https://picsum.photos/150/75" },
+    { id: 1, name: "Alice", age: 32, image: "example-img.png" },
+    { id: 2, name: "Bob", age: 28, image: "example-img.png" },
   ]}
   columns={[
     { key: "name", label: "Name", sortable: true },
@@ -165,13 +166,38 @@ import { Table } from "@nmfs-radfish/react-radfish";
 
 ![Table Example Screenshot](/img/example-table-onClickRow.gif)
 
+### defaultSort Prop
+
+```jsx
+<Table
+  data={[
+    { id: 1, firstName: "Alice", lastName: "Smith", age: 25 },
+    { id: 2, firstName: "Bob", lastName: "Jones", age: 30 },
+    { id: 3, firstName: "Charlie", lastName: "Smith", age: 20 },
+    { id: 4, firstName: "Dave", lastName: "Jones", age: 40 },
+    { id: 5, firstName: "Eva", lastName: "Brown", age: 35 },
+  ]}
+  columns={[
+    { key: "firstName", label: "First Name", sortable: true },
+    { key: "lastName", label: "Last Name", sortable: true },
+    { key: "age", label: "Age", sortable: true },
+  ]}
+  defaultSort={[
+    { key: "lastName", direction: "asc" },
+    { key: "firstName", direction: "desc" },
+  ]}
+/>
+```
+
+![Table Example Screenshot](/img/example-table-defaultSort.png)
+
 ### Trussworks Table Props
 
 ```jsx
 <Table
   data={[
-    { id: 1, name: "Alice", age: 32, image: "https://picsum.photos/150/75" },
-    { id: 2, name: "Bob", age: 28, image: "https://picsum.photos/150/75" },
+    { id: 1, name: "Alice", age: 32, image: "example-img.png" },
+    { id: 2, name: "Bob", age: 28, image: "example-img.png" },
   ]}
   columns={[
     { key: "name", label: "Name", sortable: true },
