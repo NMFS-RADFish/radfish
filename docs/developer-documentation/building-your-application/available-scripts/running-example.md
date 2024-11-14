@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+---
+
 # Running an Example
 
 RADFish ships with several different [boilerplate examples](../../examples-and-templates#examples) that demonstrate core pieces of functionality identified as critical for NOAA application development. You can use these examples as a reference point to build out your own implementation, or simply to get inspiration for your own design patterns with some pre-defined best practices.
