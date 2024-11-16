@@ -4,14 +4,14 @@ sidebar_position: 3
 
 # Table
 
-The Table component is a flexible and customizable table designed for displaying tabular data.
+The `Table` component is a flexible and customizable table designed for displaying sortable data.
 
 ## Features
 
 - **Sorting**: Click on any column header to sort the table by that column. Sorting toggles between ascending, descending, and unsorted states.
 - **Multi-Column Sorting**: Multi-column sorting allows you to sort data by multiple columns. Click additional column headers in the desired order of sorting priority.
-- **Pagination**: Use the pagination controls below the table to navigate through multiple pages of data. You can move between the first, previous, next, and last page, and see the current page number and total pages.
-- **Custom Rendering**: Certain columns (like the image and price) use custom render functions to display data in a more user-friendly way.
+- **Pagination**: Use the pagination controls below the table to navigate through multiple pages of data. You can move between the first, previous, next, and last page. You can also see the current page number and total pages.
+- **Custom Rendering**: Certain columns (like image and price) use custom render functions to display data in a more user-friendly way.
 
 ## How to Use the `<Table>` Component
 
@@ -32,7 +32,7 @@ For a practical implementation, refer to the [Simple Table Example](https://gith
 | **`defaultSort`**       | `Array<Object>` | Sets the default sorting for the table, with each object specifying a key for the column and direction ("asc" or "desc"). |
 | **`className`**         | `string`        | An optional `className` for custom styling.                                                                               |
 
-#### Trussworks Table Props
+### Trussworks Table Props
 
 The `<Table>` component is built on top of the Trussworks table component, allowing you to pass Trussworks-specific props like `striped`, `bordered`, and others for additional customization.
 
@@ -61,6 +61,7 @@ For more details on available Trussworks props, refer to the [Trussworks Table D
 ## Usage Examples
 
 ### Simple
+This example shows a simple table, with two columns and two rows.
 
 ```jsx
 import { Table } from "@nmfs-radfish/react-radfish";
@@ -77,9 +78,11 @@ import { Table } from "@nmfs-radfish/react-radfish";
 />
 ```
 
+This code will render as shown in this screenshot:
 ![Table Example Screenshot](/img/example-table-simple.png)
 
 ### Pagination
+This example shows a table with multiple pages by using `paginationOptions`.
 
 ```jsx
 import { Table } from "@nmfs-radfish/react-radfish";
@@ -100,10 +103,11 @@ import { Table } from "@nmfs-radfish/react-radfish";
   }}
 />
 ```
-
+This code will render as shown in this screenshot:
 ![Table Example Screenshot](/img/example-table-pagination.png)
 
 ### Column Render Property
+Certain data types, such as images, require special rendering properties. 
 
 ```jsx
 <Table
@@ -130,10 +134,11 @@ import { Table } from "@nmfs-radfish/react-radfish";
   }}
 />
 ```
-
+This code will render as shown in this screenshot:
 ![Table Example Screenshot](/img/example-table-render-property.png)
 
 ### onRowClick Prop
+You can use `onRowClick` to pass functions using React.
 
 ```jsx
 <Table
@@ -164,9 +169,11 @@ import { Table } from "@nmfs-radfish/react-radfish";
 />
 ```
 
+This code will render as shown in this animated gif:
 ![Table Example Screenshot](/img/example-table-onClickRow.gif)
 
 ### defaultSort Prop
+You can set how the table is displayed by default.
 
 ```jsx
 <Table
@@ -189,9 +196,11 @@ import { Table } from "@nmfs-radfish/react-radfish";
 />
 ```
 
+This code will render as shown in this screenshot:
 ![Table Example Screenshot](/img/example-table-defaultSort.png)
 
 ### Trussworks Table Props
+You can add styles like `bordered` or `striped` to your table.
 
 ```jsx
 <Table
@@ -221,4 +230,5 @@ import { Table } from "@nmfs-radfish/react-radfish";
 />
 ```
 
+This code will render as shown in this animated gif:
 ![Table Example Screenshot](/img/example-table-trussworks-prop.png)
