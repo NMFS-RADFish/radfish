@@ -4,7 +4,9 @@ sidebar_position: 2
 
 # DatePicker
 
-The `DatePicker` component is a reusable form input designed to capture date-related information from users. It provides a consistent and accessible user interface element for selecting dates, ensuring seamless integration within NOAA web applications.
+The `DatePicker` component is an essential, versitile, reusable form input. It's designed to capture date-related information from users. It is customizable, easy to integrate, and adheres to accessibility standards. It seamlessly integrates with NOAA web applications, so developers can build consistent, accessible, and user-friendly forms and data entry interfaces.
+
+By following the best practices and examples below, developers can add the DatePicker to their projects.
 
 ## **Features**
 
@@ -25,7 +27,7 @@ The `DatePicker` component is a reusable form input designed to capture date-rel
 | `hint`     | `string` | `undefined` | No       | Supplemental text that provides additional guidance or information about the input field.  |
 | `label`        | `string` | **—**       | Yes      | The text label associated with the input field.                                            |
 | `className`    | `string` | `""`        | No       | Additional CSS classes to apply to the root element for custom styling.                    |
-| `...props`     | `object` | `-`         | No       | Any other valid HTML input attributes (e.g., `onChange`, `disabled`, etc.)                 |
+| `...props`     | `object` | `-`         | No       | Any other valid HTML input attributes (e.g. `onChange`, `disabled`, etc.).                 |
 
 ## **Installation**
 
@@ -39,7 +41,7 @@ import { DatePicker } from "@nmfs-radfish/react-radfish";
 
 ### 1. Basic Usage
 
-A simple date picker with essential props
+A simple date picker with essential props:
 
 ```jsx
 import React from "react";
@@ -64,7 +66,7 @@ export default BasicForm;
 
 ### 2. With Default Value and Custom Type
 
-Using a different input type and setting a default value
+Using a different input type and setting a default value:
 
 ```jsx
 import React from "react";
@@ -129,7 +131,7 @@ export default ControlledForm;
 
 ### 4. Custom Styling
 
-Applying custom CSS classes to the DatePicker
+Applying custom CSS classes to the DatePicker:
 
 ```jsx
 import React from "react";
@@ -156,12 +158,10 @@ export default StyledForm;
 
 ### 508 Compliance
 
-The DatePicker component ensures accessibility by using the native HTML input element, which is inherently 508 compliant. It supports keyboard navigation, allowing users to interact with the date picker without a mouse. Additionally, the component is fully compatible with screen readers, providing clear labels and descriptive hints through proper ARIA attributes. This ensures that all users, including those with disabilities, can effectively utilize the DatePicker in forms and data entry interfaces.
+The DatePicker component ensures accessibility by using the native HTML input element, which is inherently 508 compliant. It supports keyboard navigation, allowing users to interact with the date picker without a mouse. Additionally, the component is fully compatible with screen readers, providing clear labels and descriptive hints through proper ARIA attributes. This means that all users, including those with disabilities, can use the DatePicker in forms and data entry interfaces.
 
 ### RADFish DatePicker vs. Trussworks DatePicker
 
-The RADFish DatePicker offers flexibility by supporting both controlled and uncontrolled modes. In controlled mode, developers manage the value via React state, allowing for precise control over the input. In uncontrolled mode, the browser manages the form state, simplifying development for straightforward use cases. On the other hand, the Trussworks date picker only supports uncontrolled behavior, which limits flexibility in scenarios where managing the input programmatically is required. This makes the RADFish DatePicker a more versatile choice for a wider range of applications, offering developers greater control when needed.
+The RADFish DatePicker offers flexibility by supporting both controlled and uncontrolled modes. In controlled mode, developers manage the value via React state, allowing for precise control over the input. In uncontrolled mode, the browser manages the form state, simplifying development for straightforward use cases. 
 
-### Conclusion
-
-The DatePicker component is a versatile and accessible tool for capturing date information within NOAA web applications. Its customizable props, ease of integration, and adherence to accessibility standards make it an essential component for building user-friendly forms and data entry interfaces. By following the best practices and examples provided, developers can efficiently incorporate the DatePicker into their projects, enhancing both functionality and user experience.
+The Trussworks date picker only supports uncontrolled behavior. This limits flexibility in scenarios where managing the input programmatically is required. This makes the RADFish DatePicker a more versatile choice for a wider range of applications, offering developers greater control when needed.

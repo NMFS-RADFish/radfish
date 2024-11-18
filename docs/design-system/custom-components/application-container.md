@@ -4,18 +4,18 @@ sidebar_position: 1
 
 # Application Container
 
-The `Application` container is designed to handle network status changes and display appropriate toast notifications. It comes with **built-in** functionality that automatically handles these changes.
+The `Application` container handles network status changes and displays appropriate toast notifications. It has **built-in** functionality that automatically handles these changes.
 
 ## Features
 
-- **Built-in Offline/Online Notifications**: The `Application` component monitors the network status and shows toast messages when the app goes offline or comes back online.
+- **Built-in Offline/Online Notifications**: The `Application` component monitors the network status. It shows toast messages when the app goes offline or comes back online.
 - **Custom Hooks**: It leverages the `useToasts` and `useOfflineStatus` hooks from within `@nmfs-radfish/react-radfish` package.
 
 ## How It Works
 
 ### Built-in Offline/Online Notifications
 
-The `Application` component has **built-in** functionality to check the application's network status and display toast notifications when the state changes:
+The `Application` component has **built-in** functionality to check the application's network status. It displays toast notifications when the state changes:
 
 - **When the application goes offline**: A warning toast is displayed with the message `"Application is offline"`.
 - **When the application comes back online**: An info toast is displayed with the message `"Application is online"`.
@@ -24,7 +24,7 @@ This feature is provided **out of the box** and requires no additional setup fro
 
 ### Example Usage
 
-To use the `Application` component, wrap it around your app in the entry file (e.g., `index.js` or `index.jsx`):
+To use the `Application` component, wrap it around your app in the entry file (e.g. `index.js` or `index.jsx`):
 
 ```jsx
 import { Application } from "@nmfs-radfish/react-radfish";
