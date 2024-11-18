@@ -82,6 +82,6 @@ Please visit [upgrading](./upgrading.md) for more information.
 
 This script starts the Vite development server. It runs the app locally with hot module reloading, allowing for fast development and instant updates as you make changes. Open [http://localhost:3000](http://localhost:3000/) to view it in the browser.
 
-See [Available Scripts](./building-your-application/available-scripts/available-scripts.md) for full list of commands.
+See [Available Scripts](./building-your-application/available-scripts) for full list of commands.
 
 Now that you are up and running, see the [Components & Usage](./building-your-application/patterns/components.md) section to start building out your first pages!
