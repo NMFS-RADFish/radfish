@@ -52,6 +52,13 @@ const config = {
   ],
   plugins: [
     [
+      require.resolve("@cmfcmf/docusaurus-search-local"),
+      {
+        indexBlog: false,
+        // Options here
+      },
+    ],
+    [
       "docusaurus-plugin-remote-content",
       {
         // options here
