@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Installing the CLI
 
-The RADFish CLI is available as an npm package, making the installation process much simpler. Follow these steps to install and use the CLI:
+The RADFish CLI is available as an `npm` package, making the installation process much simpler. Follow these steps to install and use the CLI:
 
 ## Install the CLI
 
@@ -21,4 +21,3 @@ create-radfish-app --version
 ```
 
 This should display the version number of the installed CLI.
-
