@@ -5,7 +5,7 @@ title: Service Worker Removal
 
 ### Removing the Preconfigured Service Worker
 
-> **Disclaimer:** The service worker in this template is designed to provide offline functionality and improve app performance. Removing it is generally not recommended; however, if needed, follow these steps:
+> **Disclaimer:** The service worker in this template is designed to provide offline functionality and improve app performance. Removing it is generally not recommended. However, if needed, follow these steps:
 
 1. **Uninstall the Service Worker Plugin**  
    Run the following command to uninstall `vite-plugin-pwa`:
