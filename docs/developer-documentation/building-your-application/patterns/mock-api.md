@@ -5,7 +5,7 @@ description: Simulate backend responses to unblock your development
 
 # Mock API
 
-As a frontend developer, it can sometimes be a blocker when you are developing a feature that has a dependency on an external API. Often times, you can be waiting for a backend developer to finish building our their API endpoints before you can continue building your feature. RADFishApp ships with a built-in mock server that allows the frontend developer to “stub out” and mock API requests/responses without this hard dependency during development.
+As a frontend developer, you may be developing a feature that has a dependency on an external API. This dependency sometimes becomes a blocker. You must wait for the external API endpoints to be developed before you can build your feature. The RADFish app ships with a built-in mock server that allows frontend developers to “stub out” and mock API requests. This mock API removes the hard dependency during development.
 
 More specifically, RADFishApp ships with [mock service worker](https://mswjs.io/) and is preconfigured in the boilerplate application.
 

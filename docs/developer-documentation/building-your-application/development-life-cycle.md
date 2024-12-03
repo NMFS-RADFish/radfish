@@ -18,9 +18,9 @@ To setup a new NOAA web app project, we recommend following [Getting Started](..
 
 ## React Components
 
-The following components are included by default with the RADFish Framework. The components build upon the ‣ component library, which adheres to [USWDS standards](https://designsystem.digital.gov/). For detailed information on the available components and what attributes they accept, please see the official storybook documentation: [https://trussworks.github.io/react-uswds/](https://trussworks.github.io/react-uswds/)
+Trussworks React components are included by default with the RADFish Framework. The components build upon the component library, which adheres to [USWDS standards](https://designsystem.digital.gov/). For detailed information on the available components and what attributes they accept, please see the official storybook documentation: [https://trussworks.github.io/react-uswds/](https://trussworks.github.io/react-uswds/)
 
-###Why Use React?
+### Why Use React?
 
 - **Responsive Design.** Automatically adjusts for different screen sizes with a collapsible menu.
 - **Customizable.** Allows for easy customization of navigation links.
@@ -29,10 +29,10 @@ The following components are included by default with the RADFish Framework. The
 
 **Additional Notes**
 
-- The **`@trussworks/react-uswds`** package is a requirement for this component to ensure proper styling and functionality. This package is included by default.
+- The **`@trussworks/react-uswds`** package is required to ensure proper styling and functionality. This package is included by default, so you do not need to import it. 
 - Custom CSS can be applied for further customization.
 
-##Resources
+## Resources
 
 By integrating the [header](https://trussworks.github.io/react-uswds/?path=/docs/components-header--basic-header) components into your React application, you can create a professional and responsive UI with minimal effort. The **`Layout`** and **`HeaderNav`** components work together to provide a structured and navigable interface, enhancing the overall user experience.
 

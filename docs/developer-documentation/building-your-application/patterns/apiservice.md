@@ -5,11 +5,11 @@ description: Use any network library to handle HTTP requests
 
 # Integrating with Backend Services
 
-You are free to use any network library of your choice to handle HTTP requests (GET, POST, PUT, DELETE). For your convenience, we’ve provided examples using the native fetch API. You can adapt these examples to the library that best fits your needs.
+You can use any network library to handle HTTP requests (GET, POST, PUT, DELETE). We’ve provided examples using the native fetch API. You can adapt these examples to the library that best fits your needs.
 
-**Making API Requests**
+## Making API Requests
 
-A common pattern, is to call network requests in a `useEffect` that will trigger whenever a React component loads:
+A common pattern is to call network requests in a `useEffect` that will trigger whenever a React component loads:
 
 ```jsx
 useEffect(() => {
@@ -34,12 +34,11 @@ useEffect(() => {
 }, []);
 ```
 
-- **`GET` Request**
-
-  - Asynchronous function to perform a `GET` request
-  - `@param {string} endpoint` - The API endpoint to perform the GET request.
-  - `@param {Object} queryParams` - The query parameters for the GET request.
-  - `@returns {Promise<Object|string>}` - A promise that resolves to the API response data or an error string.
+### `GET` Request
+Asynchronous function to perform a `GET` request.
+- `@param {string} endpoint` - The API endpoint to perform the GET request.
+- `@param {Object} queryParams` - The query parameters for the GET request.
+- `@returns {Promise<Object|string>}` - A promise that resolves to the API response data or an error string.
 
     ```js
     async function get(API_ENDPOINT, queryParams) {
@@ -76,12 +75,12 @@ useEffect(() => {
     }, []);
     ```
 
-- **`POST` Request**
+### `POST` Request
 
-  - Asynchronous function to perform a `POST` request
-  - `@param {string} endpoint` - The API endpoint to perform the POST request.
-  - `@param {Object} body` - The request body for the POST request.
-  - `@returns {Promise<Object|string>}` - A promise that resolves to the API response data or an error string.
+Asynchronous function to perform a `POST` request.
+- `@param {string} endpoint` - The API endpoint to perform the POST request.
+- `@param {Object} body` - The request body for the POST request.
+- `@returns {Promise<Object|string>}` - A promise that resolves to the API response data or an error string.
 
     ```jsx
     async function post(API_ENDPOINT, bodyData) {
@@ -119,12 +118,12 @@ useEffect(() => {
     }, []);
     ```
 
-- **`PUT` Request**
+### `PUT` Request
 
-  - Asynchronous function to perform a `PUT` request
-  - `@param {string} endpoint` - The API endpoint to perform the PUT request.
-  - `@param {Object} body` - The request body for the PUT request.
-  - `@returns {Promise<Object|string>}` - A promise that resolves to the API response data or an error string.
+Asynchronous function to perform a `PUT` request.
+- `@param {string} endpoint` - The API endpoint to perform the PUT request.
+- `@param {Object} body` - The request body for the PUT request.
+- `@returns {Promise<Object|string>}` - A promise that resolves to the API response data or an error string.
 
     ```jsx
     async function update(endpoint, { id, bodyData }) {
@@ -168,12 +167,12 @@ useEffect(() => {
     }, []);
     ```
 
-- **`DELETE` Request**
+### `DELETE` Request
 
-  - Asynchronous function to perform a `DELETE` request
-  - `@param {string} endpoint` - The API endpoint to perform the DELETE request.
-  - `@param {Object} body` - The request body for the DELETE request.
-  - `@returns {Promise<Object|string>}` - A promise that resolves to the API response data or an error string.
+Asynchronous function to perform a `DELETE` request.
+- `@param {string} endpoint` - The API endpoint to perform the DELETE request.
+- `@param {Object} body` - The request body for the DELETE request.
+- `@returns {Promise<Object|string>}` - A promise that resolves to the API response data or an error string.
 
     ```jsx
     async function remove(endpoint, { id }) {
@@ -210,6 +209,6 @@ useEffect(() => {
     ```
 ---
 
-# React Query
+## React Query
 
 In Progress
