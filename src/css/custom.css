@@ -25,6 +25,9 @@
   --ifm-color-secondary-light: #19daf9;
   --ifm-color-secondary-lighter: #25dcfa;
   --ifm-color-secondary-lightest: #49e2fb;
+
+  /* Search box icon & focus. Same color as --radfish-primary-blue */
+  --aa-primary-color-rgb: 32, 84, 147 !important;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -37,6 +40,14 @@
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  /* Search box icon & focus. Same color as --ifm-color-secondary */
+  --aa-primary-color-rgb: 6, 210, 243 !important;
+  /* Search box border & selected color: blue  */
+  --aa-input-border-color-rgb: 221, 221, 221 !important;
+  --aa-selected-color-rgb: 32, 84, 147 !important;
+  /* Search text. Same color as --radfish-gray-light */
+  --aa-muted-color-rgb: 102, 102, 102 !important;
 }
 
 .buttons {
