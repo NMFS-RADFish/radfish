@@ -6,7 +6,7 @@ description: Implement offline storage functionality (Coming soon)
 
 # Offline Storage
 
-RADFish application users can be out at sea for an extended period of time and may not have a reliable internet connection. The offline storage functionality outlined below allows users to continue using the application to create and manage data while offline.
+RADFish app users can be out at sea for an extended period of time. They may not have a reliable internet connection. Offline storage lets users to continue using the app to create and manage data while offline.
 
 ## Storage Models
 
@@ -26,7 +26,7 @@ new LocalStorageMethod(
 
 ### IndexedDB
 
-When using IndexedDB, we additionally need to provide a schema version and model structures. These are used to manage future data migrations.
+When using IndexedDB, we also need to provide a schema version and model structures. These are used to manage future data migrations.
 
 ```js
 import { IndexedDBStorageMethod } from '@nmfs-radfish/radfish';
@@ -43,13 +43,17 @@ new IndexedDBStorageMethod(
 
 ## React Usage
 
-The `@nmfs-radfish/react-radfish` package exposes the an `OfflineStorageWrapper` component that creates a storage model available to that React context.
+The `@nmfs-radfish/react-radfish` package exposes the `OfflineStorageWrapper` component. This creates a storage model available to that React context.
 
 ## **`useOfflineStorage` Hooks API**
 
 You can then use the `useOfflineStorage` hook to interact directly with the storage model.
 
-The hook returns an object with the following methods:
+The hook returns an object with these CRUD methods:
+- `createOfflineData` creates a new entry.
+- `findOfflineData` reads data entries.
+- `updateOfflineData` updates data entries.
+- `deleteOfflineData` deletes data entries.
 
 ### `createOfflineData`
 
@@ -86,7 +90,7 @@ Updates data in the storage with the matching `criteria`.
 
 ### `deleteOfflineData`
 
- Deletes data in the storage.
+Deletes data in the storage.
 
 | Parameter   | Description                                                    |
 | ----------- | -------------------------------------------------------------- |
@@ -95,11 +99,11 @@ Updates data in the storage with the matching `criteria`.
 
 **Returns:** A `Promise` that resolves to a boolean value of whether the delete operation succeeded without errors.
 
-## **Usage**
+## Usage
 
 Example usage when using IndexedDB:
 
-App.jsx
+**App.jsx**
 ```jsx
 import React, { useEffect, useState } from "react";
 import { Table } from "@nmfs-radfish/react-radfish";
@@ -162,4 +166,6 @@ export default App;
 
 ## Interfacing with backend services
 
-You can use any HTTP library of your choice to handle HTTP requests (GET, POST, PUT, DELETE). For your convenience, we’ve provided examples using the native fetch API. You can adapt these examples to the library that best fits your needs.
+You are free to use any network library of your choice to handle HTTP requests (GET, POST, PUT, DELETE). For your convenience, we’ve provided examples using the native fetch API. You can adapt these examples to the library that best fits your needs.
+
+Refer to the [Integrating with Backend Services](https://nmfs-radfish.github.io/radfish/developer-documentation/building-your-application/patterns/apiservice) documentation for examples.
