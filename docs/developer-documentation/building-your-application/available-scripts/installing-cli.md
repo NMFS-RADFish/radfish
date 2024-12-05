@@ -8,7 +8,7 @@ The RADFish CLI is available as an `npm` package, making the installation proces
 
 ## Install the CLI
 
-To install the RADFish CLI globally on your system, run the following command:
+To install the RADFish CLI globally on your system, run this command:
 
 ```bash
 npm install -g @nmfs-radfish/create-radfish-app
