@@ -77,8 +77,7 @@ npx @nmfs-radfish/create-radfish-app --help
     ```
 Please visit [upgrading](./upgrading.md) for more information. 
 
-## Scripts
-See [Available Scripts](./building-your-application/available-scripts/available-scripts.md) for full list of commands.
+See [Available Scripts](./building-your-application/available-scripts) for full list of commands.
 
 The **`npm start`** script starts the Vite development server. It runs the app locally with hot module reloading, allowing for fast development and instant updates as you make changes. Open [http://localhost:3000](http://localhost:3000/) to view it in the browser.
 

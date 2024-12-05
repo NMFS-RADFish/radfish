@@ -52,6 +52,13 @@ const config = {
   ],
   plugins: [
     [
+      require.resolve("@cmfcmf/docusaurus-search-local"),
+      {
+        indexBlog: false,
+        // Options here
+      },
+    ],
+    [
       "docusaurus-plugin-remote-content",
       {
         // options here
@@ -79,7 +86,7 @@ const config = {
           return {
             filename: readmeToNamedMd(filename),
             content: `---
-description: This example includes an example on how to build a form where the values of certain input fields compute the value of a separate readOnly input field elsewhere in the form.
+description: Automatically calculates a read-only field in forms
 title: Computed Form Fields
 id: computed-form-fields
 ---
@@ -117,7 +124,7 @@ ${content}`,
           return {
             filename: readmeToNamedMd(filename),
             content: `---
-description: This example includes an example on how to build a form where the values of certain input fields control the visibility of other fields within that form.
+description: Dynamically show/hide fields based on other inputs
 title: Conditional Form Fields
 id: conditional-form-fields
 ---
@@ -155,7 +162,7 @@ ${content}`,
           return {
             filename: readmeToNamedMd(filename),
             content: `---
-description: This example demonstrates how to enforce field validation logic on certain fields within your form. 
+description: Enforce validation logic, like disallowing numbers
 title: Field Validators
 id: field-validators
 ---
@@ -193,7 +200,7 @@ ${content}`,
           return {
             filename: readmeToNamedMd(filename),
             content: `---
-description: This example shows you how to detect if a user has network connectivity. 
+description: Detect network connectivity and display offline alerts
 title: Network Status
 id: network-status
 ---
@@ -231,7 +238,7 @@ ${content}`,
           return {
             filename: readmeToNamedMd(filename),
             content: `---
-description: This example includes how to setup and use mock service worker and the native fetch API to build out a mock API on the frontend to consume without needing to rely on a backend system. 
+description: Mock API for frontend development with MSW and fetch
 title: Mock API
 id: mock-api
 ---
@@ -269,7 +276,7 @@ ${content}`,
           return {
             filename: readmeToNamedMd(filename),
             content: `---
-description: This example includes how to setup and use the on-device storage using IndexedDB and Dexie.js.
+description: Use IndexedDB/Dexie.js for offline or local storage
 title: On Device Storage
 id: on-device-storage
 ---
@@ -307,7 +314,7 @@ ${content}`,
           return {
             filename: readmeToNamedMd(filename),
             content: `---
-description: This example includes an example on how to build a form that includes multiple "steps"
+description: Multi-step form saving progress and inputs locally
 title: Multistep Form
 id: multistep-form 
 ---
@@ -345,7 +352,7 @@ ${content}`,
           return {
             filename: readmeToNamedMd(filename),
             content: `---
-description: The ServerSync component is responsible for synchronizing data between a client application and a remote server.
+description: Sync client-server data with offline storage support
 title: ServerSync
 id: server-sync 
 ---
@@ -383,7 +390,7 @@ ${content}`,
           return {
             filename: readmeToNamedMd(filename),
             content: `---
-description: This example shows you how you could use the React Query library to manage state in your application.
+description: Manage app state with React Query's simplified API
 title: React Query
 id: react-query 
 ---
@@ -421,7 +428,7 @@ ${content}`,
           return {
             filename: readmeToNamedMd(filename),
             content: `---
-description: This example shows you how to configure a persisted form that saves the data locally.
+description: Save and persist form data locally with FormWrapper
 title: Persisted Form
 id: persisted-form
 ---
@@ -459,7 +466,7 @@ ${content}`,
           return {
             filename: readmeToNamedMd(filename),
             content: `---
-description: This example demonstrates how to use the <Table> component to display tabular data.
+description: Display tabular data using the <Table> component
 title: Simple Table
 id: simple-table 
 ---
@@ -497,7 +504,7 @@ ${content}`,
           return {
             filename: readmeToNamedMd(filename),
             content: `---
-description: This example demonstrates how build a non-trivial form using Trussworks components.
+description: Build complex forms using Trussworks core components
 title: Form Structure
 id: form-structure
 ---
