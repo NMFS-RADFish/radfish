@@ -6,11 +6,11 @@ sidebar_position: 7
 
 ## How to keep your RADFish project up to date
 
-Keeping your project up to date with the latest RADFish versions is essential for stability, security, and accessing the latest features. Below is a step-by-step guide on how to update your RADFish packages and ensure your project remains free of warnings and errors.
+Updating your RADFish version ensures stability, security, and the latest features. It also keeps your project free of warnings and errors. This section provides a step-by-step guide on how to update your RADFish packages. 
 
-### 1. Upgrade packages
+### 1. Upgrade Packages
 
-    1. **Run command**: In the root of your project run:
+    1. **Run command:** In the root of your project, run:
         ```bash
         npm update
         ```
@@ -24,7 +24,7 @@ Keeping your project up to date with the latest RADFish versions is essential fo
 
 ### 2. Handling Warnings During Updates
 
-    While updating your packages, you might encounter warnings(not necessarily RADFish-specific). These warnings often occur when certain packages in your project are outdated or incompatible. To get rid of these warnings:
+    While updating your packages, you might encounter warnings. These warnings may not necessarily be RADFish-specific. These warnings often occur when certain packages in your project are outdated or incompatible. To get rid of these warnings:
 
     1. **Check for outdated packages:** Run the command below to list all outdated packages, including those not related to RADFish.
         ```bash
@@ -46,11 +46,13 @@ Keeping your project up to date with the latest RADFish versions is essential fo
         npm uninstall <deprecated-package>
         ```
 
-### 3. Overview of Packages managed in `radfish` and `react-radfish`
+### 3. Overview of Packages Managed in `radfish` and `react-radfish`
 
-In your RADFish project, the following packages are managed and should be kept up to date:
+In your RADFish project, these packages are managed and should be kept up to date:
+- `@nmfs-radfish/radfish`
+- `@nmfs-radfish/react-radfish`
 
-#### 1. @nmfs-radfish/radfish:
+#### `@nmfs-radfish/radfish`
 This package handles the core logic and utilities for RADFish. It manages several dependencies that are essential for the functionality of the RADFish system:
 
    - **Dependencies:**
@@ -58,12 +60,11 @@ This package handles the core logic and utilities for RADFish. It manages severa
         - `msw`: A library for mocking API requests in development and testing environments.
         - `react`: The core React library required for building user interfaces in RADFish projects.
 
-#### 2. @nmfs-radfish/react-radfish:
+#### `@nmfs-radfish/react-radfish`
 
    This package provides UI components for React applications using RADFish. It manages several dependencies that enhance the user interface and functionality:
 
    - **Dependencies:**
-
         - `@tanstack/react-table`: A headless table library for building powerful data tables in React.
         - `@trussworks/react-uswds`: A component library that implements the U.S. Web Design System (USWDS) for React.
 
