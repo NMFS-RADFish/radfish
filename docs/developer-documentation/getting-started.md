@@ -77,7 +77,7 @@ npx @nmfs-radfish/create-radfish-app --help
     ```
 Please visit [upgrading](./upgrading.md) for more information. 
 
-# Scripts
+## Scripts
 
 **`npm start`**
 
