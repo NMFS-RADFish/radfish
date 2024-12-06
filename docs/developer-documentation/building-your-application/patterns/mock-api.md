@@ -5,9 +5,9 @@ description: Simulate backend responses to unblock your development
 
 # Mock API
 
-As a frontend developer, it can sometimes be a blocker when you are developing a feature that has a dependency on an external API. Often times, you can be waiting for a backend developer to finish building our their API endpoints before you can continue building your feature. RADFishApp ships with a built-in mock server that allows the frontend developer to “stub out” and mock API requests/responses without this hard dependency during development.
+As a frontend developer, you may be developing a feature that has a dependency on an external API. This dependency sometimes becomes a blocker. You must wait for the external API endpoints to be developed before you can build your feature. The RADFish app ships with a built-in mock server that allows frontend developers to “stub out” and mock API requests. This mock API removes the hard dependency during development.
 
-More specifically, RADFishApp ships with [mock service worker](https://mswjs.io/) and is preconfigured in the boilerplate application.
+More specifically, RADFish ships with [mock service worker](https://mswjs.io/). This service is preconfigured in the boilerplate application.
 
 At the entrypoint of the React application, we enable API mocking with the `enableMocking` function:
 
@@ -31,11 +31,11 @@ enableMocking().then(() => {
 });
 ```
 
-Keep in mind that mocking should only be available during development, and should not ship with the production application. It can be useful to use a `NODE_ENV` environment variable to ensure that API mocks are only used in `DEVELOPMENT`. The `public/mockServiceWorker.js` file installs and configures the mock server. You should not need to modify this file.
+Keep in mind that mocking should only be available during development. It should not ship with the production application. It can be useful to use a `NODE_ENV` environment variable to ensure that API mocks are only used in `DEVELOPMENT`. The `public/mockServiceWorker.js` file installs and configures the mock server. You should not need to modify this file.
 
-**Configuring mock endpoints:**
+## Configuring mock endpoints:
 
-In `src/mocks` you will notice a `browser.js` file and a `handlers.js` file. As a developer, you will do most of your work in `handlers.js` file, where you can add different mock http handlers to your application. For each handler you create, the mock service worker will intercept the request, and handle that request as defined in the file.
+In `src/mocks` there is a `browser.js` file and a `handlers.js` file. Developers can add different mock http handlers to their application in the `handlers.js` file. For each handler you create, the mock service worker will intercept the request, and handle that request as defined in the file.
 
 For instance:
 
@@ -51,6 +51,6 @@ export const handlers = [
 ];
 ```
 
-This file creates two handlers, a `GET` and `POST` request that returns a `HttpResponse` to the application. We recommend looking at the [msw docs](https://mswjs.io/) for more detailed information on how to further customize this for your needs.
+This file creates two handlers, a `GET` and `POST` request that returns a `HttpResponse` to the application. Refer to the [msw docs](https://mswjs.io/) for more information on customizing this for your needs.
 
 ---

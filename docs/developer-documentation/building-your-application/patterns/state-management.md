@@ -5,34 +5,35 @@ description: An overview of managing application state effectively
 
 # State Management
 
-**What is State Management?**
+## What is State Management?
 
-In the world of NOAA web app development, we frequently deal with various forms of data, from user inputs like form data to environmental statistics such as fish populations or weather changes. State management is our tool for keeping track of all these changes efficiently. Think of it as a digital notepad that records every update and change within the app, ensuring we always have the most current information at our fingertips.
+NOAA web apps frequently deal with a variety of data. Data can range from user-generated form data to environmental statistics such as fish populations or weather changes. State management is our tool for keeping track of all these changes efficiently. Think of it as a digital notepad that records every update and change within the app. This ensures we always have the most current information at our fingertips.
 
-**Why Use State Management in NOAA Apps?**
+## Why Use State Management in NOAA Apps?
 
-Our applications are not just repositories of static data; they are dynamic platforms where data constantly evolves. State management is essential for several reasons:
+Our applications are not just repositories of static data. They are dynamic platforms where data constantly evolves. State management is essential for several reasons:
 
-- **Stay Updated**: It allows us to display the most up-to-date information to our users, ensuring accuracy and reliability.
-- **Work Offline**: It enables our apps to function even in the absence of an internet connection, storing data locally and syncing it back to our servers once a connection is re-established.
-- **Be Fast and Responsive**: It helps our apps to react swiftly to user interactions and data changes, providing a smooth and efficient user experience.
-A Simple Way to Manage State: Using React Context
+- **Stay Updated.** Display the most up-to-date information to our users. This ensures accuracy and reliability.
+- **Work Offline.** Our apps can function even without an internet connection. We do this by storing data locally and syncing it back to our servers once a connection is re-established.
+- **Fast and Responsive.** Our apps to react swiftly to user interactions and data changes, providing a smooth and efficient user experience.
 
-For sharing and managing state across different parts of our applications, we use a feature called React Context. This is akin to creating a communal space where any component of our app can easily access or update shared information, eliminating the complexity of passing data through multiple layers.
+### A Simple Way to Manage State: Using React Context
 
-**How We Implement State Management**
+We use a feature called **React Context** to share and manage states across different parts of our applications. This creates a communal space where any component of our app can easily access or update shared information. This feature eliminates the complexity of passing data through multiple layers.
 
-**FormState**
+## How We Implement State Management
 
-Our approach to managing form state is straightforward yet effective. Each form should maintain it's own state within the component itself. Note, that this is the recommended approach for managing a form's state, rather that reaching for a centralized state machine (think React Context or Redux) as it is more straightforward to implement without any excess layers of abstraction.
+### FormState
 
-The potential downside of this approach is that each form will have it's own state management implemented independantly, which could lead to less DRY code. This is an acceptable tradeoff in most cases, but if you notice that certain patterns should be shared among different components, you will either need to pass these state values as props to child components, or wrap the related components in a `ContextProvider` and expose them via the `useContext` hook. See more about how to use React Context [here](https://react.dev/reference/react/useContext).
+Our approach to managing form state is simple yet effective. Each form should maintain it's own state within the component itself. This is the recommended approach for managing a form's state, rather that reaching for a centralized state machine like React Context or Redux. This approach is more straightforward to implement and removes excess layers of abstraction.
 
-For an example on best practices for implementing this type of form state management, you can run any of several example implementations with the RADFish CLI:
+One downside of this approach is that each form has it's own state management. This can lead to less DRY code. This is an acceptable tradeoff in most cases, however. If you notice that certain patterns should be shared among different components, you will either need to pass these state values as props to child components, or wrap the related components in a `ContextProvider` and expose them via the `useContext` hook. See more about how to use React Context [here](https://react.dev/reference/react/useContext).
+
+For an example on best practices for implementing this type of form state management, you can run an example implementation with the RADFish CLI:
 
 `npx @nmfs-radfish/create-radfish-app my-app --example computed-form-fields`
 
-Below is a simplified code snippet on how to set this form state management up in a React component:
+Here is a simplified code snippet on how to set this form state management up in a React component:
 
 ```jsx
 const SimplifiedForm = () => {
@@ -66,22 +67,22 @@ const SimplifiedForm = () => {
 };
 ```
 
-**_Flexibility and Debugging:_**
+### Flexibility and Debugging
 
-This method allows developers to implement form state within the scope of a single file, making it simpler to build out forms for different use cases. If certain repeatable patterns arise, they can be broken out into a separate context provider if needed, or alternatively get passed in as props to child components.
+This method allows developers to implement form state within the scope of a single file. This makes it simpler to build out forms for different use cases. If certain repeatable patterns arise, they can be broken out into a separate context provider if needed. Alternatively, they can get passed in as props to child components.
 
-This approach provides better encapsulation and modularity, allowing for more straightforward debugging and maintenance of form-related logic.
+This approach provides better encapsulation and modularity. It also allows for more straightforward debugging and maintenance of form-related logic.
 
 
-# Offline / Online State Management
+## Offline / Online State Management
 
-A key consideration for any NOAA application, is for it to be able to be fully functional offline without a network connection. Fishermen are often on ships far away from network connection, and need to reliably store data to be uploaded to NOAA services when the app comes back online. For this reason, building with “offline first” considerations is of vital importance to NOAA web application development.
+Any NOAA web application must be fully functional offline without a network connection. Fishermen are often on ships far away from network connection. They need to reliably store data that will be uploaded to NOAA services when the app comes back online. Therefore, designing apps to be “offline first” is of vital importance to NOAA web appdevelopment.
 
-Progressive Web Applications (or PWAs) offer a robust solution for offline use at sea, by combining the benefits of a familiar app-like experience, offline access, and efficient data management. These features make PWAs well-suited for maritime environments, where connectivity is often limited or intermittent.
+Progressive Web Applications (PWAs) offer a robust solution for offline use at sea. They combine the benefits of an app-like experience, offline access, and efficient data management. These features make PWAs well-suited for maritime environments, where connectivity is often limited or intermittent.
 
-PWAs leverage service workers, which are scripts that run in the background independantly of the main application. Service workers enable offline functionality by caching important static resources, such as HTML, CSS, and JavaScript files. This allows the PWA to continue functioning event when there’s no network connectivity.
+PWAs leverage service workers, which are scripts that run independently in the background. Service workers enable offline functionality by caching important static resources, such as HTML, CSS, and JavaScript files. This allows the PWA to continue functioning even when there’s no network connectivity.
 
-**See more about service workers [here](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)**.
+Read more about service workers [here](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API).
 
 Service workers are integrated into the RADFish application by default. After scaffolding the application you will notice the following files:
 
@@ -102,9 +103,9 @@ This will register the React application as a PWA, which can be downloaded from 
 
 Additionally, you can query for whether or not the RADFish application is online or offline by leveraging the [navigator API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator).
 
-> Note, that this service worker is preconfigured when using the boilerplate `react-javascript` template
+> Note: This service worker is preconfigured when using the boilerplate `react-javascript` template.
 
-It is up to the developer on how, or where this API needs to be used, but it is a good idea to use it early on in your application, so that the rest of the application can listen for changes in offline state. The `@nmfs-radfish/react-radfish` package exposes a `useOfflineStatus` hook that allows you a simple way to tap into whether or not your application is online:
+It is up to the developer on how or where this API needs to be used. It's a good idea to use it early on in your application, so that the rest of the application can listen for changes in offline state. The `@nmfs-radfish/react-radfish` package exposes a `useOfflineStatus` hook that gives you a simple way to tap into whether or not your application is online:
 
 ```jsx
 import { Application, useOfflineStatus } from "@nmfs-radfish/react-radfish";
@@ -122,27 +123,27 @@ function App() {
 }
 ```
 
-This underlying code listens for changes surfaced from the `navigator` API, and notifies the application in the form of a Toast message of the applications online/offline state.
+This underlying code listens for changes surfaced from the `navigator` API. It notifies the application in the form of a Toast message of the application's online/offline state.
 
-> 🚨 Warning: Note that there is a known issue, where if the user's device is in an offline state, and the RADFish application is booted up for the first time, the Navigator API will actually resolve to "offline". On future refreshes, this will appropriately resolve to the "offline" status. This is an issue with the underlying Navigator API and will be addressed in a future release.
+> 🚨 **Warning:** There is a known issue where if the user's device is in an offline state, and the RADFish application is booted up for the first time, the Navigator API will actually resolve to "offline". On future refreshes, this will appropriately resolve to the "offline" status. This is an issue with the underlying Navigator API and will be addressed in a future release.
 
-## **Caching Strategy**
+## Caching Strategy
 
 It is important to fetch and cache required data needed to basic app functionality while the application is online. This can be done by fetching the required data from an API, and storing that data into IndexedDB. To see a basic example of how this can be done, you can run the `server-sync` example from the CLI:
 
 `npx @nmfs-radfish/create-radfish-app my-app --example server-sync`
 
-This example fetches several JSON arrays from our Mock API, then stores and caches it in IndexedDB. The application then can reference the data in IndexedDB without needing to have any network connection. Keep in mind that it is up to the developer to decide when and how to invalidate this IndexedDB cache in according to their application's needs.
+This example fetches several JSON arrays from our Mock API, then stores and caches it in IndexedDB. The application then can reference the data in IndexedDB without a network connection. Keep in mind that it is up to the developer to decide when and how to invalidate this IndexedDB cache based on their application's needs.
 
 ## **Offline Storage**
 
-To use offline data storage, use the `useOfflineStorage` hook. This React hook provides methods for managing offline form data. There are two storage methods available `LocalStorageMethod` or `IndexedDBStorageMethod`.
+To use offline data storage, use the `useOfflineStorage` hook. This React hook provides methods for managing offline form data. There are two storage methods available: `LocalStorageMethod` and `IndexedDBStorageMethod`.
 
 ### Configuration
 
 Step-by-step instructions to configure offline storage:
 
-1. **Set the environment variables in the `.env` files. Based on which offline storage method you select, the following env variables are required:**
+1. **Set the environment variables in the `.env` files. Based on which offline storage method you select, the following `env` variables are required:**
    1. Local Storage
       1. `VITE_LOCAL_STORAGE_KEY`
    2. Indexed DB:
@@ -150,7 +151,7 @@ Step-by-step instructions to configure offline storage:
       2. `VITE_INDEXED_DB_VERSION`
       3. `VITE_INDEXED_DB_TABLE_NAME`
       4. `VITE_INDEXED_DB_SCHEMA`
-2. **In the `src/hooks/useOfflineStorage.js` file, initialize one of the following Storage Method instances, and pass the appropriate environment variables using `import.meta.env.REPLACE_WITH_KEY_NAME` as parameters:**
+2. **In the `src/hooks/useOfflineStorage.js` file, initialize one of the these Storage Method instances, and pass the appropriate environment variables using `import.meta.env.REPLACE_WITH_KEY_NAME` as parameters:**
 
    1. `LocalStorageMethod` — Requires one parameter, the key name for localStorage.
 
@@ -171,7 +172,7 @@ Step-by-step instructions to configure offline storage:
       );
       ```
 
-3. **In the `src/hooks/useOfflineStorage.js` file, create the `StorageModelFactory` :**
+3. **In the `src/hooks/useOfflineStorage.js` file, create the `StorageModelFactory`:**
 
    ```jsx
    // 1. Choose one of the following storage methods:
@@ -188,24 +189,24 @@ Step-by-step instructions to configure offline storage:
    const storageModel = StorageModelFactory.createModel(storageMethod);
    ```
 
-### **`useOfflineStorage` Hooks API**
+### `useOfflineStorage` Hooks API
 
 The `useOfflineStorage` hook returns an object with the following methods:
 
-- **`createOfflineDataEntry(data)` —** Creates a new data entry in the storage.
+- **`createOfflineDataEntry(data)`** creates a new data entry in the storage.
   - `data`: The data object to create.
   - Returns a promise that resolves when the data is created.
-- **`findOfflineData(criteria)`** — Finds data in the storage based on the given criteria, returns all data if not criteria parameter is passed.
+- **`findOfflineData(criteria)`** finds data in the storage based on the given criteria. It returns all data if not criteria parameter is passed.
   - `criteria`: The criteria object to use for finding data, eg `{uuid: 123}`.
   - Returns a promise that resolves to an array of tuples:
     - `[ [ uuid, { key: value } ], [ uuid2, { key: value } ] ]`
-- **`updateOfflineDataEntry(criteria, data)`** — Updates data in the storage.
+- **`updateOfflineDataEntry(criteria, data)`** updates data in the storage.
   - `criteria`: The criteria to use for updating data. This should be an object.
   - `data`: The updated data object.
   - Returns a promise that resolves to the updated data as an object:
     - `{ numberOfFish: 10, species: salmon }`
 
-### **Usage**
+### Usage
 
 ```jsx
 import useOfflineStorage from "./useOfflineStorage";
@@ -232,11 +233,11 @@ export default MyComponent;
 
 ---
 
-# OfflineStorageWrapper Usage Guide
+## OfflineStorageWrapper Usage Guide
 
 `OfflineStorageWrapper` is a context wrapper component that provides offline storage functionality to its child components through a React context. It supports both IndexedDB and LocalStorage methods.
 
-## How to Use
+### How to Use
 
 **1. Wrap your component with `OfflineStorageWrapper`:**
 
@@ -250,7 +251,7 @@ import { OfflineStorageWrapper } from "@nmfs-radfish/react-radfish";
 
 The config prop is an object that specifies the storage type and configuration. It should include the `type` set to `indexedDB` or `localStorage`, database name (`string`), database version number (`number`), and stores (`object`).
 
-The `stores` object should contain a key that is mapped as the table name, the value should be a comma separated string that outlines the schema. For more information on setting up the stores, please see the official `Dexie.js` docs: [https://dexie.org/docs/Tutorial/React#3-create-a-file-dbjs-or-dbts](https://dexie.org/docs/Tutorial/React#3-create-a-file-dbjs-or-dbts).
+The `stores` object should contain a key that is mapped as the table name. The value should be a comma separated string that outlines the schema. For more information on setting up the stores, see the official `Dexie.js` docs: [https://dexie.org/docs/Tutorial/React#3-create-a-file-dbjs-or-dbts](https://dexie.org/docs/Tutorial/React#3-create-a-file-dbjs-or-dbts).
 
 For IndexedDB, the configuration should look like this:
 
@@ -305,8 +306,8 @@ If you try to use the `useOfflineStorage` hook outside of an `OfflineStorageWrap
 
 ## Testing during development
 
-As a developer, you will often run into an issue where you are developing an "offline-first" feature that needs to be tested before pushed and merged into the `main` branch. For instance, you may be developing a `Toast` message that notifies the user whenever they go offline. If you are simply running the local vite server, and you go offline to test your feature, you'll notice that the page breaks on page refresh. This is because the `serviceWorker` is not being used until the production build is created. In order to do this, you need to bundle the application and serve it locally in order to simulate a production environment:
+As a developer, you'll often run into an issue where an "offline-first" feature needs to be tested before pushed and merged into the `main` branch. For instance, you may be developing a `Toast` message that notifies the user whenever they go offline. If you are simply running the local vite server, and you go offline to test your feature, you'll notice that the page breaks on page refresh. This is because the `serviceWorker` is not being used until the production build is created. In order to do this, you need to bundle the application and serve it locally to simulate a production environment:
 
 `npm run build && npm run serve`
 
-This will bundle the application and serve it, so that when you turn your browser offline, the cached static assets will remain, and your application will not break when the page is refreshed.
+This will bundle the application and serve it. When you turn your browser offline, the cached static assets will remain, and your application will not break when the page is refreshed.

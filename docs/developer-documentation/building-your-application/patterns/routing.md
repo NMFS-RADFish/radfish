@@ -5,24 +5,24 @@ description: Manage app routes with React Router
 
 # Routing
 
-The **Routing** in this application is handled using `react-router-dom`, a powerful library for routing in React applications. This section will guide you through the basic setup and usage of routing in your project.
+The **Routing** in RADFish applications is handled using `react-router-dom`. This section will guide you through the basic setup and usage of routing in your project.
 
-### **React Router Overview**
+## React Router Overview
 
 React Router provides a declarative, component-based approach to defining routes and managing navigation in React applications. It supports nested routes, dynamic route matching, and lazy loading of components.
 
-For detailed documentation on React Router, please refer to the official [React Router documentation](https://reactrouter.com/).
+To learn about React Router, refer to the official [React Router documentation](https://reactrouter.com/).
 
-### **Features**
+### Features
 
-- **Declarative Routing**: Define routes in a declarative manner using components like `Routes`, `Route`, and `Link`.
-- **Dynamic Routing**: Easily create routes that can change based on the application's state or URL parameters.
-- **Nested Routing**: Support for nested routes, allowing more complex routing configurations.
-- **Programmatic Navigation**: Use React Router hooks like `useNavigate` to navigate programmatically.
+- **Declarative Routing.** Define routes in a declarative manner using components like `Routes`, `Route`, and `Link`.
+- **Dynamic Routing.** Easily create routes that can change based on the application's state or URL parameters.
+- **Nested Routing.** Support for nested routes, allowing more complex routing configurations.
+- **Programmatic Navigation.** Use React Router hooks like `useNavigate` to navigate programmatically.
 
-### **Usage**
+### Usage
 
-In this project, routing is set up in the `App.jsx` file. Below is a breakdown of the main components used for routing:
+In this project, routing is set up in the `App.jsx` file. This section provides a breakdown of the main components used for routing.
 
 **Basic Setup**
 
