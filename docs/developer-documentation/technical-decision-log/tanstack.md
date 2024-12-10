@@ -3,7 +3,11 @@ sidebar_position: 11
 description: Offers flexible state management
 ---
 
-# Tanstack for State Management
+# TanStack for State Management
+[TanStack](https://tanstack.com/) provides utilities for state management, tables, and querying.
 
-- **Why we chose this:** Tanstack (React Query and React Table) offers efficient solutions for managing server state and table state in RADFish applications. This is particularly useful for handling NOAA's complex data structures and multi-entry forms, providing an improved user experience with less boilerplate code.
-- **Trade-offs:** The adoption of Tanstack requires familiarity with its API and concepts, which may present a learning curve. However, the productivity gains and enhanced user experience in handling NOAA’s data-centric applications make it a great choice for RADFish's goals.
+## Why we chose this 
+TanStack helps manage server state and table state in RADFish applications. NOAA applications have complex data structures and multi-entry forms. TanStack creates an improved user experience with less boilerplate code.
+
+## Trade-offs
+Using Tanstack requires familiarity with its API and concepts, which may present a learning curve. However, it handles NOAA’s data-centric applications and provides an enhanced user experience.

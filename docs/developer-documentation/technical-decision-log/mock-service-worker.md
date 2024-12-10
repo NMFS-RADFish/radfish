@@ -4,10 +4,13 @@ description: Required for offline functionality
 ---
 
 # Mock Service Worker
+[Mock Service Worker (MSW)](https://mswjs.io/) simulates API responses during development and testing. 
 
-- **Why we chose this:** RADFish's requirement for offline functionality makes Mock Service Worker (MSW) invaluable for simulating API responses during development and testing. This allows developers to build and test applications without dependency on real backend services, crucial for offline-capable applications and for developing apps without a backend to test against.
-- **Trade-offs:** Relying on MSW for development might mask integration issues with actual backend services if human error is made in the setup of MSW and a real endpoint is overridden by the mock endpoint. Nonetheless, the benefits of seamless offline development and testing are crucial for RADFish's goals.
+## Why we chose this
+NOAA applications must work offline. MSW lets developers build and test applications without dependency on real backend services. This helps develop applications with offline functionality without a backend to test against.
 
-JSON Server or Mirage JS provide similar mocking capabilities with more emphasis on full-fledged backend simulation. However, MSW's integration with service workers and its ability to intercept network requests at the browser level offer more realistic testing scenarios for RADFish's offline functionality, making it preferable despite JSON Server or Mirage JS's ease of setup for simpler backends.
+## Trade-offs
+Relying on MSW for development might mask integration issues with actual backend services. For example, an error in MWS setup could result in a real endpoint being overridden by the mock endpoint. However, the benefits of offline development and testing are crucial for RADFish's goals.
 
----
+## Alternatives
+[JSON Server](https://www.npmjs.com/package/json-server) or [Mirage JS](https://miragejs.com/) provide similar mocking capabilities. They emphasize full-fledged backend simulation. They emphasize full-fledged backend simulation and ease of setup for simpler backends. However, MSW's integrates with service workers and can intercept network requests at the browser level. These features offer more realistic testing scenarios for RADFish's offline functionality. 
