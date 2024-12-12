@@ -4,15 +4,18 @@ sidebar_position: 3
 
 # Examples and Templates
 
+Examples are small projects designed to demonstrate RADFish ecosystem. Templates are meant to be a clean starting point for a new RADFish project.
+
 ## Examples
 
-Examples are small, scoped projects that are meant to demonstrate how to implement core pieces of functionality within the RADFish ecosystem. Each example includes a detailed `README.md` file about the purpose of each example, and the reasoning behind the design pattern, and the best practices utilized in each.
+Each exammple is scoped to teach developers how to implement core pieces of functionality. Examples include a detailed `README.md` file that explains its purpose, design pattern, and best practices.
 
-These examples are meant to be a reference for any RADFish project. While these examples can certainly be used as a starting point to build out a new RADFish application, we still suggest starting with a fresh `react-javascript` template (see below).
+These examples are meant to be a reference for any RADFish project. These examples can serve as a starting point to build out a new RADFish application. However, we recommend starting with a fresh `react-javascript` template.
 
-You can visualize the source code for each example at the open source repository for the overall RADFish [boilerplate](https://github.com/NMFS-RADFish/boilerplate/tree/main/examples). Each of these examples can be cloned and run separately as you are working with each from the RADFish CLI. To learn more about how to run these scripts, please reference the [running examples](./building-your-application/available-scripts/running-example) section of this documentation
+The source code for each example is in the open source repo for RADFish [boilerplate](https://github.com/NMFS-RADFish/boilerplate/tree/main/examples). Each example can be cloned and run separately as you are working with each from the RADFish CLI. To learn how to run these scripts, refer to the [running examples](./building-your-application/available-scripts/running-example) section.
 
-Below are a list of pre-built examples that you can use as a starting point for your application. These examples are scoped to one core feature.
+### List of Examples
+Here's a list of pre-built examples that you can use as a starting point for your application. These examples are scoped to one core feature.
 
 1. [Computed Form Fields](https://github.com/NMFS-RADFish/boilerplate/blob/main/examples/computed-form-fields/README.md)
 1. [Conditional Form Fields](https://github.com/NMFS-RADFish/boilerplate/blob/main/examples/conditional-form-fields/README.md)
@@ -28,19 +31,21 @@ Below are a list of pre-built examples that you can use as a starting point for 
 
 ## Templates
 
-Templates are meant to be a clean starting point for a new RADFish project. These templates are framework specific. Note that at the time of this writing, only the `react-javascript` template is supported, though new frameworks/languages are planned to be supported in the future!
+These templates are framework-specific. At the time of this writing, only the `react-javascript` template is supported. New templates for other frameworks and other languages are planned for the future!
 
-The template will come pre-configured with everything you need to get up and running to start coding your new project as quickly as possible. This will include the core modules of RADFish, including service-worker configuration, application routing, and offline storage.
+Templates come pre-configured with everything to start coding your new project right away. This includes RADFish core modules, service-worker configuration, application routing, and offline storage.
 
-If you want to create a new project based from the `react-javascript` library, you can execute the following RADFish CLI command, similar to how you run examples: `npx @nmfs-radfish/create-radfish-app my-app --template react-javascript`
+Creating a new project based on a template is similar to running an example. If you want to create a new project from the `react-javascript` library, execute this RADFish CLI command:
+
+ `npx @nmfs-radfish/create-radfish-app my-app --template react-javascript`
 
 This will create a new RADFish project named `my-app` in your current working directory. Happy hacking!
 
-Note: The `react-javascript` template is the default, so running `npx @nmfs-radfish/create-radfish-app my-app` will create the same project without needing to specify the template.
+**Note:** The `react-javascript` template is the default. Running `npx @nmfs-radfish/create-radfish-app my-app` will create the same project without needing to specify the template.
 
 ### Template Directory Structure
 
-Once you scaffold a new template radfish app, you will be given the following file structure:
+Once you scaffold a new template radfish app, you'll be given the following file structure:
 
 ```bash
 my-app
@@ -72,13 +77,13 @@ my-app
 
 #### Root Level
 
-- **`babel.config.js`** Configuration file for Babel, a JavaScript compiler. It specifies how Babel should transpile your code, enabling the use of modern JavaScript features while maintaining compatibility with older browsers.
+- **`babel.config.js`** Configuration file for Babel, a JavaScript compiler. It specifies how Babel should transpile your code. This enables modern JavaScript features while maintaining compatibility with older browsers.
 
 - **`index.html`** The main HTML file that serves as the entry point of your application. It includes references to your compiled JavaScript and CSS files generated by the build process.
 
 - **`node_modules/`** This directory contains all the project's dependencies installed via npm. It's automatically generated when you run `npm install`. You should not manually modify this folder, as it's managed by npm.
 
-- **`package-lock.json`** Automatically generated file that records the exact version of each installed package. It ensures consistent installs across different environments by locking the dependencies to specific versions.
+- **`package-lock.json`** Automatically generated file that records the exact version of each installed package.  It locks dependencies to specific versions. This ensures consistent installs across different environments.
 
 - **`package.json`** A manifest file for your Node.js project. It includes metadata about the project, such as the name, version, scripts, dependencies, and more. This file is essential for managing project configurations and dependencies.
 
@@ -86,7 +91,7 @@ my-app
 
 #### mocks/
 
-Contains files related to mocking API requests for development and testing purposes.
+This folder contains files related to mocking API requests for development and testing purposes.
 
 - **`mocks/browser.js`** Sets up and configures the mock service worker for the browser environment. It intercepts network requests during development to simulate API responses without needing a real backend.
 
@@ -94,23 +99,23 @@ Contains files related to mocking API requests for development and testing purpo
 
 #### public/
 
-Contains static assets that will be served directly to the browser. These files are not processed by Webpack.
+This folder ontains static assets that will be served directly to the browser. These files are not processed by Webpack.
 
-- **`public/icons`**: Directory containing icon images of various sizes, typically used for favicons and PWA (Progressive Web App) requirements.
-- **`manifest.json`**: Provides metadata about the web application, useful for Progressive Web Apps (PWAs).
-- **`mockServiceWorker.js`**: The script for the mock service worker. It's automatically generated and used by the msw library to intercept network requests in the browser.
-- **`noaafavicon.png`**: The favicon image for your application, which appears in the browser tab and bookmarks.
+- **`public/icons`**: Directory containing icon images of various sizes. Typically used for favicons and Progressive Web App (PWA) requirements.
+- **`manifest.json`**: Provides metadata about the web application. Useful for PWAs.
+- **`mockServiceWorker.js`**: The automatically generated script for the mock service worker. It's used by the msw library to intercept network requests in the browser.
+- **`noaafavicon.png`**: The favicon image for your application. This appears in the browser tab and bookmarks.
 - **`robots.txt`**: A file that provides directives to web crawlers and bots about which pages or sections of your site should not be processed or scanned.
 
 #### src/
 
-Source code for your React application resides. This is where you will spend most of your development time.
+This folder contains source code for your React application. This is where you will spend most of your development time.
 
 - **`App.js`**: The root React component of your application. It serves as the main container for your app's components and routes.
 - **`index.jsx`**: The entry point for your React application. It renders the App component into the DOM and may include global providers like routers or state management tools.
-- **`index.css`**: Provides general styling rules that apply to the entire app, including resets, normalizations, and default HTML element styling.
+- **`index.css`**: Provides general styling rules that apply to the entire app. It includes resets, normalizations, and default HTML element styling.
 - **`pages/`**: Directory containing React components that represent different pages or routes in your application. Each file typically corresponds to a route managed by your router.
-- **`pages/Home.jsx`**: Represents the main landing page of your application. It defines the content and layout for the homepage, often containing key UI components such as headers, footers, navigation, and other elements relevant to the first impression of your app.
-- **`service-worker.js`**:Custom service worker script for handling offline support, caching, and other background tasks. It enables your app to function as a PWA with offline capabilities.
+- **`pages/Home.jsx`**: The main landing page of your application. It defines the content and layout for the homepage. It often contains key UI components such as headers, footers, navigation, and other elements relevant to the first impression of your app.
+- **`service-worker.js`**: Custom service worker script for handling offline support, caching, and other background tasks. It enables your app to function as a PWA with offline capabilities.
 - **`styles/`**: Directory for organizing additional CSS or styling files, such as variables, mixins, or component-specific stylesheets.
-- **`styles/theme.css`**: Contains global theme variables and styles for consistency in design (like colors, fonts, and spacing).
+- **`styles/theme.css`**: Contains global theme variables and styles for consistency in design like colors, fonts, and spacing.
