@@ -1,6 +1,7 @@
 ---
 sidebar_position: 2
 ---
+
 # Offline-First
 
 Offline-first design prioritizes web app functionality even without internet connectivity. This means building the app so users can interact with it uninterrupted, even without a stable network. 

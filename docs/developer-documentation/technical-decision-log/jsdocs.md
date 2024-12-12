@@ -3,13 +3,15 @@ sidebar_position: 8
 description: Accessible and easy to adopt
 ---
 
-# JavaScript w/JS Docs
+# JavaScript with JSDoc
 
-- **Why we chose this:** JavaScript, complemented by JS Docs, offers broad accessibility and ease of adoption for government contractors. This choice supports RADFish’s goal of standardizing frontend development without imposing the stricter typing system of TypeScript, balancing flexibility with documentation needs.
-- **Trade-offs:** The absence of TypeScript’s compile-time type checking increases reliance on runtime testing. However, for RADFish’s diverse and evolving project requirements, JavaScript’s flexibility is more beneficial, allowing for broader adoption among government contractors.
+[JSDoc](https://jsdoc.app/about-getting-started) is an automatic API documentation generator. 
 
-TypeScript provides static typing out of the box, offering compile-time type checking and reducing runtime errors. However, adopting TypeScript involves a steeper learning curve and potentially longer development times. Given RADFish's emphasis on ease of adoption and the existing familiarity within the developer community with JavaScript, JS Docs offers a balanced approach, providing some benefits of TypeScript without its overhead.
+## Why we chose this 
+JavaScript offers broad accessibility and ease of adoption for government contractors.  Combined with JS Docs, this helps standardize frontend development. JavaScript’s flexibility allows for broader adoption among government contractors. It also adapts to RADFish's diverse and evolving project requirements. JS Docs also doesn't impose the stricter typing system of TypeScript. 
 
-Additionally, TypeScript can always be leveraged by teams that wish to use it as migrating from JS to TypeScript is relatively straightforward and there are tools available to automate this process.
+## Trade-offs
+TypeScript provides static typing, offering compile-time type checking, which reduces runtime errors. The absence of TypeScript’s compile-time type checking may increase reliance on runtime testing.  However, adopting TypeScript involves a steeper learning curve and potentially longer development times. RADFish leverages most developers' familiarity with JavaScript. JS Docs offers a balanced approach, providing some benefits of TypeScript without its overhead.
 
----
+## Alternatives
+[TypeScript](https://www.typescriptlang.org/) can still be adopted by teams that wish to use it. Migrating from JS Docs to TypeScript is relatively straightforward. There are tools available to automate this process.
