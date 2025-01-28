@@ -11,7 +11,7 @@ This section covers our accessibility and open source policies. It also covers c
 At RADFish, we're committed to ensuring that all users can fully engage with our project. We adhere to Section 508 of the Rehabilitation Act and the Web Content Accessibility Guidelines (WCAG 2.1) from the World Wide Web Consortium (W3C). Key accessibility features include:
 
 - **Alternative text for images.** Make sure all images have descriptive text.
-- **Strong color contrast: Maintain high contrast between foreground and background colors for readability.
+- **Strong color contrast**: Maintain high contrast between foreground and background colors for readability.
 - **Text resizing.** Allow users to adjust text sizes based on personal preferences.
 - **Proper use of headings.** Structure pages to ensure clear navigation for screen readers.
 - **Descriptive links.** Avoid ambiguous text like "Click here" or "More..." and instead using meaningful link descriptions.
