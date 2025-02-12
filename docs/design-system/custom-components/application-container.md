@@ -4,44 +4,74 @@ sidebar_position: 1
 
 # Application Container
 
-The `Application` container handles network status changes and displays appropriate toast notifications. It has **built-in** functionality that automatically handles these changes.
+The Application container handles core application-wide functionality, including service worker integration, custom storage management, and network status detection. It provides a centralized way to manage these features within your app.
 
 ## Features
 
-- **Built-in Offline/Online Notifications**: The `Application` component monitors the network status. It shows toast messages when the app goes offline or comes back online.
-- **Custom Hooks**: It leverages the `useToasts` and `useOfflineStatus` hooks from within `@nmfs-radfish/react-radfish` package.
+1. **Service Worker for Offline Caching**
 
-## How It Works
+   The Application container supports service worker integration, enabling offline capabilities by caching static assets and handling API requests when the network is unavailable.
 
-### Built-in Offline/Online Notifications
+2. **Pluggable Storage**
 
-The `Application` component has **built-in** functionality to check the application's network status. It displays toast notifications when the state changes:
+   Pass in IndexedDB or LocalStorage storage methods.
 
-- **When the application goes offline**: A warning toast is displayed with the message `"Application is offline"`.
-- **When the application comes back online**: An info toast is displayed with the message `"Application is online"`.
+3. **Offline/Online Detection**
 
-This feature is provided **out of the box** and requires no additional setup from your side.
+   Automatically detects network changes and displays toast notifications:
 
-### Example Usage
+   - Offline: Shows a warning toast with "Application is offline".
+   - Online: Shows an informational toast with "Application is online".
 
-To use the `Application` component, wrap it around your app in the entry file (e.g. `index.js` or `index.jsx`):
+## Usage
+
+### Setting up Application instance
+
+To use the `Application` container, instantiate it with your desired configuration:
+
+```jsx
+import { Application } from "@nmfs-radfish/radfish";
+
+const myApp = new Application({
+  serviceWorker: {
+    url:
+      import.meta.env.MODE === "development"
+        ? "/mockServiceWorker.js"
+        : "/service-worker.js",
+  },
+  storage: store, // Use IndexedDBMethod or LocalStorageMethod for offline storage
+});
+```
+
+### Using `<Application>`
+
+Once instantiated, the `Application` instance should be passed to the `<Application>` component.
 
 ```jsx
 import { Application } from "@nmfs-radfish/react-radfish";
 
-function App () {
-  return (
-    <Application>
-      { /* Your application code */ }
-    </Application>
-  );
-}
-
-export default App;
+<Application application={myApp} />;
 ```
 
-<!-- ### Extending Functionality with Hooks
+## Distinguishing `Application` from `@nmfs-radfish/radfish` vs. `@nmfs-radfish/react-radfish`
 
-While the `Application` component provides **out-of-the-box** functionality for network status notifications, you can also use RADFish's custom hooks—`useToasts` and `useOfflineStatus`—independently for more control over toast messages and offline status in other parts of your application.
+### `@nmfs-radfish/radfish` (Core)
 
-For more information on how to use these hooks, refer to the [RADFish Custom Hooks Documentation](link-to-hooks-documentation). -->
+- Provides the underlying **non-UI logic**, such as the `Application` class for managing:
+  - **Offline support**
+  - **Service workers**
+  - **Storage (IndexedDB, LocalStorage)**
+
+### `@nmfs-radfish/react-radfish` (React Integration)
+
+- Offers **React components and hooks** that make it easy to integrate `Application` container into a React app.
+- Provides:
+  - `<Application>` component for wrapping your app with offline support.
+  - Hooks like `useOfflineStatus` for checking network connectivity.
+  - `useOfflineStorage` for managing offline storage state within React components.
+- This package is **React-specific** and simplifies working with the `Application` container in a React project.
+
+#### In Other Words:
+
+- **`@nmfs-radfish/radfish`** = the **engine** (all the logic).
+- **`@nmfs-radfish/react-radfish`** = the **React car** that sits on top of the engine, making it easy to drive your offline-ready web app in React.
