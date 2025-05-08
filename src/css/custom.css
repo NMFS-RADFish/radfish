@@ -97,7 +97,7 @@
 
 /* Code diff highlighting start */
 .token-line::before {
-  content: ' ';
+  content: '';
   position: absolute;
   left: 1ch;
 }
