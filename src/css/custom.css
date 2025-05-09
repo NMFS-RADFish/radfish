@@ -106,7 +106,7 @@
   background-color: var(--radfish-code-block-diff-add-background);
 }
 
-.token-line.code-block-diff-add-line::before {
+.code-block-diff-add-line::before {
   content: '+';
 }
 
@@ -114,22 +114,12 @@
   background-color: var(--radfish-code-block-diff-remove-background);
 }
 
- .code-block-diff-remove-line::before {
+.code-block-diff-remove-line::before {
   content: '-';
- }
-
-pre code:has(.code-block-diff-add-line) {
-  padding-left: 2ch!important
 }
 
-pre code:has(.code-block-diff-remove-line) {
-  padding-left: 2ch!important
+pre code:has(.code-block-diff-add-line, .code-block-diff-remove-line) {
+  padding-left: 2ch !important;
 }
 
-[data-theme="dark"] pre code .token-line.code-block-diff-add-line {
-  background-color: #4A5827;
-}
-[data-theme="dark"] pre code .token-line.code-block-diff-remove-line {
-  background-color: #542936;
-}
 /* Code diff highlighting end */
