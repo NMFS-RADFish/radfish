@@ -28,6 +28,10 @@
 
   /* Search box icon & focus. Same color as --radfish-primary-blue */
   --aa-primary-color-rgb: 32, 84, 147 !important;
+
+  /* Code blocks */
+  --radfish-code-block-diff-add-background: #ccffd8;
+  --radfish-code-block-diff-remove-background: #ffebe9;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -48,6 +52,10 @@
   --aa-selected-color-rgb: 32, 84, 147 !important;
   /* Search text. Same color as --radfish-gray-light */
   --aa-muted-color-rgb: 102, 102, 102 !important;
+
+  /* Code blocks */
+  --radfish-code-block-diff-add-background: #4A5827;
+  --radfish-code-block-diff-remove-background: #542936;
 }
 
 .buttons {
@@ -88,49 +96,30 @@
 }
 
 /* Code diff highlighting start */
+.token-line::before {
+  content: '';
+  position: absolute;
+  left: 1ch;
+}
+
 .code-block-diff-add-line {
-  background-color: #ccffd8;
-  display: block;
-  margin: 0 -40px;
-  padding: 0 40px;
+  background-color: var(--radfish-code-block-diff-add-background);
 }
 
 .code-block-diff-add-line::before {
-  position: absolute;
-  left: 8px;
-  padding-right: 8px;
   content: '+';
 }
 
 .code-block-diff-remove-line {
-  background-color: #ffebe9;
-  display: block;
-  margin: 0 -40px;
-  padding: 0 40px;
+  background-color: var(--radfish-code-block-diff-remove-background);
 }
 
 .code-block-diff-remove-line::before {
-  position: absolute;
-  left: 8px;
-  padding-right: 8px;
   content: '-';
 }
 
-/**
- * use magic comments to mark diff blocks
- */
-pre code:has(.code-block-diff-add-line) {
-  padding-left: 40px!important;
+pre code:has(.code-block-diff-add-line, .code-block-diff-remove-line) {
+  padding-left: 2ch !important;
 }
 
-pre code:has(.code-block-diff-remove-line) {
-  padding-left: 40px!important;
-}
-
-[data-theme="dark"] pre code .token-line.code-block-diff-add-line {
-  background-color: #4A5827;
-}
-[data-theme="dark"] pre code .token-line.code-block-diff-remove-line {
-  background-color: #542936;
-}
 /* Code diff highlighting end */
