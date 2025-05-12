@@ -1,0 +1,308 @@
+# Lesson 5: Form Validation
+
+In this lesson, we will implement form validation for all three steps of the trip logging process (Start Trip, Catch Log, and End Trip). This ensures that users provide necessary information in the correct format before proceeding. We'll add validation logic and display error messages using the USWDS `ErrorMessage` component.
+
+## Step 1: Set validation errors in Start Trip
+
+We need to store the validation results in the component's state so we can use them to display error messages.
+
+Open `src/pages/StartTrip.jsx`. Locate the `/* Step 1: Set validation errors */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/StartTrip.jsx
+    const newErrors = validateForm();
+    setErrors(newErrors);
+```
+
+This code calls the `validateForm` function (which we'll enhance later) and updates the `errors` state with the returned error object.
+
+## Step 2: Display Trip Date Error in Start Trip
+
+Now, let's display an error message if the Trip Date is invalid.
+
+Open `src/pages/StartTrip.jsx`. Locate the `/* Step 2: Display Trip Date Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/StartTrip.jsx
+              <ErrorMessage id="tripDate-error-message">
+                {(submitted && errors.tripDate) || "\u00A0"} {/* Non-breaking space for layout */}
+              </ErrorMessage>
+```
+
+This uses the `ErrorMessage` component from `@trussworks/react-uswds`. It conditionally renders the error message stored in `errors.tripDate` only if the form has been `submitted` and an error exists for that field. The `\u00A0` (non-breaking space) ensures the layout doesn't shift when there's no error.
+
+## Step 3: Display Start Time Error in Start Trip
+
+Similarly, display an error for the Start Time.
+
+Open `src/pages/StartTrip.jsx`. Locate the `/* Step 3: Display Start Time Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/StartTrip.jsx
+              <ErrorMessage id="startTime-error-message">
+                {(submitted && errors.startTime) || "\u00A0"}
+              </ErrorMessage>
+```
+
+This adds the error message display for the `startTime` field.
+
+## Step 4: Display Weather Error in Start Trip
+
+Finally, add the error display for the Weather field.
+
+Open `src/pages/StartTrip.jsx`. Locate the `/* Step 4: Display Weather Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/StartTrip.jsx
+              <ErrorMessage id="weather-error-message">
+                {(submitted && errors.weather) || "\u00A0"}
+              </ErrorMessage>
+```
+
+This completes the error message display for the Start Trip form.
+
+## Step 5: Set validation errors for new catch in Catch Log
+
+In the Catch Log page, we need to validate the *new* catch form before adding it.
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 5: Set validation errors for new catch */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/CatchLog.jsx
+    const formErrors = validateForm();
+    setErrors(formErrors);
+```
+
+This updates the `errors` state specifically for the *new catch* form based on the results of `validateForm`.
+
+## Step 6: Display Species Error in Catch Log (New Catch)
+
+Display the error message for the Species field in the new catch form.
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 6: Display Species Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/CatchLog.jsx
+                <ErrorMessage id="species-error-message">
+                  {(submitted && errors.species) || "\u00A0"}
+                </ErrorMessage>
+```
+
+## Step 7: Display Weight Error in Catch Log (New Catch)
+
+Display the error message for the Weight field in the new catch form.
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 7: Display Weight Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/CatchLog.jsx
+                    <ErrorMessage id="weight-error-message">
+                      {(submitted && errors.weight) || "\u00A0"}
+                    </ErrorMessage>
+```
+
+## Step 8: Display Length Error in Catch Log (New Catch)
+
+Display the error message for the Length field in the new catch form.
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 8: Display Length Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/CatchLog.jsx
+                    <ErrorMessage id="length-error-message">
+                      {(submitted && errors.length) || "\u00A0"}
+                    </ErrorMessage>
+```
+
+## Step 9: Display Time Error in Catch Log (New Catch)
+
+Display the error message for the Time field in the new catch form.
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 9: Display Time Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/CatchLog.jsx
+                <ErrorMessage id="time-error-message">
+                  {(submitted && errors.time) || "\u00A0"}
+                </ErrorMessage>
+```
+
+## Step 10: Display Latitude Error in Catch Log (New Catch)
+
+Display the error message for the Latitude field (optional field, but validation applies if entered).
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 10: Display Latitude Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/CatchLog.jsx
+                    <ErrorMessage id="latitude-error-message">
+                      {(submitted && errors.latitude) || "\u00A0"}
+                    </ErrorMessage>
+```
+
+## Step 11: Display Longitude Error in Catch Log (New Catch)
+
+Display the error message for the Longitude field (optional field, but validation applies if entered).
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 11: Display Longitude Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/CatchLog.jsx
+                    <ErrorMessage id="longitude-error-message">
+                      {(submitted && errors.longitude) || "\u00A0"}
+                    </ErrorMessage>
+```
+
+## Step 12: Set validation errors for recorded catches in Catch Log
+
+Before navigating to the next step (End Trip), we must validate *all* the catches already recorded in the list.
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 12: Set validation errors for recorded catches */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/CatchLog.jsx
+    const recordedErrors = validateRecordedCatches();
+    setRecordedCatchErrors(recordedErrors);
+```
+
+This calls a separate validation function (`validateRecordedCatches`) and stores the errors in the `recordedCatchErrors` state, which is structured to hold errors per catch item index.
+
+## Step 13: Display Recorded Species Error in Catch Log (List)
+
+Now, we'll add error displays within the list of recorded catches. This is slightly different as we need to access errors based on the catch's index.
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 13: Display Recorded Species Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/CatchLog.jsx
+                            {catchErrors.species && (
+                              <ErrorMessage id={`recorded-species-${index}-error-message`}>
+                                {catchErrors.species}
+                              </ErrorMessage>
+                            )}
+```
+
+Here, `catchErrors` is an object containing validation errors for the *current* catch item being rendered in the loop (at `index`). We conditionally render the `ErrorMessage` only if `catchErrors.species` exists.
+
+## Step 14: Display Recorded Weight Error in Catch Log (List)
+
+Add the error display for Weight in the recorded catches list.
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 14: Display Recorded Weight Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/CatchLog.jsx
+                                {catchErrors.weight && (
+                                  <ErrorMessage id={`recorded-weight-${index}-error-message`}>
+                                    {catchErrors.weight}
+                                  </ErrorMessage>
+                                )}
+```
+
+## Step 15: Display Recorded Length Error in Catch Log (List)
+
+Add the error display for Length in the recorded catches list.
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 15: Display Recorded Length Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/CatchLog.jsx
+                                {catchErrors.length && (
+                                  <ErrorMessage id={`recorded-length-${index}-error-message`}>
+                                    {catchErrors.length}
+                                  </ErrorMessage>
+                                )}
+```
+
+## Step 16: Display Recorded Time Error in Catch Log (List)
+
+Add the error display for Time in the recorded catches list.
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 16: Display Recorded Time Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/CatchLog.jsx
+                            {catchErrors.time && (
+                              <ErrorMessage id={`recorded-time-${index}-error-message`}>
+                                {catchErrors.time}
+                              </ErrorMessage>
+                            )}
+```
+
+## Step 17: Display Recorded Latitude Error in Catch Log (List)
+
+Add the error display for Latitude in the recorded catches list.
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 17: Display Recorded Latitude Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/CatchLog.jsx
+                                {catchErrors.latitude && (
+                                  <ErrorMessage id={`recorded-latitude-${index}-error-message`}>
+                                    {catchErrors.latitude}
+                                  </ErrorMessage>
+                                )}
+```
+
+## Step 18: Display Recorded Longitude Error in Catch Log (List)
+
+Add the error display for Longitude in the recorded catches list.
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 18: Display Recorded Longitude Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/CatchLog.jsx
+                                {catchErrors.longitude && (
+                                  <ErrorMessage id={`recorded-longitude-${index}-error-message`}>
+                                    {catchErrors.longitude}
+                                  </ErrorMessage>
+                                )}
+```
+
+## Step 19: Set validation errors in End Trip
+
+Move to the final form step. We need to set the validation errors when submitting the End Trip form.
+
+Open `src/pages/EndTrip.jsx`. Locate the `/* Step 19: Set validation errors */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/EndTrip.jsx
+    const newErrors = validateForm();
+    setErrors(newErrors);
+```
+
+## Step 20: Display End Time Error in End Trip
+
+Display the error message for the End Time field.
+
+Open `src/pages/EndTrip.jsx`. Locate the `/* Step 20: Display End Time Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/EndTrip.jsx
+              <ErrorMessage id="endTime-error-message">
+                {(submitted && errors.endTime) || "\u00A0"}
+              </ErrorMessage>
+```
+
+## Step 21: Display End Weather Error in End Trip
+
+Display the error message for the End Weather field.
+
+Open `src/pages/EndTrip.jsx`. Locate the `/* Step 21: Display End Weather Error */` comment and replace it with the following code:
+
+```jsx
+// filepath: src/pages/EndTrip.jsx
+              <ErrorMessage id="endWeather-error-message">
+                {(submitted && errors.endWeather) || "\u00A0"}
+              </ErrorMessage>
+```
+
+# Conclusion
+
+You have now implemented validation logic and error message displays across all three form steps (Start Trip, Catch Log, End Trip). This involves:
+*   Defining validation rules (required fields, number ranges, coordinates).
+*   Storing validation results in the component state (`errors` and `recordedCatchErrors`).
+*   Conditionally displaying `ErrorMessage` components based on the submission status and validation results.
+*   Preventing navigation to the next step if validation fails.
+
+This makes the application more robust by guiding the user to provide complete and correct data. In the next lesson, we'll focus on reviewing the collected data before final submission.

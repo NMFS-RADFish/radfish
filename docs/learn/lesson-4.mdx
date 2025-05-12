@@ -1,0 +1,39 @@
+# Lesson 4: Dynamic Inputs
+
+In this lesson, we will implement the functionality to add new catches to our trip log. When the user fills out the "Add Catch" form and clicks the button, we need to save this data to the offline database (IndexedDB) using RADFish and then update the user interface to display the newly added catch in the "Recorded Catches" list.
+
+## Step 1: Save new catch data to IndexedDB
+
+When the user submits the "Add Catch" form, after validation (which we'll handle in a later lesson), we need to persist the new catch data. We'll use the `Catch.create()` method provided by RADFish to save the `newCatchData` object into the IndexedDB store.
+
+Open `src/pages/CatchLog.jsx`. Locate the `/* Step 1: Save new catch data to IndexedDB */` comment within the `handleAddCatch` function and replace it with the following code:
+
+```javascript
+// filepath: src/pages/CatchLog.jsx
+        // Create record in RADFish/IndexedDB
+        await Catch.create(newCatchData);
+```
+
+This line asynchronously calls the `create` method on the `Catch` collection object obtained from the RADFish store. It passes the `newCatchData` object, which contains all the details entered by the user for the new catch, along with a generated ID, the associated `tripId`, and a timestamp. RADFish handles the underlying IndexedDB operation.
+
+## Step 2: Update catches state to re-render list
+
+After successfully saving the new catch to IndexedDB, we need to update the component's state so that the UI reflects the change. We'll add the `newCatchData` to the beginning of the `catches` array in our component's state. This will cause React to re-render the component, displaying the new catch at the top of the "Recorded Catches" list.
+
+In the same `handleAddCatch` function in `src/pages/CatchLog.jsx`, locate the `/* Step 2: Update catches state to re-render list */` comment and replace it with the following code:
+
+```javascript
+// filepath: src/pages/CatchLog.jsx
+        // Add to the top of the displayed list
+        setCatches(prev => [newCatchData, ...prev]);
+```
+
+This uses the `setCatches` state updater function. We provide a function that takes the previous state (`prev`) and returns a new array. The new array is constructed by placing the `newCatchData` at the beginning, followed by all the elements of the previous `catches` array (`...prev`). This ensures the newest catch appears first.
+
+## Conclusion
+
+With these changes, when the user adds a catch:
+1. The data is saved persistently in the browser's IndexedDB via RADFish.
+2. The list of recorded catches displayed on the page updates immediately to include the new entry.
+
+This provides a seamless experience for the user, allowing them to log multiple catches during their trip, even while offline. In the next lesson, we'll focus on adding validation to ensure the data entered is correct before saving.

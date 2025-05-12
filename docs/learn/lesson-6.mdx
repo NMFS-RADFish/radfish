@@ -1,0 +1,109 @@
+# Lesson 6: Review Computed Fields & Table Component
+
+In this lesson, we will focus on reading data from IndexedDB, aggregating catch data, and displaying it using the RADFish Table component. We will also validate that the entire form is valid before proceeding.
+
+## Getting Started
+
+Ensure you have all dependencies installed by running `npm install` in the project root. If you want to see the application in action, run `npm run start` and open your browser to the specified local development server address.
+
+## Step 1: Access RADFish stores and fetch trip/catch data
+
+We need to fetch the trip and catch data from their respective RADFish stores to display on the review page.
+
+Open `src/pages/ReviewSubmit.jsx`. Locate the `/* Step 1: Access RADFish stores and fetch trip/catch data */` comment and replace it with the following code:
+
+```javascript
+// ...existing code...
+        /* Step 1: Access RADFish stores and fetch trip/catch data */
+        const tripStore = app.stores["trip"];
+        const Form = tripStore.getCollection("Form");
+        const Catch = tripStore.getCollection("Catch");
+
+        // Fetch the trip details
+        const trips = await Form.find({ id: tripId });
+
+        // Handle trip not found
+        if (trips.length === 0) {
+          setError(`Trip with ID ${tripId} not found`);
+          navigate("/"); // Redirect home if trip doesn't exist
+          return;
+        }
+
+        const selectedTrip = trips[0];
+        setTrip(selectedTrip); // Store fetched trip data in state
+
+        // Fetch all catches associated with this trip
+        const tripCatches = await Catch.find({ tripId: selectedTrip.id });
+// ...existing code...
+```
+
+**Explanation:**
+- We access the `trip` store from the `app` instance.
+- We then get the `Form` and `Catch` collections from the `tripStore`.
+- `Form.find({ id: tripId })` fetches the specific trip by its ID.
+- If the trip is not found, an error is set, and the user is redirected to the home page.
+- The fetched trip data is stored in the `trip` state variable.
+- `Catch.find({ tripId: selectedTrip.id })` fetches all catch records associated with the current trip's ID.
+
+## Step 2: Call the aggregation function
+
+After fetching the raw catch data, we need to process it to calculate summary statistics for display. This involves grouping catches by species and calculating totals and averages.
+
+In the same file, `src/pages/ReviewSubmit.jsx`, locate the `/* Step 2: Call the aggregation function */` comment and replace it with the following code:
+
+```javascript
+// ...existing code...
+        /* Step 2: Call the aggregation function */
+        const aggregatedData = aggregateCatchesBySpecies(tripCatches);
+        setAggregatedCatches(aggregatedData);
+// ...existing code...
+```
+
+**Explanation:**
+- `aggregateCatchesBySpecies(tripCatches)` is a helper function (already defined in the file) that takes the raw `tripCatches` array as input.
+- This function groups the catches by species and calculates the total count, total weight, and average length for each species.
+- The returned `aggregatedData` is then stored in the `aggregatedCatches` state variable, which will be used by the Table component.
+
+## Step 3: Use the RADFish Table component to display aggregated data
+
+Now that we have the aggregated catch data, we will use the RADFish `Table` component to display it in a structured and user-friendly way.
+
+Still in `src/pages/ReviewSubmit.jsx`, find the `/* Step 3: Use the RADFish Table component to display aggregated data */` comment and replace it with the following code:
+
+```javascript
+// ...existing code...
+                /* Step 3: Use the RADFish Table component to display aggregated data */
+                <Table
+                  // Map aggregated data to the format expected by the Table component
+                  data={aggregatedCatches.map((item, index) => ({
+                    id: index, // Use index as ID for the table row
+                    species: item.species,
+                    count: item.count,
+                    totalWeight: `${item.totalWeight} lbs`, // Add units
+                    avgLength: `${item.avgLength} in`, // Add units
+                  }))}
+                  // Define table columns: key corresponds to data keys, label is header text
+                  columns={[
+                    { key: "species", label: "Species", sortable: true },
+                    { key: "count", label: "Count", sortable: true },
+                    { key: "totalWeight", label: "Total Weight", sortable: true },
+                    { key: "avgLength", label: "Avg. Length", sortable: true },
+                  ]}
+                  // Enable striped rows for better readability
+                  striped
+                />
+// ...existing code...
+```
+
+**Explanation:**
+- The `<Table>` component is used to render the catch data.
+- The `data` prop is populated by mapping over the `aggregatedCatches` state. We transform the data slightly to add units (`lbs`, `in`) and provide a unique `id` for each row (using the array index here for simplicity).
+- The `columns` prop defines the table structure:
+    - `key`: Matches the keys in the `data` objects.
+    - `label`: The header text for the column.
+    - `sortable`: Allows the user to sort the table by clicking on the column header.
+- `striped`: Adds alternating row colors for better readability.
+
+## Conclusion
+
+In this lesson, you learned how to fetch data from multiple RADFish stores, perform data aggregation, and display the results using the RADFish `Table` component. This provides a clear and concise summary of the trip's catch data for the user to review before submission. You also ensured that the form is validated before allowing the user to proceed to the confirmation screen.

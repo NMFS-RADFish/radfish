@@ -1,0 +1,132 @@
+import CodeBlock from '@theme/CodeBlock';
+
+# Lesson 1: Offline First and Navigation
+
+Welcome to the RADFish tutorial! In this first lesson, we'll introduce the concept of Progressive Web Applications (PWAs) and their ability to work offline. We'll start by building the application and running it locally. Then, we'll simulate an offline environment to see how the PWA behaves. We'll fix a missing application icon issue and implement the first piece of navigation by making the "Start New Trip" button functional.
+
+```sh
+git clone https://github.com/NMFS-RADFish/learn-radfish.git
+cd learn-radfish
+
+# This step will not be included in the final tutorial
+git reset --hard 3c42de24b330fa8da92ed06b0e5528d218d2d84f
+```
+
+## Getting Started
+
+Before we begin coding, let's build the application and serve it locally to see its current state.
+
+1.  **Install Dependencies:** If you haven't already, open your terminal in the project root directory and run:
+    ```bash
+    npm install
+    ```
+2.  **Build the Application:** Run the build command to generate the production-ready files, including the service worker needed for offline capabilities.
+    ```bash
+    npm run build
+    ```
+3.  **Serve the Application:** Use a simple HTTP server to serve the built application. We've included `http-server` as a dev dependency.
+    ```bash
+    npm run serve
+    ```
+    This command will typically make the application available at `http://localhost:8080`. Open this URL in your browser.
+
+4.  **Simulate Offline Mode:** Open your browser's developer tools (usually by pressing F12 or right-clicking and selecting "Inspect" or "Inspect Element").
+    *   Go to the "Network" tab.
+    *   Find the option to throttle the network connection. Look for a dropdown that might say "No throttling" or "Online" and change it to "Offline".
+
+    ![Developer Tools Offline Toggle](https://developer.chrome.com/static/docs/devtools/network/image/new-resource-in-log_1920.png)
+    *(Image source: Chrome Developers)*
+
+5.  **Reload the Page:** With the network set to "Offline", try reloading the page (Ctrl+R or Cmd+R). You should see that the application still loads! This is the service worker in action, serving cached assets.
+
+6.  **Notice the Missing Icon:** While offline, you might notice that the application icon (in the browser tab or if you try to "install" the PWA) is missing or incorrect. We'll fix this first.
+
+7.  **Go Back Online:** Remember to set your network back to "Online" in the developer tools when you're ready to proceed with the next steps.
+
+## Step 1: Add App Icons to Manifest
+
+The PWA manifest file (`public/manifest.json` generated via `vite.config.js`) tells the browser about your web application and how it should behave when 'installed' on the user's mobile device or desktop. This includes specifying icons of various sizes for different contexts. We need to add the correct icon definitions to our Vite configuration, which generates the manifest.
+
+Open `vite.config.js`. Locate the `/* Step 1: ... */` comment within the `manifest.icons` array and replace it with the following code:
+
+```javascript showLineNumbers=19 title="vite.config.js"
+      manifest: {
+        short_name: "RADFish",
+        name: "RADFish React Boilerplate",
+        icons: [
+          // diff-add-start
+          {
+            src: "icons/radfish-144.ico",
+            sizes: "144x144 64x64 32x32 24x24 16x16",
+            type: "image/x-icon",
+          },
+          {
+            src: "icons/radfish-144.ico",
+            type: "image/icon",
+            sizes: "144x144",
+            purpose: "any",
+          },
+          {
+            src: "icons/radfish-192.ico",
+            type: "image/icon",
+            sizes: "192x192",
+            purpose: "any",
+          },
+          {
+            src: "icons/radfish-512.ico",
+            type: "image/icon",
+            sizes: "512x512",
+            purpose: "any",
+          },
+          // diff-add-end
+          {
+            src: "icons/144.png",
+            type: "image/png",
+            sizes: "144x144",
+            purpose: "any",
+          },
+```
+
+**Explanation:** We are adding several definitions for our application icons (`radfish-*.ico`) to the `icons` array within the `VitePWA` plugin configuration. These definitions tell the browser where to find icons of different sizes and types (`.ico` in this case). Providing multiple sizes ensures the icon looks sharp on various devices and contexts (like the home screen, app launcher, etc.). The `purpose: "any"` indicates these icons are suitable for general use.
+
+**Rebuild and Test:**
+*   Stop the server if it's running (Ctrl+C in the terminal).
+*   Re-run `npm run build` and `npm run serve`.
+*   Go offline again in developer tools and reload. The correct application icon should now appear.
+
+## Step 2: Implement "Start New Trip" Navigation
+
+Currently, the "Start New Trip" button on the home page doesn't do anything. We need to make it navigate the user to the first step of the trip logging process, which will be at the `/start` route. We'll use the `useNavigate` hook from `react-router-dom` for this.
+
+Open `src/pages/Home.jsx`. Locate the `/* Step 2: ... */` comment within the `Button` component for "Start New Trip" and replace it with the following `onClick` handler:
+
+```jsx showLineNumbers=293
+<Button
+  type="button"
+  className="width-full margin-top-3"
+  //diff-add-start
+  onClick={() => {
+    navigate("/start");
+  }}
+  //diff-add-end
+>
+  Start New Trip
+</Button>
+```
+
+**Explanation:**
+*   We're adding an `onClick` event handler to the `Button`.
+*   Inside the handler, we call the `navigate` function (which we get from the `useNavigate()` hook provided earlier in the component).
+*   We pass the string `"/start"` to `navigate`, telling React Router to change the URL to `/start` when the button is clicked. This will cause the `App` component to render the `StartTrip` page component associated with that route.
+
+**Test Navigation:**
+*   You might need to restart your development server if you stopped it. If you are still running `npm run serve`, stop it (Ctrl+C) and start the development server for easier testing with Hot Module Replacement (HMR):
+    ```bash
+    npm run start
+    ```
+*   Open the application in your browser (usually `http://localhost:3000` for the dev server).
+*   Click the "Start New Trip" button. You should now be navigated to a new page (which is currently blank or basic, as we haven't built the `StartTrip` form yet).
+
+## Conclusion
+
+In this lesson, you learned how to build and serve the PWA, verify its basic offline capabilities using the browser's developer tools, and add necessary application icons to the PWA manifest via the Vite configuration. You also implemented the first navigation feature, linking the home page button to the start of the trip logging workflow using React Router. The application now works offline and has a functional starting point for logging a new trip.

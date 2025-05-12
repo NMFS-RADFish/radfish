@@ -534,6 +534,12 @@ ${content}`,
           },
           {
             type: "docSidebar",
+            sidebarId: "learn",
+            position: "left",
+            label: "Learn",
+          },
+          {
+            type: "docSidebar",
             sidebarId: "designSystem",
             position: "left",
             label: "Design System",

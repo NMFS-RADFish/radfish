@@ -1,0 +1,78 @@
+# Lesson 3: Form Submission
+
+In this lesson, we'll enhance the "Start Trip" form to save the initial trip details (date, time, weather) to offline storage using IndexedDB via RADFish. We'll also navigate the user to the next step in the form process, the "Catch Log" page.
+
+## Step 1: Declare the trip store and form collection
+
+To save data, we first need to access the appropriate RADFish store and collection within our `handleSubmit` function.
+
+Open `src/pages/StartTrip.jsx`. Locate the `/* Step 1: Declare the trip store and form collection */` comment and replace it with the following code:
+
+```javascript
+// filepath: src/pages/StartTrip.jsx
+// ...existing code...
+      try {
+        // Access RADFish store and collection
+        const tripStore = app.stores["trip"];
+        const Form = tripStore.getCollection("Form");
+        let navigateToId = currentTripId;
+// ...existing code...
+```
+
+**Explanation:**
+*   `app.stores["trip"]`: Accesses the RADFish data store named "trip", which is defined in our RADFish configuration (though not explicitly shown in this lesson). Stores group related data collections.
+*   `tripStore.getCollection("Form")`: Within the "trip" store, accesses the collection named "Form". Collections are analogous to tables in a relational database or collections in MongoDB; they hold the actual data records (in this case, our trip forms).
+
+## Step 2: Update the form if it exists, else create a new form
+
+Now that we have access to the `Form` collection, we can save the data. We need to handle two cases: creating a new trip record if it's the first time submitting this form, or updating an existing record if the user came back to edit this step.
+
+In the same file (`src/pages/StartTrip.jsx`), locate the `/* Step 2: Update the form if it exists, else create a new form */` comment and replace it with the following code:
+
+```javascript
+// filepath: src/pages/StartTrip.jsx
+// ...existing code...
+          step: 2 // Update step number
+        };
+
+        if (currentTripId) {
+          // --- Update existing trip ---
+          // Merge existing ID with new data and update in IndexedDB
+          await Form.update({ id: currentTripId, ...tripData });
+        } else {
+          // --- Create new trip ---
+          const newTripId = crypto.randomUUID(); // Generate a unique ID
+          // Add ID to data and create new record in IndexedDB
+          await Form.create({ id: newTripId, ...tripData, endWeather: "", endTime: "" });
+          navigateToId = newTripId; // Store the new ID for navigation
+          setCurrentTripId(newTripId); // Update state with the new ID
+        }
+        // Navigate to the next step (CatchLog), passing the tripId via state
+        navigate(`/catch`, { state: { tripId: navigateToId } });
+// ...existing code...
+```
+
+**Explanation:**
+*   `tripData`: We gather the form data (`tripDate`, `weather`, `startTime`) along with some metadata (`status: "in-progress"`, `step: 2`) into an object.
+*   `if (currentTripId)`: We check if `currentTripId` (which we set when loading existing data) has a value.
+    *   **Update:** If it exists, we call `Form.update()`, passing the `currentTripId` and the `tripData`. RADFish finds the record with that ID in the "Form" collection (in IndexedDB) and updates it with the new data.
+    *   **Create:** If `currentTripId` is null, it's a new trip. We generate a unique ID using `crypto.randomUUID()`. We then call `Form.create()`, passing the new ID and the `tripData` (plus initial empty values for fields from later steps). RADFish creates a new record in the "Form" collection. We also store the `newTripId` so we can navigate correctly.
+*   `navigate(`/catch`, { state: { tripId: navigateToId } })`: After successfully saving the data, we use the `navigate` function from React Router to go to the `/catch` route (the Catch Log page). Crucially, we pass the `tripId` (either the existing one or the newly created one) in the navigation state. This allows the Catch Log page to know which trip it's associated with.
+
+## Dev Tip: Inspecting IndexedDB
+
+You can see the data being saved directly in your browser's developer tools:
+
+1.  Open your browser's developer tools (usually by pressing F12 or right-clicking and selecting "Inspect" or "Inspect Element").
+2.  Go to the "Application" tab (Chrome/Edge) or "Storage" tab (Firefox).
+3.  In the left-hand panel, find "IndexedDB".
+4.  Expand the database (it might be named after your application or have a default RADFish name).
+5.  Expand the "trip" object store.
+6.  Click on the "Form" collection/index. You should see the trip data you just submitted.
+
+![IndexedDB Inspection](https://developer.chrome.com/static/docs/devtools/storage/indexeddb/image/indexeddb-data-preview-key_1440.png)
+*(Image source: Chrome Developers)*
+
+## Conclusion
+
+You have now successfully implemented the submission logic for the first step of the trip form! The application saves the initial trip details to IndexedDB using RADFish, handling both new trip creation and updates. Upon successful submission, the user is automatically navigated to the next step, ready to log their catches.
