@@ -1,4 +1,6 @@
-# Lesson 2: Form Inputs
+import CodeBlock from '@theme/CodeBlock';
+
+# Lesson 2: [Start Trip] Form Inputs
 
 This lesson focuses on building the first step of the trip logging form, the "Start Trip" page. We'll use components from the U.S. Web Design System (USWDS) library (`@trussworks/react-uswds`) to add inputs for the trip date, start time, and weather conditions. We will also start the application in development mode to take advantage of Hot Module Replacement (HMR) for faster feedback during development.
 
@@ -16,35 +18,28 @@ This command starts the Vite development server. It will automatically open the 
 
 We need a way for the user to select the date of their fishing trip. We'll use the `DatePicker` component from `@trussworks/react-uswds`.
 
-Open `src/pages/StartTrip.jsx`. Locate the `/* Step 1: Add Date Picker Input */` comment and replace it with the following code:
+Open `src/pages/StartTrip.jsx`. Locate the `Form` component to add the following code:
 
-```jsx
-// filepath: src/pages/StartTrip.jsx
-            {/* Trip Date - USWDS DatePicker */}
-            {/* FormGroup adds spacing and connects label/input/error */}
-            <FormGroup error={submitted && errors.tripDate}>
-              {/* Label with required indicator */}
-              <Label htmlFor="tripDate" error={submitted && errors.tripDate}>
-                Date<span className="text-secondary-vivid margin-left-05">*</span>
-              </Label>
-              {/* Hint text for date format */}
-              <div className="usa-hint" id="tripDate-hint">
-                mm/dd/yyyy
-              </div>
-              <DatePicker
-                id="tripDate"
-                name="tripDate"
-                defaultValue={formData.tripDate} // Use formatted date for default
-                onChange={handleDateChange} // Use specific handler
-                aria-describedby="tripDate-hint"
-                // Apply error styling if submitted and error exists
-                className={submitted && errors.tripDate ? "usa-input--error" : ""}
-              />
-              {/* Error message displayed below input */}
-              {/* [Lesson 5.2:START] Display Trip Date Error */}
-              {/* This block will be deleted in the snapshot */}
-              {/* [Lesson 5.2:END] */}
-            </FormGroup>
+```jsx title="src/pages/StartTrip.jsx"
+<Form onSubmit={handleSubmit} large className="margin-top-3">
+// diff-add-start
+  <FormGroup error={submitted && errors.tripDate}>
+    <Label htmlFor="tripDate" error={submitted && errors.tripDate}>
+      Date<span className="text-secondary-vivid margin-left-05">*</span>
+    </Label>
+    <div className="usa-hint" id="tripDate-hint">
+      mm/dd/yyyy
+    </div>
+    <DatePicker
+      id="tripDate"
+      name="tripDate"
+      defaultValue={formData.tripDate}
+      onChange={handleDateChange}
+      aria-describedby="tripDate-hint"
+      className={submitted && errors.tripDate ? "usa-input--error" : ""}
+    />
+  </FormGroup>
+// diff-add-end
 ```
 
 **Explanation:**
@@ -62,31 +57,28 @@ Open `src/pages/StartTrip.jsx`. Locate the `/* Step 1: Add Date Picker Input */`
 
 Next, we'll add an input for the trip's start time using the `TimePicker` component.
 
-In the same file (`src/pages/StartTrip.jsx`), locate the `/* Step 2: Add Time Picker Input */` comment and replace it with the following code:
+Let's add the `TimePicker` input below the `DatePicker`:
 
-```jsx
-// filepath: src/pages/StartTrip.jsx
-            {/* Trip Start Time - USWDS TimePicker */}
-            <FormGroup error={submitted && errors.startTime}>
-              <Label htmlFor="startTime" error={submitted && errors.startTime}>
-                Time<span className="text-secondary-vivid margin-left-05">*</span>
-              </Label>
-              <TimePicker
-                id="time"
-                name="time"
-                defaultValue={formData.startTime}
-                onChange={handleTimeChange} // Use specific handler
-                minTime="00:00"
-                maxTime="23:30"
-                step={15}
-                validationStatus={submitted && errors.startTime ? "error" : undefined}
-                className={submitted && errors.startTime ? "usa-input--error" : ""}
-                aria-describedby="startTime-error-message"
-              />
-              {/* [Lesson 5.3:START] Display Start Time Error */}
-              {/* This block will be deleted in the snapshot */}
-              {/* [Lesson 5.3:END] */}
-            </FormGroup>
+```jsx title="src/pages/StartTrip.jsx"
+// diff-add-start
+<FormGroup error={submitted && errors.startTime}>
+  <Label htmlFor="startTime" error={submitted && errors.startTime}>
+    Time<span className="text-secondary-vivid margin-left-05">*</span>
+  </Label>
+  <TimePicker
+    id="time"
+    name="time"
+    defaultValue={formData.startTime}
+    onChange={handleTimeChange}
+    minTime="00:00"
+    maxTime="23:30"
+    step={15}
+    validationStatus={submitted && errors.startTime ? "error" : undefined}
+    className={submitted && errors.startTime ? "usa-input--error" : ""}
+    aria-describedby="startTime-error-message"
+  />
+</FormGroup>
+// diff-add-end
 ```
 
 **Explanation:**
@@ -102,34 +94,30 @@ In the same file (`src/pages/StartTrip.jsx`), locate the `/* Step 2: Add Time Pi
 
 Finally, we need a dropdown menu for the user to select the weather conditions at the start of the trip. We'll use the `Select` component.
 
-Still in `src/pages/StartTrip.jsx`, locate the `/* Step 3: Add Weather Select Input */` comment and replace it with the following code:
+Add the following code below the `TimePicker`:
 
-```jsx
-// filepath: src/pages/StartTrip.jsx
-            {/* Weather Conditions - USWDS Select */}
-            <FormGroup error={submitted && errors.weather}>
-              <Label htmlFor="weather" error={submitted && errors.weather}>
-                Weather<span className="text-secondary-vivid margin-left-05">*</span>
-              </Label>
-              <Select
-                id="weather"
-                name="weather"
-                value={formData.weather}
-                onChange={handleInputChange} // Standard handler works here
-                validationStatus={submitted && errors.weather ? "error" : undefined}
-                aria-describedby="weather-error-message"
-              >
-                <option value="">-Select-</option>
-                <option value="Sunny">Sunny</option>
-                <option value="Cloudy">Cloudy</option>
-                <option value="Rainy">Rainy</option>
-              </Select>
-              {/* [Lesson 5.4:START] Display Weather Error */}
-              {/* This block will be deleted in the snapshot */}
-              {/* [Lesson 5.4:END] */}
-            </FormGroup>
+```jsx title="src/pages/StartTrip.jsx"
+// diff-add-start
+<FormGroup error={submitted && errors.weather}>
+  <Label htmlFor="weather" error={submitted && errors.weather}>
+    Weather<span className="text-secondary-vivid margin-left-05">*</span>
+  </Label>
+  <Select
+    id="weather"
+    name="weather"
+    value={formData.weather}
+    onChange={handleInputChange} 
+    validationStatus={submitted && errors.weather ? "error" : undefined}
+    aria-describedby="weather-error-message"
+  >
+    <option value="">-Select-</option>
+    <option value="Sunny">Sunny</option>
+    <option value="Cloudy">Cloudy</option>
+    <option value="Rainy">Rainy</option>
+  </Select>
+</FormGroup>
+// diff-add-end
 ```
-
 **Explanation:**
 
 *   Again, `FormGroup` and `Label` provide the necessary structure.
