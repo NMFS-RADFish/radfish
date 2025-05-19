@@ -20,6 +20,24 @@ Open `src/pages/Home.jsx`. Locate the `/* Step 1: ... */` comment within the `Bu
 
 > Note: This code appears around line 296 in the Home.jsx file
 
+**Here's the button before adding navigation:**
+```jsx jsx title="src/pages/Home.jsx" showLineNumbers
+<Button
+  type="button"
+  className="bg-primary hover:bg-primary-darker width-full"
+>
+  Start New Trip
+</Button>
+```
+
+**Add this code to implement navigation:**
+```jsx howLineNumbers
+onClick={() => {
+  navigate("/start");
+}}
+```
+
+**Complete button with navigation:**
 ```jsx title="src/pages/Home.jsx" showLineNumbers
 <Button
   type="button"
