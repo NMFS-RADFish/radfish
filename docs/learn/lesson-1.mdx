@@ -16,12 +16,10 @@ git reset --hard 3c42de24b330fa8da92ed06b0e5528d218d2d84f
 
 Currently, the "Start New Trip" button on the home page doesn't do anything. We need to make it navigate the user to the first step of the trip logging process, which will be at the `/start` route. We'll use the `useNavigate` hook from `react-router-dom` for this.
 
-Open `src/pages/Home.jsx`. Locate the `/* Step 1: ... */` comment within the `Button` component for "Start New Trip" and replace it with the following `onClick` handler:
-
-> Note: This code appears around line 296 in the Home.jsx file
+Open `src/pages/Home.jsx`. Locate the `Button` component for "Start New Trip". You will modify this button by adding an `onClick` handler.
 
 **Here's the button before adding navigation:**
-```jsx jsx title="src/pages/Home.jsx" showLineNumbers
+```jsx jsx title="src/pages/Home.jsx" showLineNumbers=293
 <Button
   type="button"
   className="bg-primary hover:bg-primary-darker width-full"
@@ -38,7 +36,7 @@ onClick={() => {
 ```
 
 **Complete button with navigation:**
-```jsx title="src/pages/Home.jsx" showLineNumbers
+```jsx title="src/pages/Home.jsx" showLineNumbers=293
 <Button
   type="button"
   className="bg-primary hover:bg-primary-darker width-full"
