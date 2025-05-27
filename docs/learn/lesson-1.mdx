@@ -32,7 +32,7 @@ We'll begin by structuring our `HomePage` using `GridContainer` and `Grid` compo
 
 For more detailed information on the React components (`GridContainer`, `Grid`) from `@trussworks/react-uswds` that we are using, please see the [Trussworks React USWDS Grid documentation](https://trussworks.github.io/react-uswds/?path=/docs/components-grid--docs). To understand the foundational CSS grid system and its principles upon which these components are built, the [official USWDS Layout Grid documentation](https://designsystem.digital.gov/utilities/layout-grid/) is also a valuable resource.
 
-**1. Import Grid Components:**
+### 1.1: Import Grid Components
 
 In `src/pages/Home.jsx`, update your import statement from `@trussworks/react-uswds` to also include `GridContainer` and `Grid`. Your existing import for `Button` will be modified as follows:
 
@@ -45,7 +45,7 @@ In `src/pages/Home.jsx`, update your import statement from `@trussworks/react-us
   //diff-add-end
 ```
 
-**2. Apply the Grid Structure:**
+### 1.2: Apply the Grid Structure
 
 Next, modify the `return` statement of your `HomePage` component to incorporate the USWDS grid. You will wrap your main page content (everything inside the main `<>...</>` fragment, except for the sticky footer) with these components.
 
