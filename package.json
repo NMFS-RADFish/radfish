@@ -15,8 +15,13 @@
   },
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^1.2.0",
+<<<<<<< Updated upstream
     "@docusaurus/core": "3.7.0-canary-6315",
     "@docusaurus/preset-classic": "3.7.0-canary-6315",
+=======
+    "@docusaurus/core": "^3.8.0",
+    "@docusaurus/preset-classic": "^3.8.0",
+>>>>>>> Stashed changes
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
     "docusaurus-plugin-remote-content": "^4.0.0",
@@ -45,10 +50,10 @@
   },
   "overrides": {
     "@cmfcmf/docusaurus-search-local": {
-      "@docusaurus/core": "3.7.0"
+      "@docusaurus/core": "^3.8.0"
     },
     "docusaurus-plugin-remote-content": {
-      "@docusaurus/core": "3.7.0"
+      "@docusaurus/core": "^3.8.0"
     }
   }
 }
