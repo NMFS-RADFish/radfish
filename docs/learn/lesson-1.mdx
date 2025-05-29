@@ -36,10 +36,7 @@ For more detailed information on the React components (`GridContainer`, `Grid`) 
 
 In `src/pages/Home.jsx`, update your import statement from `@trussworks/react-uswds` to also include `GridContainer` and `Grid`. Your existing import for `Button` will be modified as follows:
 
-```jsx title="src/pages/Home.jsx"
-  //diff-remove-start
-  import { Button } from "@trussworks/react-uswds";
-  //diff-remove-end
+```jsx title="src/pages/Home.jsx" showLineNumbers=5
   //diff-add-start
   import { Button, GridContainer, Grid } from "@trussworks/react-uswds";
   //diff-add-end
@@ -51,17 +48,13 @@ Next, modify the `return` statement of your `HomePage` component to incorporate 
 
 **Add this `GridContainer` and `Grid` structure around your main page content:**
 ```jsx
-//diff-add-start
 <GridContainer className="padding-y-4 padding-x-2 text-center">
   <Grid row>
     <Grid col="fill">
-//diff-add-end
       {/* Your existing main page content (headings, lists, etc.) goes here */}
-//diff-add-start
     </Grid>
   </Grid>
 </GridContainer>
-//diff-add-end
 ```
 
 **The complete `return` statement with the new Grid structure will look like this:**
