@@ -195,7 +195,7 @@ Let's add the `TimePicker` input below the `DatePicker`:
 **Explanation:**
 
 - Similar to the `DatePicker`, we use `FormGroup` and `Label` for structure and accessibility
-- `defaultValue={formDatastartTime}` binds the input to the `startTime` field in our state
+- `defaultValue={formData.startTime}` binds the input to the `startTime` field in our state
 - `onChange={handleTimeChange}` calls our specific handler function to update the state
 - `minTime`, `maxTime`, and `step={15}` configure the available time options (from 00:00 to 23:45 in 15-minute increments)
 
