@@ -1,113 +1,245 @@
-import CodeBlock from '@theme/CodeBlock';
+import CodeBlock from "@theme/CodeBlock";
 
-# Lesson 2: [Start Trip] Form Inputs
+# Lesson 2: Start Trip Form Inputs
 
-This lesson focuses on building the first step of the trip logging form, the "Start Trip" page. We'll use components from the U.S. Web Design System (USWDS) library (`@trussworks/react-uswds`) to add inputs for the trip date, start time, and weather conditions. We will also start the application in development mode to take advantage of Hot Module Replacement (HMR) for faster feedback during development.
-
-## Getting Started
-
-Before adding the form inputs, let's start the development server. Open your terminal, navigate to the project's root directory (`learn-radfish`), and run the following command:
-
-```bash
-npm run start
-```
-
-This command starts the Vite development server. It will automatically open the application in your default web browser. Thanks to Hot Module Replacement (HMR), most changes you make to the code will be reflected in the browser almost instantly without needing a full page reload, speeding up your development workflow. Keep this terminal window open while you work through the lesson.
+This lesson focuses on building the first step of the trip logging form, the "Start Trip" page. We'll use components from the U.S. Web Design System (USWDS) library (`@trussworks/react-uswds`) to add inputs for the trip date, start time, and weather conditions.
 
 ## Step 1: Add Date Picker Input
 
 We need a way for the user to select the date of their fishing trip. We'll use the `DatePicker` component from `@trussworks/react-uswds`.
 
-Open `src/pages/StartTrip.jsx`. Locate the `Form` component to add the following code:
+### 1.1: Import the DatePicker Component
 
-```jsx title="src/pages/StartTrip.jsx"
-<Form onSubmit={handleSubmit} large className="margin-top-3">
-// diff-add-start
-  <FormGroup error={submitted && errors.tripDate}>
-    <Label htmlFor="tripDate" error={submitted && errors.tripDate}>
-      Date<span className="text-secondary-vivid margin-left-05">*</span>
+First, open `src/pages/StartTrip.jsx` and update the import statement from `@trussworks/react-uswds` to include `DatePicker`. Your existing import will be modified as follows:
+
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=5
+import {
+  Button,
+  //diff-add-start
+  DatePicker,
+  //diff-add-end
+  ErrorMessage,
+  //diff-add-start
+  Form,
+  FormGroup,
+  //diff-add-end
+  Grid,
+  GridContainer,
+  //diff-add-start
+  Label,
+  //diff-add-end
+  StepIndicator,
+  StepIndicatorStep,
+} from "@trussworks/react-uswds";
+```
+
+**Understanding the USWDS Components:**
+
+Before we start building the form, let's understand what each of these imported components does:
+
+- **`Form`**: Main container for form elements with submission handling and styling
+- **`FormGroup`**: Wrapper that groups form elements for proper spacing and accessibility
+- **`Label`**: Creates accessible form labels with support for required indicators
+- **`DatePicker`**: Calendar interface for date selection with formatting and validation
+
+These components work together to create accessible, well-structured forms that follow USWDS design patterns and accessibility guidelines.
+
+### 1.2: Add the DatePicker to the Form
+
+Now locate the `Form` component to add the following code:
+
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=278
+<Form onSubmit={handleSubmit} large></Form>
+```
+
+**Add the `FormGroup`, `Label`, and `DatePicker` input within the `Form` component:**
+
+```jsx
+<FormGroup>
+  <Label
+    htmlFor="tripDate"
+    hint=" mm/dd/yyyy"
+    className="input-date-label"
+    requiredMarker
+  >
+    Date
+  </Label>
+  <DatePicker
+    id="tripDate"
+    name="tripDate"
+    defaultValue={formData.tripDate}
+    onChange={handleDateChange}
+    aria-describedby="tripDate-hint"
+    required
+  />
+</FormGroup>
+```
+
+The complete **Form** will look like this:
+
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=278
+<Form onSubmit={handleSubmit} large>
+  // diff-add-start
+  <FormGroup>
+    <Label
+      htmlFor="tripDate"
+      hint=" mm/dd/yyyy"
+      className="input-date-label"
+      requiredMarker
+    >
+      Date
     </Label>
-    <div className="usa-hint" id="tripDate-hint">
-      mm/dd/yyyy
-    </div>
     <DatePicker
       id="tripDate"
       name="tripDate"
       defaultValue={formData.tripDate}
       onChange={handleDateChange}
       aria-describedby="tripDate-hint"
-      className={submitted && errors.tripDate ? "usa-input--error" : ""}
+      required
     />
   </FormGroup>
-// diff-add-end
+  // diff-add-end
+</Form>
 ```
 
-**Explanation:**
+#### React State Management Explanation
 
-*   We wrap the `DatePicker` and its `Label` in a `FormGroup` component. This helps with spacing and accessibility, associating the label, input, and potential error messages.
-*   The `Label` includes a red asterisk (`*`) to visually indicate that the field is required.
-*   A `div` with the class `usa-hint` provides helpful text about the expected date format.
-*   The `DatePicker` component itself is configured with an `id` and `name`.
-*   `defaultValue={formData.tripDate}` sets the initial value of the picker based on the component's state.
-*   `onChange={handleDateChange}` connects the picker to our custom `handleDateChange` function (already present in the file) which updates the `formData` state when the user selects a date.
-*   `aria-describedby` links the input to the hint text for screen readers.
-*   The `className` is conditionally set to apply error styling if the form has been submitted (`submitted` is true) and there's an error for this field (`errors.tripDate` exists). We'll implement the error handling logic in a later lesson.
+Let's look at two key aspects of how React manages state with this form:
+
+1. **Initial State with `defaultValue`**:
+
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=295
+   defaultValue={formData.tripDate}
+   ```
+
+   - The component initializes form data using React's useState hook:
+
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=72
+   const [formData, setFormData] = useState({
+     tripDate: "",
+     weather: "",
+     startTime: "",
+   });
+   ```
+
+   - This binds the DatePicker's initial value to the component's state
+   - When the form first renders, it displays any existing data if editing a trip, or empty if creating a new trip
+   - To learn more about React state management, visit [React's Managing State documentation](https://react.dev/learn/managing-state)
+
+2. **Updating State with `onChange`**:
+
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=292
+   onChange = { handleDateChange };
+   ```
+
+   - The `onChange` attribute is a required prop for controlled inputs. It is called whenever the input's value changes (on every keystroke or selection). Without this handler, React would revert the input to its original value after each change.
+   - When a user selects a date, the `handleDateChange` function is called
+
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=150
+   const handleDateChange = (value) => {
+     setFormData((prevData) => ({ ...prevData, tripDate: value || "" }));
+   };
+   ```
+
+   - It preserves other form field values by spreading the previous state
+   - To learn more about controlled inputs, visit [Input documentation](https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable)
 
 ## Step 2: Add Time Picker Input
 
 Next, we'll add an input for the trip's start time using the `TimePicker` component.
 
+### 2.1: Import the TimePicker Component
+
+Open `src/pages/StartTrip.jsx` and update the import statement from `@trussworks/react-uswds` to include `TimePicker`. Your existing import will be modified as follows:
+
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=5
+import {
+  Button,
+  DatePicker,
+  //diff-add-start
+  TimePicker,
+  //diff-add-end
+  ErrorMessage,
+  Form,
+  FormGroup,
+  Grid,
+  GridContainer,
+  Label,
+  StepIndicator,
+  StepIndicatorStep,
+} from "@trussworks/react-uswds";
+```
+
+### 2.2: Add the TimePicker to the Form
+
 Let's add the `TimePicker` input below the `DatePicker`:
 
-```jsx title="src/pages/StartTrip.jsx"
-// diff-add-start
-<FormGroup error={submitted && errors.startTime}>
-  <Label htmlFor="startTime" error={submitted && errors.startTime}>
-    Time<span className="text-secondary-vivid margin-left-05">*</span>
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=315
+<FormGroup>
+  <Label htmlFor="startTime" className="input-time-label" requiredMarker>
+    Time
   </Label>
   <TimePicker
-    id="time"
-    name="time"
+    id="startTime"
+    name="startTime"
     defaultValue={formData.startTime}
     onChange={handleTimeChange}
     minTime="00:00"
-    maxTime="23:30"
+    maxTime="23:45"
     step={15}
-    validationStatus={submitted && errors.startTime ? "error" : undefined}
-    className={submitted && errors.startTime ? "usa-input--error" : ""}
     aria-describedby="startTime-error-message"
   />
 </FormGroup>
-// diff-add-end
 ```
 
 **Explanation:**
 
-*   Similar to the `DatePicker`, we use `FormGroup` and `Label` for structure and accessibility.
-*   The `TimePicker` component provides a user-friendly way to select a time.
-*   `defaultValue={formData.startTime}` binds the input to the `startTime` field in our state.
-*   `onChange={handleTimeChange}` calls our specific handler function (already present) to update the state.
-*   `minTime`, `maxTime`, and `step={15}` configure the available time options (from 00:00 to 23:30 in 15-minute increments).
-*   `validationStatus` and `className` are used for conditional error styling, similar to the `DatePicker`.
+- Similar to the `DatePicker`, we use `FormGroup` and `Label` for structure and accessibility
+- `defaultValue={formData.startTime}` binds the input to the `startTime` field in our state
+- `onChange={handleTimeChange}` calls our specific handler function to update the state
+- `minTime`, `maxTime`, and `step={15}` configure the available time options (from 00:00 to 23:45 in 15-minute increments)
 
 ## Step 3: Add Weather Select Input
 
 Finally, we need a dropdown menu for the user to select the weather conditions at the start of the trip. We'll use the `Select` component.
 
+### 3.1: Import the Select Component
+
+Open `src/pages/StartTrip.jsx` and update the import statement from `@trussworks/react-uswds` to include `Select`. Your existing import will be modified as follows:
+
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=5
+import {
+  Button,
+  DatePicker,
+  TimePicker,
+  //diff-add-start
+  Select,
+  //diff-add-end
+  ErrorMessage,
+  Form,
+  FormGroup,
+  Grid,
+  GridContainer,
+  Label,
+  StepIndicator,
+  StepIndicatorStep,
+} from "@trussworks/react-uswds";
+```
+
+### 3.2: Add the Select to the Form
+
 Add the following code below the `TimePicker`:
 
-```jsx title="src/pages/StartTrip.jsx"
-// diff-add-start
-<FormGroup error={submitted && errors.weather}>
-  <Label htmlFor="weather" error={submitted && errors.weather}>
-    Weather<span className="text-secondary-vivid margin-left-05">*</span>
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=352
+<FormGroup>
+  <Label htmlFor="weather" requiredMarker>
+    Weather
   </Label>
   <Select
     id="weather"
     name="weather"
     value={formData.weather}
-    onChange={handleInputChange} 
-    validationStatus={submitted && errors.weather ? "error" : undefined}
+    onChange={handleInputChange}
     aria-describedby="weather-error-message"
   >
     <option value="">-Select-</option>
@@ -116,16 +248,72 @@ Add the following code below the `TimePicker`:
     <option value="Rainy">Rainy</option>
   </Select>
 </FormGroup>
-// diff-add-end
 ```
+
 **Explanation:**
 
-*   Again, `FormGroup` and `Label` provide the necessary structure.
-*   The `Select` component creates a dropdown menu.
-*   `value={formData.weather}` binds the selected option to the `weather` field in the state.
-*   `onChange={handleInputChange}` uses the standard input handler (already present) because the `Select` component behaves like a standard HTML select element in this regard.
-*   We define the available weather options using standard HTML `<option>` tags within the `Select` component. The first option has an empty `value` to represent the default, unselected state.
-*   `validationStatus` handles conditional error styling.
+- `value={formData.weather}` binds the selected option to the `weather` field in the state.
+- `onChange={handleInputChange}` uses the standard input handler (already present) because the `Select` component behaves like a standard HTML select element in this regard.
+- We define the available weather options using standard HTML `<option>` tags within the `Select` component. The first option has an empty `value` to represent the default, unselected state.
+
+The complete **Form** will look like this: 
+
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=352
+<Form onSubmit={handleSubmit} large>
+  // diff-add-start
+  <FormGroup>
+    <Label
+      htmlFor="tripDate"
+      hint=" mm/dd/yyyy"
+      className="input-date-label"
+      requiredMarker
+    >
+      Date
+    </Label>
+    <DatePicker
+      id="tripDate"
+      name="tripDate"
+      defaultValue={formData.tripDate}
+      onChange={handleDateChange}
+      aria-describedby="tripDate-hint"
+      required
+    />
+  </FormGroup>
+  <FormGroup>
+    <Label htmlFor="startTime" className="input-time-label" requiredMarker>
+      Time
+    </Label>
+    <TimePicker
+      id="startTime"
+      name="startTime"
+      defaultValue={formData.startTime}
+      onChange={handleTimeChange}
+      minTime="00:00"
+      maxTime="23:45"
+      step={15}
+      aria-describedby="startTime-error-message"
+    />
+  </FormGroup>
+  <FormGroup>
+    <Label htmlFor="weather" requiredMarker>
+      Weather
+    </Label>
+    <Select
+      id="weather"
+      name="weather"
+      value={formData.weather}
+      onChange={handleInputChange}
+      aria-describedby="weather-error-message"
+    >
+      <option value="">-Select-</option>
+      <option value="Sunny">Sunny</option>
+      <option value="Cloudy">Cloudy</option>
+      <option value="Rainy">Rainy</option>
+    </Select>
+  </FormGroup>
+  // diff-add-end
+</Form>
+```
 
 ## Conclusion
 

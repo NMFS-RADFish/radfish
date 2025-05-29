@@ -1,8 +1,8 @@
 import CodeBlock from '@theme/CodeBlock';
 
-# Lesson 1: Offline First and Navigation
+# Lesson 1: Page Structure and Navigation
 
-Welcome to the RADFish tutorial! In this first lesson, we'll introduce the concept of Progressive Web Applications (PWAs) and their ability to work offline. We'll start by building the application and running it locally. Then, we'll simulate an offline environment to see how the PWA behaves. We'll fix a missing application icon issue and implement the first piece of navigation by making the "Start New Trip" button functional.
+Welcome to the RADFish tutorial! In this first lesson, we'll structure our main page using USWDS grid components and then implement navigation within the app by making the "Start New Trip" button functional.
 
 ```sh
 git clone https://github.com/NMFS-RADFish/learn-radfish.git
@@ -20,90 +20,95 @@ Before we begin coding, let's build the application and serve it locally to see 
     ```bash
     npm install --force # Force flag will be removed in the final tutorial
     ```
-2.  **Build the Application:** Run the build command to generate the production-ready files, including the service worker needed for offline capabilities.
+2.  **Start the Development Server:** Run the following command to start the application:
     ```bash
-    npm run build
+    npm run start
     ```
-3.  **Serve the Application:** Use a simple HTTP server to serve the built application. We've included `http-server` as a dev dependency.
-    ```bash
-    npm run serve
-    ```
-    This command will typically make the application available at [http://localhost:4173](http://localhost:4173). Open this URL in your browser.
+    This command will start the development server and typically make the application available at [http://localhost:3000](http://localhost:3000). Open this URL in your browser.
 
-4.  **Simulate Offline Mode:** Open your browser's developer tools (usually by pressing F12 or right-clicking and selecting "Inspect" or "Inspect Element").
-    *   Go to the "Network" tab.
-    *   Find the option to throttle the network connection. Look for a dropdown that might say "No throttling" or "Online" and change it to "Offline".
+## Step 1: Structure the Page with USWDS Grid Components
 
-    ![Developer Tools Offline Toggle](https://developer.chrome.com/static/docs/devtools/network/image/new-resource-in-log_1920.png)
-    *(Image source: Chrome Developers)*
+We'll begin by structuring our `HomePage` using `GridContainer` and `Grid` components from the U.S. Web Design System (USWDS). This is a common practice in RADFish applications to ensure consistent layout, responsiveness, and alignment with USWDS standards. These components help center content and manage its maximum width.
 
-5.  **Reload the Page:** With the network set to "Offline", try reloading the page (Ctrl+R or Cmd+R). You should see that the application still loads! This is the service worker in action, serving cached assets.
+For more detailed information on the React components (`GridContainer`, `Grid`) from `@trussworks/react-uswds` that we are using, please see the [Trussworks React USWDS Grid documentation](https://trussworks.github.io/react-uswds/?path=/docs/components-grid--docs). To understand the foundational CSS grid system and its principles upon which these components are built, the [official USWDS Layout Grid documentation](https://designsystem.digital.gov/utilities/layout-grid/) is also a valuable resource.
 
-6.  **Notice the Missing Icon:** While offline, you might notice that the application icon (in the browser tab or if you try to "install" the PWA) is missing or incorrect. We'll fix this first.
+### 1.1: Import Grid Components
 
-7.  **Go Back Online:** Remember to set your network back to "Online" in the developer tools when you're ready to proceed with the next steps.
+In `src/pages/Home.jsx`, update your import statement from `@trussworks/react-uswds` to also include `GridContainer` and `Grid`. Your existing import for `Button` will be modified as follows:
 
-## Step 1: Add App Icons to Manifest
-
-The PWA manifest file (`public/manifest.json` generated via `vite.config.js`) tells the browser about your web application and how it should behave when 'installed' on the user's mobile device or desktop. This includes specifying icons of various sizes for different contexts. We need to add the correct icon definitions to our Vite configuration, which generates the manifest.
-
-Open `vite.config.js`. Locate the `/* Step 1: ... */` comment within the `manifest.icons` array and replace it with the following code:
-
-```javascript showLineNumbers=19 title="vite.config.js"
-      manifest: {
-        short_name: "RADFish",
-        name: "RADFish React Boilerplate",
-        icons: [
-          // diff-add-start
-          {
-            src: "icons/radfish-144.ico",
-            sizes: "144x144 64x64 32x32 24x24 16x16",
-            type: "image/x-icon",
-          },
-          {
-            src: "icons/radfish-144.ico",
-            type: "image/icon",
-            sizes: "144x144",
-            purpose: "any",
-          },
-          {
-            src: "icons/radfish-192.ico",
-            type: "image/icon",
-            sizes: "192x192",
-            purpose: "any",
-          },
-          {
-            src: "icons/radfish-512.ico",
-            type: "image/icon",
-            sizes: "512x512",
-            purpose: "any",
-          },
-          // diff-add-end
-          {
-            src: "icons/144.png",
-            type: "image/png",
-            sizes: "144x144",
-            purpose: "any",
-          },
+```jsx title="src/pages/Home.jsx" showLineNumbers=5
+  //diff-add-start
+  import { Button, GridContainer, Grid } from "@trussworks/react-uswds";
+  //diff-add-end
 ```
 
-**Explanation:** We are adding several definitions for our application icons (`radfish-*.ico`) to the `icons` array within the `VitePWA` plugin configuration. These definitions tell the browser where to find icons of different sizes and types (`.ico` in this case). Providing multiple sizes ensures the icon looks sharp on various devices and contexts (like the home screen, app launcher, etc.). The `purpose: "any"` indicates these icons are suitable for general use.
+### 1.2: Apply the Grid Structure
 
-**Rebuild and Test:**
-*   Stop the server if it's running (Ctrl+C in the terminal).
-*   Re-run `npm run build` and `npm run serve`.
-*   Go offline again in developer tools and reload. The correct application icon should now appear.
+Next, modify the `return` statement of your `HomePage` component to incorporate the USWDS grid. You will wrap your main page content (everything inside the main `<>...</>` fragment, except for the sticky footer) with these components.
+
+**Add this `GridContainer` and `Grid` structure around your main page content:**
+```jsx
+<GridContainer className="padding-y-4 padding-x-2 text-center">
+  <Grid row>
+    <Grid col="fill">
+      {/* Your existing main page content (headings, lists, etc.) goes here */}
+    </Grid>
+  </Grid>
+</GridContainer>
+```
+
+**The complete `return` statement with the new Grid structure will look like this:**
+```jsx title="src/pages/Home.jsx" showLineNumbers=222
+return (
+  <>
+    //diff-add-start
+    <GridContainer className="padding-y-4 padding-x-2 text-center">
+      <Grid row>
+        <Grid col="fill">
+    //diff-add-end
+          {/* All your main page content (headings, lists, etc.) goes here */}
+          <h1 className="font-heading-xl text-center margin-0">
+            Hi, Captain
+          </h1>
+          <h2 className="font-heading-lg text-center margin-top-4 margin-bottom-2">
+            Recent Trips
+          </h2>
+          {/* Example: trips.map(...) or conditional messages */}
+    //diff-add-start
+        </Grid>
+      </Grid>
+    </GridContainer>
+    //diff-add-end
+
+    {/* Sticky footer remains outside the GridContainer */}
+      <footer className="position-fixed bottom-0 ...">
+      {/* ... footer content ... */}
+      </footer>
+  </>
+);
+```
+
+**Why `GridContainer`?**
+The `GridContainer` component from USWDS is crucial for maintaining a consistent layout. It centers your content on the page and applies a maximum width (e.g., 1024px on desktop by default), preventing content from stretching uncomfortably wide on larger screens. The `Grid row` serves as a necessary container for grid columns, and `Grid col="fill"` allows the column to expand and take up the available space within that row.
 
 ## Step 2: Implement "Start New Trip" Navigation
 
 Currently, the "Start New Trip" button on the home page doesn't do anything. We need to make it navigate the user to the first step of the trip logging process, which will be at the `/start` route. We'll use the `useNavigate` hook from `react-router-dom` for this.
 
-Open `src/pages/Home.jsx`. Locate the `/* Step 2: ... */` comment within the `Button` component for "Start New Trip" and replace it with the following `onClick` handler:
+Open `src/pages/Home.jsx`. You will add an `onClick` handler to the `Button` component for "Start New Trip" (around line 293). The snippet below shows the `onClick` handler code you will add. Following that, you'll see how this handler is integrated into the complete `Button` component, with the added lines highlighted.
 
+**Add this `onClick` handler code:**
+```jsx
+onClick={() => {
+  navigate("/start");
+}}
+```
+
+**The complete `Button` component with the new `onClick` handler will look like this:**
 ```jsx title="src/pages/Home.jsx" showLineNumbers=293
 <Button
   type="button"
-  className="width-full margin-top-3"
+  className="bg-primary hover:bg-primary-darker width-full"
   //diff-add-start
   onClick={() => {
     navigate("/start");
@@ -120,13 +125,8 @@ Open `src/pages/Home.jsx`. Locate the `/* Step 2: ... */` comment within the `Bu
 *   We pass the string `"/start"` to `navigate`, telling React Router to change the URL to `/start` when the button is clicked. This will cause the `App` component to render the `StartTrip` page component associated with that route.
 
 **Test Navigation:**
-*   You might need to restart your development server if you stopped it. If you are still running `npm run serve`, stop it (Ctrl+C) and start the development server for easier testing with Hot Module Replacement (HMR):
-    ```bash
-    npm run start
-    ```
-*   Open the application in your browser (usually [http://localhost:3000](http://localhost:3000) for the dev server).
 *   Click the "Start New Trip" button. You should now be navigated to a new page (which is currently blank or basic, as we haven't built the `StartTrip` form yet).
 
 ## Conclusion
 
-In this lesson, you learned how to build and serve the PWA, verify its basic offline capabilities using the browser's developer tools, and add necessary application icons to the PWA manifest via the Vite configuration. You also implemented the first navigation feature, linking the home page button to the start of the trip logging workflow using React Router. The application now works offline and has a functional starting point for logging a new trip.
+In this lesson, you learned how to structure your page using USWDS `GridContainer` and `Grid` components for a consistent layout. You also implemented the first navigation feature, linking the home page button to the start of the trip logging workflow using React Router. The application now has a better-structured main page and a functional starting point for logging a new trip.
