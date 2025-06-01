@@ -81,15 +81,12 @@ To save data, we first need to access the appropriate RADFish store and collecti
 Open `src/pages/StartTrip.jsx`. Locate the `// Access RADFish store and collection` comment and add the following code:
 
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=202
-      try {
-        // Access RADFish store and collection
-```
-
-Add the following code after the `try` block to access the RADFish store and collection:
-
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=203
-      const tripStore = app.stores["trip"];
-      const Form = tripStore.getCollection("Form");
+try {
+  // Access RADFish store and collection
+  //diff-add-start
+  const tripStore = app.stores["trip"];
+  const Form = tripStore.getCollection("Form");
+  //diff-add-end
 ```
 
 **Explanation:**
@@ -99,56 +96,98 @@ Add the following code after the `try` block to access the RADFish store and col
 
 ## Step 2: Saving Trip Data
 
-### 2.1: Update the form if it exists, else create a new form
+### 2.1: Prepare the trip data object
 
-Now that we have access to the `Form` collection, we can save the data. We need to handle two cases: creating a new trip record if it's the first time submitting this form, or updating an existing record if the user came back to edit this step.
+Before we can save or update the trip, we need to prepare the data object with all the form values plus some metadata. 
 
-In the same file (`src/pages/StartTrip.jsx`), locate the `/* Step 2: Update the form if it exists, else create a new form */` comment and replace it with the following code:
+Locate the comment `// Prepare data to be saved` and add the following code:
 
-```javascript
-// filepath: src/pages/StartTrip.jsx
-// ...existing code...
-          step: 2 // Update step number
-        };
-
-        if (currentTripId) {
-          // --- Update existing trip ---
-          // Merge existing ID with new data and update in IndexedDB
-          await Form.update({ id: currentTripId, ...tripData });
-        } else {
-          // --- Create new trip ---
-          const newTripId = crypto.randomUUID(); // Generate a unique ID
-          // Add ID to data and create new record in IndexedDB
-          await Form.create({ id: newTripId, ...tripData, endWeather: "", endTime: "" });
-          navigateToId = newTripId; // Store the new ID for navigation
-          setCurrentTripId(newTripId); // Update state with the new ID
-        }
-        // Navigate to the next step (CatchLog), passing the tripId via state
-        navigate(`/catch`, { state: { tripId: navigateToId } });
-// ...existing code...
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=209
+// Prepare data to be saved
+//diff-add-start
+const tripData = {
+  tripDate: formData.tripDate,
+  weather: formData.weather,
+  startTime: formData.startTime,
+  status: "in-progress", // Set status for new/updated trip
+  step: 2 // Update step number
+};
+//diff-add-end
 ```
 
 **Explanation:**
 
-- `tripData`: We gather the form data (`tripDate`, `weather`, `startTime`) along with some metadata (`status: "in-progress"`, `step: 2`) into an object.
-- `if (currentTripId)`: We check if `currentTripId` (which we set when loading existing data) has a value.
-  - **Update:** If it exists, we call `Form.update()`, passing the `currentTripId` and the `tripData`. RADFish finds the record with that ID in the "Form" collection (in IndexedDB) and updates it with the new data.
-  - **Create:** If `currentTripId` is null, it's a new trip. We generate a unique ID using `crypto.randomUUID()`. We then call `Form.create()`, passing the new ID and the `tripData` (plus initial empty values for fields from later steps). RADFish creates a new record in the "Form" collection. We also store the `newTripId` so we can navigate correctly.
-- `navigate(`/catch`, { state: { tripId: navigateToId } })`: After successfully saving the data, we use the `navigate` function from React Router to go to the `/catch` route (the Catch Log page). Crucially, we pass the `tripId` (either the existing one or the newly created one) in the navigation state. This allows the Catch Log page to know which trip it's associated with.
+- We gather the form data (`tripDate`, `weather`, `startTime`) from our component's state
+- We add metadata like `status: "in-progress"` to track that this trip is currently being worked on
+- We set `step: 2` to indicate the user should proceed to the Catch Log page next
 
-## Dev Tip: Inspecting IndexedDB
+### 2.2: Update existing trip or create new trip
+
+Now we handle both scenarios: updating an existing trip or creating a brand new one.
+
+In the same file, locate `// Update the form if it exists, else create a new form` and add the following code:
+
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=218
+/* Update the form if it exists, else create a new form */
+//diff-add-start
+if (currentTripId) {
+  // --- Update existing trip ---
+  // Merge existing ID with new data and update in IndexedDB
+  await Form.update({ id: currentTripId, ...tripData });
+} else {
+  // --- Create new trip ---
+  const newTripId = crypto.randomUUID(); // Generate a unique ID
+  // Add ID to data and create new record in IndexedDB
+  await Form.create({ 
+    id: newTripId, 
+    ...tripData, 
+    endWeather: "", 
+    endTime: "" 
+  });
+  navigateToId = newTripId; // Store the new ID for navigation
+  setCurrentTripId(newTripId); // Update state with the new ID
+}
+//diff-add-end
+```
+
+**Explanation:**
+
+- **Update Path**: If `currentTripId` exists, we call `Form.update()` with the existing ID and our `tripData`. RADFish finds the record in IndexedDB and updates it with the new values.
+- **Create Path**: If no `currentTripId`, it's a new trip:
+  - Generate a unique ID using `crypto.randomUUID()`
+  - Call `Form.create()` with the new ID, our `tripData`, plus empty values for fields from later steps (`endWeather`, `endTime`)
+  - Store the new ID for navigation and update our component state
+
+### 2.3: Navigate to the next step
+
+After successfully saving the data, we navigate the user to the Catch Log page.
+
+Add the following navigation code after the create/update logic:
+
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=233
+// Navigate to the next step (CatchLog), passing the tripId via state
+//diff-add-start
+navigate(`/catch`, { state: { tripId: navigateToId } });
+//diff-add-end
+```
+
+**Explanation:**
+
+- We use React Router's `navigate` function to go to the `/catch` route
+- We pass the `tripId` (either existing or newly created) in the navigation state
+- This allows the Catch Log page to know which trip it's associated with
+
+:::tip Dev Tip: Inspecting IndexedDB
 
 You can see the data being saved directly in your browser's developer tools:
 
-1.  Open your browser's developer tools (usually by pressing F12 or right-clicking and selecting "Inspect" or "Inspect Element").
-2.  Go to the "Application" tab (Chrome/Edge) or "Storage" tab (Firefox).
-3.  In the left-hand panel, find "IndexedDB".
-4.  Expand the database (it might be named after your application or have a default RADFish name).
-5.  Expand the "trip" object store.
-6.  Click on the "Form" collection/index. You should see the trip data you just submitted.
-
-![IndexedDB Inspection](https://developer.chrome.com/static/docs/devtools/storage/indexeddb/image/indexeddb-data-preview-key_1440.png)
-_(Image source: Chrome Developers)_
+1. Open your browser's developer tools (usually by pressing F12 or right-clicking and selecting "Inspect" or "Inspect Element").
+2. Go to the "Application" tab (Chrome/Edge) or "Storage" tab (Firefox).
+3. In the left-hand panel, find "IndexedDB".
+4. Expand the database (it might be named after your application or have a default RADFish name).
+5. Expand the "trip" object store.
+6. Click on the "Form" collection/index. You should see the trip data you just submitted.
+:::
 
 ## Conclusion
 
