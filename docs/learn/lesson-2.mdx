@@ -46,10 +46,10 @@ These components work together to create accessible, well-structured forms that 
 
 ### 1.2: Add the DatePicker to the Form
 
-Now locate the `Form` component to add the following code:
+Now locate the `{/* USWDS Form component */}` to add the following code:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=278
-<Form onSubmit={handleSubmit} large></Form>
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=272
+{/* USWDS Form component */}
 ```
 
 **Add the `FormGroup`, `Label`, and `DatePicker` input within the `Form` component:**
@@ -77,9 +77,10 @@ Now locate the `Form` component to add the following code:
 
 The complete **Form** will look like this:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=278
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=272
+{/* USWDS Form component */}
+// diff-add-start
 <Form onSubmit={handleSubmit} large>
-  // diff-add-start
   <FormGroup>
     <Label
       htmlFor="tripDate"
@@ -98,8 +99,8 @@ The complete **Form** will look like this:
       required
     />
   </FormGroup>
-  // diff-add-end
 </Form>
+// diff-add-end
 ```
 
 #### React State Management Explanation
@@ -108,7 +109,7 @@ Let's look at two key aspects of how React manages state with this form:
 
 1. **Initial State with `defaultValue`**:
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=295
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=289
    defaultValue={formData.tripDate}
    ```
 
@@ -128,14 +129,14 @@ Let's look at two key aspects of how React manages state with this form:
 
 2. **Updating State with `onChange`**:
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=292
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=290
    onChange = { handleDateChange };
    ```
 
    - The `onChange` attribute is a required prop for controlled inputs. It is called whenever the input's value changes (on every keystroke or selection). Without this handler, React would revert the input to its original value after each change.
    - When a user selects a date, the `handleDateChange` function is called
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=150
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=149
    const handleDateChange = (value) => {
      setFormData((prevData) => ({ ...prevData, tripDate: value || "" }));
    };
@@ -156,9 +157,6 @@ Open `src/pages/StartTrip.jsx` and update the import statement from `@trussworks
 import {
   Button,
   DatePicker,
-  //diff-add-start
-  TimePicker,
-  //diff-add-end
   ErrorMessage,
   Form,
   FormGroup,
@@ -167,12 +165,15 @@ import {
   Label,
   StepIndicator,
   StepIndicatorStep,
+  //diff-add-start
+  TimePicker,
+  //diff-add-end
 } from "@trussworks/react-uswds";
 ```
 
 ### 2.2: Add the TimePicker to the Form
 
-Let's add the `TimePicker` input below the `DatePicker`:
+Let's add the `TimePicker` input below the `DatePicker` form group:
 
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=315
 <FormGroup>
@@ -212,15 +213,15 @@ import {
   Button,
   DatePicker,
   TimePicker,
-  //diff-add-start
-  Select,
-  //diff-add-end
   ErrorMessage,
   Form,
   FormGroup,
   Grid,
   GridContainer,
   Label,
+  //diff-add-start
+  Select,
+  //diff-add-end
   StepIndicator,
   StepIndicatorStep,
 } from "@trussworks/react-uswds";
@@ -228,7 +229,7 @@ import {
 
 ### 3.2: Add the Select to the Form
 
-Add the following code below the `TimePicker`:
+Add the following code below the `TimePicker` form group:
 
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=352
 <FormGroup>
@@ -258,9 +259,10 @@ Add the following code below the `TimePicker`:
 
 The complete **Form** will look like this: 
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=352
-<Form onSubmit={handleSubmit} large>
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=272
+{/* USWDS Form component */}
   // diff-add-start
+<Form onSubmit={handleSubmit} large>
   <FormGroup>
     <Label
       htmlFor="tripDate"
@@ -311,8 +313,8 @@ The complete **Form** will look like this:
       <option value="Rainy">Rainy</option>
     </Select>
   </FormGroup>
-  // diff-add-end
 </Form>
+// diff-add-end
 ```
 
 ## Conclusion
