@@ -317,6 +317,49 @@ The complete **Form** will look like this:
 // diff-add-end
 ```
 
+## Step 4: Testing Form Data Collection
+
+Before we learn how to save data to storage in the next lesson, let's first see what our form data looks like when submitted. We'll modify the form submission to display the collected data in the browser console.
+
+### 4.1: Update the form submission handler
+
+Open `src/pages/StartTrip.jsx` and locate the `handleSubmit` function. Replace the existing submission logic with the following code that will log the form data to the console:
+
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=191
+// Proceed only if validation passes
+if (Object.keys(newErrors).length === 0) {
+  //diff-add-start
+  // Print the form data to console instead of saving to IndexedDB
+  console.log("Form Data:", {
+    tripDate: formData.tripDate,
+    weather: formData.weather,
+    startTime: formData.startTime,
+    status: "in-progress",
+    step: 2
+  });
+  //diff-add-end
+}
+```
+
+**Explanation:**
+
+- We gather all the form data (`tripDate`, `weather`, `startTime`) into a single object
+- We add metadata fields like `status: "in-progress"` and `step: 2` that will be useful for tracking form progress
+- `console.log()` outputs this data structure to the browser's developer console so we can inspect it
+
+### 4.2: Test the form submission
+
+Now let's test our form to see the data structure:
+
+1. Fill out all the form fields (Date, Time, Weather)
+2. Click the "Next" button
+3. Open your browser's developer console (F12 or right-click → Inspect → Console tab)
+4. You should see the form data logged to the console
+
+![Form Data Console Output](./src/assets/step-4.2.png)
+
+This shows you exactly what data structure we'll be saving to IndexedDB in the next lesson. You can see how React has collected all your form inputs into a clean, structured object.
+
 ## Conclusion
 
 You have now successfully implemented the user interface for the first step of the trip logging form! You've added USWDS `DatePicker`, `TimePicker`, and `Select` components to capture the trip's start date, time, and weather. These inputs are connected to the component's state, ready to be saved. The development server is running with HMR, making it easy to see your changes as you make them.
