@@ -2,7 +2,7 @@ import CodeBlock from "@theme/CodeBlock";
 
 # Lesson 2: Start Trip Form Inputs
 
-This lesson focuses on building the first step of the trip logging form, the "Start Trip" page. We'll use components from the U.S. Web Design System (USWDS) library (`@trussworks/react-uswds`) to add inputs for the trip date, start time, and weather conditions.
+This lesson focuses on building the first step of the trip logging form, the "Start Trip" page. We'll use components from the U.S. Web Design System (USWDS) library (`@trussworks/react-uswds`) to add inputs for the trip date, start time, and start weather.
 
 ## Step 1: Add Date Picker Input
 
@@ -118,7 +118,7 @@ Let's look at two key aspects of how React manages state with this form:
    ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=72
    const [formData, setFormData] = useState({
      tripDate: "",
-     weather: "",
+     startWeather: "",
      startTime: "",
    });
    ```
@@ -188,7 +188,7 @@ Let's add the `TimePicker` input below the `DatePicker` form group:
     minTime="00:00"
     maxTime="23:45"
     step={15}
-    aria-describedby="startTime-error-message"
+    aria-describedby="start-time-error-message"
   />
 </FormGroup>
 ```
@@ -233,15 +233,15 @@ Add the following code below the `TimePicker` form group:
 
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=352
 <FormGroup>
-  <Label htmlFor="weather" requiredMarker>
+  <Label htmlFor="startWeather" requiredMarker>
     Weather
   </Label>
   <Select
-    id="weather"
-    name="weather"
-    value={formData.weather}
+    id="startWeather"
+    name="startWeather"
+    value={formData.startWeather}
     onChange={handleInputChange}
-    aria-describedby="weather-error-message"
+    aria-describedby="start-weather-error-message"
   >
     <option value="">-Select-</option>
     <option value="Sunny">Sunny</option>
@@ -253,7 +253,7 @@ Add the following code below the `TimePicker` form group:
 
 **Explanation:**
 
-- `value={formData.weather}` binds the selected option to the `weather` field in the state.
+- `value={formData.startWeather}` binds the selected option to the `startWeather` field in the state.
 - `onChange={handleInputChange}` uses the standard input handler (already present) because the `Select` component behaves like a standard HTML select element in this regard.
 - We define the available weather options using standard HTML `<option>` tags within the `Select` component. The first option has an empty `value` to represent the default, unselected state.
 
@@ -293,19 +293,19 @@ The complete **Form** will look like this:
       minTime="00:00"
       maxTime="23:45"
       step={15}
-      aria-describedby="startTime-error-message"
+      aria-describedby="start-time-error-message"
     />
   </FormGroup>
   <FormGroup>
-    <Label htmlFor="weather" requiredMarker>
+    <Label htmlFor="startWeather" requiredMarker>
       Weather
     </Label>
     <Select
-      id="weather"
-      name="weather"
-      value={formData.weather}
+      id="startWeather"
+      name="startWeather"
+      value={formData.startWeather}
       onChange={handleInputChange}
-      aria-describedby="weather-error-message"
+      aria-describedby="start-weather-error-message"
     >
       <option value="">-Select-</option>
       <option value="Sunny">Sunny</option>
@@ -332,7 +332,7 @@ if (Object.keys(newErrors).length === 0) {
   // Print the form data to console instead of saving to IndexedDB
   console.log("Form Data:", {
     tripDate: formData.tripDate,
-    weather: formData.weather,
+    startWeather: formData.startWeather,
     startTime: formData.startTime,
     status: "in-progress",
     step: 2
@@ -343,7 +343,7 @@ if (Object.keys(newErrors).length === 0) {
 
 **Explanation:**
 
-- We gather all the form data (`tripDate`, `weather`, `startTime`) into a single object
+- We gather all the form data (`tripDate`, `startWeather`, `startTime`) into a single object
 - We add metadata fields like `status: "in-progress"` and `step: 2` that will be useful for tracking form progress
 - `console.log()` outputs this data structure to the browser's developer console so we can inspect it
 
@@ -351,17 +351,17 @@ if (Object.keys(newErrors).length === 0) {
 
 Now let's test our form to see the data structure:
 
-1. Fill out all the form fields (Date, Time, Weather)
+1. Fill out all the form fields (Date, Start Time, Start Weather)
 2. Click the "Next" button
 3. Open your browser's developer console (F12 or right-click → Inspect → Console tab)
 4. You should see the form data logged to the console
 
-![Form Data Console Output](./src/assets/step-4.2.png)
+![Form Data Console Output](./src/assets/lesson-2_step-4.2.png)
 
 This shows you exactly what data structure we'll be saving to IndexedDB in the next lesson. You can see how React has collected all your form inputs into a clean, structured object.
 
 ## Conclusion
 
-You have now successfully implemented the user interface for the first step of the trip logging form! You've added USWDS `DatePicker`, `TimePicker`, and `Select` components to capture the trip's start date, time, and weather. These inputs are connected to the component's state, ready to be saved. The development server is running with HMR, making it easy to see your changes as you make them.
+You have now successfully implemented the user interface for the first step of the trip logging form! You've added USWDS `DatePicker`, `TimePicker`, and `Select` components to capture the trip's start date, start time, and start weather. These inputs are connected to the component's state, ready to be saved. The development server is running with HMR, making it easy to see your changes as you make them.
 
 In the next lesson, we will implement the logic to save the data entered in this form using RADFish's offline storage capabilities (IndexedDB) and navigate the user to the next step.
