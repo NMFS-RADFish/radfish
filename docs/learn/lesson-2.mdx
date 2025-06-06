@@ -46,39 +46,9 @@ These components work together to create accessible, well-structured forms that 
 
 ### 1.2: Add the DatePicker to the Form
 
-Now locate the `{/* USWDS Form component */}` to add the following code:
-
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=272
-{/* USWDS Form component */}
-```
-
 **Add the `FormGroup`, `Label`, and `DatePicker` input within the `Form` component:**
 
-```jsx
-<FormGroup>
-  <Label
-    htmlFor="tripDate"
-    hint=" mm/dd/yyyy"
-    className="input-date-label"
-    requiredMarker
-  >
-    Date
-  </Label>
-  <DatePicker
-    id="tripDate"
-    name="tripDate"
-    defaultValue={formData.tripDate}
-    onChange={handleDateChange}
-    aria-describedby="tripDate-hint"
-    required
-  />
-</FormGroup>
-```
-
-The complete **Form** will look like this:
-
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=272
-{/* USWDS Form component */}
 // diff-add-start
 <Form onSubmit={handleSubmit} large>
   <FormGroup>
@@ -95,9 +65,12 @@ The complete **Form** will look like this:
       name="tripDate"
       defaultValue={formData.tripDate}
       onChange={handleDateChange}
-      aria-describedby="tripDate-hint"
+      aria-describedby="tripDateHint"
       required
     />
+    <span id="tripDateHint" className="usa-sr-only">
+      Please enter or select the date of your fishing trip.
+    </span>
   </FormGroup>
 </Form>
 // diff-add-end
@@ -176,6 +149,7 @@ import {
 Let's add the `TimePicker` input below the `DatePicker` form group:
 
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=315
+// diff-add-start
 <FormGroup>
   <Label htmlFor="startTime" className="input-time-label" requiredMarker>
     Time
@@ -188,9 +162,13 @@ Let's add the `TimePicker` input below the `DatePicker` form group:
     minTime="00:00"
     maxTime="23:45"
     step={15}
-    aria-describedby="start-time-error-message"
+    aria-describedby="startTimeHint"
   />
+  <span id="startTimeHint" className="usa-sr-only">
+    Please enter or select the time you started fishing.
+  </span>
 </FormGroup>
+// diff-add-end
 ```
 
 **Explanation:**
@@ -232,6 +210,7 @@ import {
 Add the following code below the `TimePicker` form group:
 
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=352
+// diff-add-start
 <FormGroup>
   <Label htmlFor="startWeather" requiredMarker>
     Weather
@@ -241,14 +220,18 @@ Add the following code below the `TimePicker` form group:
     name="startWeather"
     value={formData.startWeather}
     onChange={handleInputChange}
-    aria-describedby="start-weather-error-message"
+    aria-describedby="startWeatherHint"
   >
     <option value="">-Select-</option>
     <option value="Sunny">Sunny</option>
     <option value="Cloudy">Cloudy</option>
     <option value="Rainy">Rainy</option>
   </Select>
+  <span id="startWeatherHint" className="usa-sr-only">
+    Please select the weather conditions at the start of your fishing trip.
+  </span>
 </FormGroup>
+// diff-add-end
 ```
 
 **Explanation:**
@@ -257,11 +240,10 @@ Add the following code below the `TimePicker` form group:
 - `onChange={handleInputChange}` uses the standard input handler (already present) because the `Select` component behaves like a standard HTML select element in this regard.
 - We define the available weather options using standard HTML `<option>` tags within the `Select` component. The first option has an empty `value` to represent the default, unselected state.
 
-The complete **Form** will look like this: 
+The complete **Form** will look like this:
 
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=272
-{/* USWDS Form component */}
-  // diff-add-start
+// diff-add-start
 <Form onSubmit={handleSubmit} large>
   <FormGroup>
     <Label
@@ -277,9 +259,12 @@ The complete **Form** will look like this:
       name="tripDate"
       defaultValue={formData.tripDate}
       onChange={handleDateChange}
-      aria-describedby="tripDate-hint"
+      aria-describedby="tripDateHint"
       required
     />
+    <span id="tripDateHint" className="usa-sr-only">
+      Please enter or select the date of your fishing trip.
+    </span>
   </FormGroup>
   <FormGroup>
     <Label htmlFor="startTime" className="input-time-label" requiredMarker>
@@ -293,8 +278,11 @@ The complete **Form** will look like this:
       minTime="00:00"
       maxTime="23:45"
       step={15}
-      aria-describedby="start-time-error-message"
+      aria-describedby="startTimeHint"
     />
+    <span id="startTimeHint" className="usa-sr-only">
+      Please enter or select the time you started fishing.
+    </span>
   </FormGroup>
   <FormGroup>
     <Label htmlFor="startWeather" requiredMarker>
@@ -305,15 +293,18 @@ The complete **Form** will look like this:
       name="startWeather"
       value={formData.startWeather}
       onChange={handleInputChange}
-      aria-describedby="start-weather-error-message"
+      aria-describedby="startWeatherHint"
     >
       <option value="">-Select-</option>
       <option value="Sunny">Sunny</option>
       <option value="Cloudy">Cloudy</option>
       <option value="Rainy">Rainy</option>
     </Select>
+    <span id="startWeatherHint" className="usa-sr-only">
+      Please select the weather conditions at the start of your fishing trip.
+    </span>
   </FormGroup>
-</Form>
+</Form>;
 // diff-add-end
 ```
 
@@ -326,16 +317,14 @@ Before we learn how to save data to storage in the next lesson, let's first see 
 Open `src/pages/StartTrip.jsx` and locate the `handleSubmit` function. Replace the existing submission logic with the following code that will log the form data to the console:
 
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=191
-// Proceed only if validation passes
 if (Object.keys(newErrors).length === 0) {
   //diff-add-start
-  // Print the form data to console instead of saving to IndexedDB
   console.log("Form Data:", {
     tripDate: formData.tripDate,
     startWeather: formData.startWeather,
     startTime: formData.startTime,
     status: "in-progress",
-    step: 2
+    step: 2,
   });
   //diff-add-end
 }
