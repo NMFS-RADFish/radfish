@@ -27,12 +27,12 @@ stores: {
             step: {
               type: "number",
               required: true,
-              default: 1 // Track the current step (1: Start, 2: Catch, 3: End, 4: Review)
+              default: 1
             },
             status: {
               type: "string",
               required: true,
-              default: "none", // none, in-progress, Not Submitted, submitted
+              default: "none",
             },
             // diff-add-start
             tripDate: {
@@ -77,11 +77,8 @@ This schema ensures data consistency and provides validation when we create or u
 
 To save data, we first need to access the appropriate RADFish store and collection within our `handleSubmit` function.
 
-Open `src/pages/StartTrip.jsx`. Locate the `// Access RADFish store and collection` comment and add the following code:
-
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=202
 try {
-  // Access RADFish store and collection
   //diff-add-start
   const tripStore = app.stores["trip"];
   const Form = tripStore.getCollection("Form");
@@ -101,10 +98,7 @@ Before we can save or update the trip, we need to prepare the data object with a
 
 In lesson 2, we used `console.log()` to test our form data collection. Now we'll replace that with actual data preparation for storage.
 
-Locate the comment `// Prepare data to be saved` and update the code to the following:
-
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=209
-// Prepare data to be saved
 //diff-remove-start
 console.log("Form Data:", {
   tripDate: formData.tripDate,
@@ -129,25 +123,18 @@ const tripData = {
 
 Now we handle both scenarios: updating an existing trip or creating a brand new one.
 
-In the same file, locate `// Update the form if it exists, else create a new form` and add the following code:
-
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=218
-/* Update the form if it exists, else create a new form */
 //diff-add-start
 if (currentTripId) {
-  // --- Update existing trip ---
-  // Merge existing ID with new data and update in IndexedDB
   await Form.update({ id: currentTripId, ...tripData });
 } else {
-  // --- Create new trip ---
-  const newTripId = crypto.randomUUID(); // Generate a unique ID
-  // Add ID to data and create new record in IndexedDB
+  const newTripId = crypto.randomUUID();
   await Form.create({ 
     id: newTripId, 
     ...tripData, 
   });
-  navigateToId = newTripId; // Store the new ID for navigation
-  setCurrentTripId(newTripId); // Update state with the new ID
+  navigateToId = newTripId;
+  setCurrentTripId(newTripId);
 }
 //diff-add-end
 ```
@@ -183,7 +170,6 @@ After successfully saving the data, we navigate the user to the Catch Log page.
 Add the following navigation code after the create/update logic:
 
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=233
-// Navigate to the next step (CatchLog), passing the tripId via state
 //diff-add-start
 navigate(`/catch`, { state: { tripId: navigateToId } });
 //diff-add-end
