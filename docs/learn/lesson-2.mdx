@@ -65,7 +65,7 @@ These components work together to create accessible, well-structured forms that 
       name="tripDate"
       defaultValue={formData.tripDate}
       onChange={handleDateChange}
-      aria-describedby="tripDateHint"
+      aria-describedby="tripDate-hint"
       required
     />
     <span id="tripDateHint" className="usa-sr-only">
@@ -162,9 +162,9 @@ Let's add the `TimePicker` input below the `DatePicker` form group:
     minTime="00:00"
     maxTime="23:45"
     step={15}
-    aria-describedby="startTimeHint"
+    aria-describedby="start-time-hint"
   />
-  <span id="startTimeHint" className="usa-sr-only">
+  <span id="start-time-hint" className="usa-sr-only">
     Please enter or select the time you started fishing.
   </span>
 </FormGroup>
@@ -220,14 +220,14 @@ Add the following code below the `TimePicker` form group:
     name="startWeather"
     value={formData.startWeather}
     onChange={handleInputChange}
-    aria-describedby="startWeatherHint"
+    aria-describedby="start-weather-hint"
   >
     <option value="">-Select-</option>
     <option value="Sunny">Sunny</option>
     <option value="Cloudy">Cloudy</option>
     <option value="Rainy">Rainy</option>
   </Select>
-  <span id="startWeatherHint" className="usa-sr-only">
+  <span id="start-weather-hint" className="usa-sr-only">
     Please select the weather conditions at the start of your fishing trip.
   </span>
 </FormGroup>
@@ -240,7 +240,7 @@ Add the following code below the `TimePicker` form group:
 - `onChange={handleInputChange}` uses the standard input handler (already present) because the `Select` component behaves like a standard HTML select element in this regard.
 - We define the available weather options using standard HTML `<option>` tags within the `Select` component. The first option has an empty `value` to represent the default, unselected state.
 
-The complete **Form** will look like this:
+The complete **Form** will look like this: 
 
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=272
 // diff-add-start
@@ -259,10 +259,10 @@ The complete **Form** will look like this:
       name="tripDate"
       defaultValue={formData.tripDate}
       onChange={handleDateChange}
-      aria-describedby="tripDateHint"
+      aria-describedby="trip-date-hint"
       required
     />
-    <span id="tripDateHint" className="usa-sr-only">
+    <span id="trip-date-hint" className="usa-sr-only">
       Please enter or select the date of your fishing trip.
     </span>
   </FormGroup>
@@ -278,9 +278,9 @@ The complete **Form** will look like this:
       minTime="00:00"
       maxTime="23:45"
       step={15}
-      aria-describedby="startTimeHint"
+      aria-describedby="start-time-hint"
     />
-    <span id="startTimeHint" className="usa-sr-only">
+    <span id="start-time-hint" className="usa-sr-only">
       Please enter or select the time you started fishing.
     </span>
   </FormGroup>
@@ -293,18 +293,18 @@ The complete **Form** will look like this:
       name="startWeather"
       value={formData.startWeather}
       onChange={handleInputChange}
-      aria-describedby="startWeatherHint"
+      aria-describedby="start-weather-hint"
     >
       <option value="">-Select-</option>
       <option value="Sunny">Sunny</option>
       <option value="Cloudy">Cloudy</option>
       <option value="Rainy">Rainy</option>
     </Select>
-    <span id="startWeatherHint" className="usa-sr-only">
+    <span id="start-weather-hint" className="usa-sr-only">
       Please select the weather conditions at the start of your fishing trip.
     </span>
   </FormGroup>
-</Form>;
+</Form>
 // diff-add-end
 ```
 
@@ -324,7 +324,7 @@ if (Object.keys(newErrors).length === 0) {
     startWeather: formData.startWeather,
     startTime: formData.startTime,
     status: "in-progress",
-    step: 2,
+    step: 2
   });
   //diff-add-end
 }
