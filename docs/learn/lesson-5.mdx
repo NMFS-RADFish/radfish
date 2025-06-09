@@ -269,52 +269,50 @@ const validateRecordedCatches = () => {
 The recorded catches list displays errors with index-specific identifiers:
 
 ```jsx title="src/pages/CatchLog.jsx" showLineNumbers=580
-{
-  catches.map((catchItem, index) => {
-    const catchErrors = recordedCatchErrors[index] || {};
+catches.map((catchItem, index) => {
+  const catchErrors = recordedCatchErrors[index] || {};
 
-    return (
-      <div key={catchItem.id || index}>
-        //diff-remove-start
-        <FormGroup>
-        //diff-remove-end
-        //diff-add-start
-        <FormGroup error={!!catchErrors.species}>
-        //diff-add-end
-          <Label
-            htmlFor={`recorded-species-${index}`}
-            //diff-add-start
-            error={!!catchErrors.species}
-            //diff-add-end
-          >
-            Species
-            <span className="text-secondary-vivid margin-left-05">*</span>
-          </Label>
-          <Select
-            id={`recorded-species-${index}`}
-            //diff-add-start
-            validationStatus={catchErrors.species ? "error" : undefined}
-            aria-describedby={`species-hint recorded-species-${index}-error-message`}
-            //diff-add-end
-            // ... other props
-          >
-            {/* options */}
-          </Select>
-          <span id="species-hint" className="usa-sr-only">
-            Please select the species of the catch.
-          </span>
+  return (
+    <div key={catchItem.id || index}>
+      //diff-remove-start
+      <FormGroup>
+      //diff-remove-end
+      //diff-add-start
+      <FormGroup error={!!catchErrors.species}>
+      //diff-add-end
+        <Label
+          htmlFor={`recorded-species-${index}`}
           //diff-add-start
-          {catchErrors.species && (
-            <ErrorMessage id={`recorded-species-${index}-error-message`}>
-              {catchErrors.species}
-            </ErrorMessage>
-          )}
+          error={!!catchErrors.species}
           //diff-add-end
-        </FormGroup>
-      </div>
-    );
-  });
-}
+        >
+          Species
+          <span className="text-secondary-vivid margin-left-05">*</span>
+        </Label>
+        <Select
+          id={`recorded-species-${index}`}
+          //diff-add-start
+          validationStatus={catchErrors.species ? "error" : undefined}
+          aria-describedby={`species-hint recorded-species-${index}-error-message`}
+          //diff-add-end
+          // ... other props
+        >
+          {/* options */}
+        </Select>
+        <span id="species-hint" className="usa-sr-only">
+          Please select the species of the catch.
+        </span>
+        //diff-add-start
+        {catchErrors.species && (
+          <ErrorMessage id={`recorded-species-${index}-error-message`}>
+            {catchErrors.species}
+          </ErrorMessage>
+        )}
+        //diff-add-end
+      </FormGroup>
+    </div>
+  );
+})
 ```
 
 ## Step 4: Apply Validation to End Trip (Practice Exercise)
