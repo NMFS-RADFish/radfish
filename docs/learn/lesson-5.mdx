@@ -1,308 +1,454 @@
 # Lesson 5: Form Validation
 
-In this lesson, we will implement form validation for all three steps of the trip logging process (Start Trip, Catch Log, and End Trip). This ensures that users provide necessary information in the correct format before proceeding. We'll add validation logic and display error messages using the USWDS `ErrorMessage` component.
+In this lesson, we will implement comprehensive form validation across all three steps of the trip logging process (Start Trip, Catch Log, and End Trip). This ensures users provide accurate, complete information before proceeding to each subsequent step. We'll add validation logic using React state management and display user-friendly error messages using USWDS `ErrorMessage` components.
 
-## Step 1: Set validation errors in Start Trip
+## Step 1: Understanding Form Validation in RADFish Applications
 
-We need to store the validation results in the component's state so we can use them to display error messages.
+Before implementing validation, let's understand the validation patterns used in RADFish applications and how they integrate with React state management.
 
-Open `src/pages/StartTrip.jsx`. Locate the `/* Step 1: Set validation errors */` comment and replace it with the following code:
+### 1.1: Validation Architecture
 
-```jsx
-// filepath: src/pages/StartTrip.jsx
+Form validation in RADFish applications follows a consistent pattern across all form components:
+
+1. **Validation Functions**: Pure functions that check field values against business rules
+2. **Error State Management**: React state to store and display validation errors
+3. **Submission Prevention**: Block navigation/submission when validation fails
+4. **User Experience**: Clear, accessible error messages using USWDS components
+
+### 1.2: Validation Types
+
+Our trip logging application uses several validation types:
+
+- **Required Field Validation**: Ensures essential fields are not empty
+- **Data Type Validation**: Validates numbers, coordinates, and other specific formats
+- **Range Validation**: Ensures numeric values fall within acceptable bounds
+- **Business Logic Validation**: Custom rules specific to fishing trip data
+
+**Key Validation Concepts:**
+
+- **Client-Side Validation**: Immediate feedback without server round-trips
+- **Accessible Error Messages**: Screen reader compatible with proper ARIA attributes
+- **Form State Management**: Coordinating validation with React's controlled components
+- **Progressive Enhancement**: Validation works even if JavaScript fails
+
+## Step 2: Start Trip Form Validation
+
+Let's begin by implementing validation for the Start Trip form, which collects the trip date, start time, and weather conditions.
+
+### 2.1: Set Validation Error State
+
+The Start Trip form uses React state to store validation errors. When the form is submitted, we need to validate all fields and update the error state.
+
+Open `src/pages/StartTrip.jsx` and locate the `handleSubmit` function.
+
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=190
+const newErrors = validateForm();
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default browser form submission
+    setSubmitted(true); // Mark form as submitted to show errors
+
+    //diff-add-start
     const newErrors = validateForm();
     setErrors(newErrors);
+    //diff-add-end
 ```
 
-This code calls the `validateForm` function (which we'll enhance later) and updates the `errors` state with the returned error object.
+**Explanation:**
 
-## Step 2: Display Trip Date Error in Start Trip
+- `validateForm()`: Calls the validation function that checks all form fields
+- `setErrors(newErrors)`: Updates React state with the validation results
+- The form only proceeds if `Object.keys(newErrors).length === 0`
 
-Now, let's display an error message if the Trip Date is invalid.
+### 2.2: Required Field Validation Logic
 
-Open `src/pages/StartTrip.jsx`. Locate the `/* Step 2: Display Trip Date Error */` comment and replace it with the following code:
+The Start Trip form validates three required fields using a standardized validation helper:
 
-```jsx
-// filepath: src/pages/StartTrip.jsx
-              <ErrorMessage id="tripDate-error-message">
-                {(submitted && errors.tripDate) || "\u00A0"} {/* Non-breaking space for layout */}
-              </ErrorMessage>
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=166
+const validateRequired = (value, fieldName) => {
+  if (!value || String(value).trim() === "") {
+    return `${fieldName} is required`;
+  }
+  return null;
+};
+
+// Validates all fields in the form
+const validateForm = () => {
+  const newErrors = {};
+
+  const dateError = validateRequired(formData.tripDate, FIELD_DATE);
+  if (dateError) newErrors.tripDate = dateError;
+
+  const weatherError = validateRequired(formData.weather, FIELD_WEATHER);
+  if (weatherError) newErrors.weather = weatherError;
+
+  const timeError = validateRequired(formData.startTime, FIELD_START_TIME);
+  if (timeError) newErrors.startTime = timeError;
+
+  return newErrors;
+};
 ```
 
-This uses the `ErrorMessage` component from `@trussworks/react-uswds`. It conditionally renders the error message stored in `errors.tripDate` only if the form has been `submitted` and an error exists for that field. The `\u00A0` (non-breaking space) ensures the layout doesn't shift when there's no error.
+**Understanding the Validation Pattern:**
 
-## Step 3: Display Start Time Error in Start Trip
+- **Helper Function**: `validateRequired()` provides reusable validation logic
+- **Field Constants**: `FIELD_DATE`, `FIELD_WEATHER`, etc. ensure consistent error messages
+- **Error Object**: Returned object maps field names to error messages
+- **Null Returns**: Valid fields return `null` to indicate no errors
 
-Similarly, display an error for the Start Time.
+### 2.3: Display Error Messages
 
-Open `src/pages/StartTrip.jsx`. Locate the `/* Step 3: Display Start Time Error */` comment and replace it with the following code:
+The Start Trip form displays validation errors using USWDS `ErrorMessage` components. Each form field has an associated error display:
 
-```jsx
-// filepath: src/pages/StartTrip.jsx
-              <ErrorMessage id="startTime-error-message">
-                {(submitted && errors.startTime) || "\u00A0"}
-              </ErrorMessage>
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=274
+//diff-remove-start
+<FormGroup>
+//diff-remove-end
+//diff-add-start
+<FormGroup error={submitted && errors.tripDate}>
+//diff-add-end
+  <Label
+    htmlFor="tripDate"
+    //diff-add-start
+    error={submitted && errors.tripDate}
+    //diff-add-end
+    hint=" mm/dd/yyyy"
+    requiredMarker
+  >
+    Date
+  </Label>
+  <DatePicker
+    id="tripDate"
+    name="tripDate"
+    defaultValue={formData.tripDate}
+    onChange={handleDateChange}
+    //diff-add-start
+    validationStatus={submitted && errors.tripDate ? "error" : undefined}
+    //diff-add-end
+    aria-describedby="trip-date-hint trip-date-error-message"
+    required
+  />
+  <span id="trip-date-hint" className="usa-sr-only">
+    Please enter or select the date of your fishing trip.
+  </span>
+  //diff-add-start
+  {submitted && errors.tripDate && (
+         <ErrorMessage id="trip-date-error-message" className="font-sans-2xs">
+      {errors.tripDate}
+    </ErrorMessage>
+  )}
+  //diff-add-end
+</FormGroup>
 ```
 
-This adds the error message display for the `startTime` field.
+**Understanding the Error Display Pattern:**
 
-## Step 4: Display Weather Error in Start Trip
+The diff shows the transformation from a basic form group to a fully validated one:
 
-Finally, add the error display for the Weather field.
+- **FormGroup Error State**: `error={submitted && errors.tripDate}` applies USWDS error styling to the entire form group
+- **Label Error Integration**: `error={submitted && errors.tripDate}` on the Label component provides visual error indication
+- **Input Validation Status**: `validationStatus={submitted && errors.tripDate ? "error" : undefined}` adds error styling to the DatePicker
+- **ARIA Accessibility**: `aria-describedby="trip-date-hint trip-date-error-message"` links the input to both hint text and error messages
+- **Conditional Error Messages**: `{submitted && errors.tripDate && (...)}` only displays errors after form submission
+- **Consistent ID Naming**: `id="trip-date-error-message"` follows a consistent kebab-case pattern for error message identification
 
-Open `src/pages/StartTrip.jsx`. Locate the `/* Step 4: Display Weather Error */` comment and replace it with the following code:
+This pattern ensures errors are visually prominent, accessible to screen readers, and only appear when users attempt to submit invalid data.
 
-```jsx
-// filepath: src/pages/StartTrip.jsx
-              <ErrorMessage id="weather-error-message">
-                {(submitted && errors.weather) || "\u00A0"}
-              </ErrorMessage>
+## Step 3: Catch Log Form Validation
+
+The Catch Log page presents a more complex validation scenario with both a "new catch" form and a list of existing catches that can be edited.
+
+### 3.1: New Catch Validation
+
+The "Add Catch" form validates species, weight, length, time, and optional coordinates before adding to the list.
+
+Open `src/pages/CatchLog.jsx` and locate the `handleAddCatch` function. Observe how validation is implemented:
+
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=213
+const handleAddCatch = async (e) => {
+  e.preventDefault();
+  setSubmitted(true);
+
+  //diff-add-start
+  const formErrors = validateForm();
+  setErrors(formErrors);
+  //diff-add-end
+
+  // Proceed only if no errors and tripId exists
+  if (Object.keys(formErrors).length === 0 && tripId) {
+    // Save catch and update UI
+  }
+};
 ```
 
-This completes the error message display for the Start Trip form.
+**Complex Validation Rules:**
 
-## Step 5: Set validation errors for new catch in Catch Log
+The Catch Log uses multiple validation types beyond simple required field checks:
 
-In the Catch Log page, we need to validate the *new* catch form before adding it.
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=42
+const validateNumberRange = (value, min, max, fieldName, allowZero = true) => {
+  if (value === "" || value === null || value === undefined) return null;
+  const numValue = Number(value);
+  if (isNaN(numValue)) return `${fieldName} must be a valid number`;
+  if (!allowZero && numValue <= min)
+    return `${fieldName} must be greater than ${min}`;
+  if (allowZero && numValue < min)
+    return `${fieldName} must be at least ${min}`;
+  if (numValue > max) {
+    const minOperator = allowZero ? ">=" : ">";
+    return `${fieldName} must be ${minOperator} ${min} and <= ${max}`;
+  }
+  return null;
+};
 
-Open `src/pages/CatchLog.jsx`. Locate the `/* Step 5: Set validation errors for new catch */` comment and replace it with the following code:
-
-```jsx
-// filepath: src/pages/CatchLog.jsx
-    const formErrors = validateForm();
-    setErrors(formErrors);
+const validateLatitude = (value) => {
+  if (value === "" || value === null || value === undefined) return null;
+  const numValue = Number(value);
+  if (isNaN(numValue)) return `${FIELD_LATITUDE} must be a valid number`;
+  if (numValue < -90 || numValue > 90)
+    return `${FIELD_LATITUDE} must be between -90 and 90`;
+  return null;
+};
 ```
 
-This updates the `errors` state specifically for the *new catch* form based on the results of `validateForm`.
+**Advanced Validation Features:**
 
-## Step 6: Display Species Error in Catch Log (New Catch)
+- **Range Validation**: Weight (0-1000 lbs) and length (0-500 inches) must be within realistic bounds
+- **Coordinate Validation**: Latitude (-90 to 90) and longitude (-180 to 180) follow geographic standards
+- **Optional Field Handling**: Coordinates are validated only if values are provided
+- **Type Coercion**: Automatic conversion from string inputs to numbers
 
-Display the error message for the Species field in the new catch form.
+### 3.2: Recorded Catches Validation
 
-Open `src/pages/CatchLog.jsx`. Locate the `/* Step 6: Display Species Error */` comment and replace it with the following code:
+Before navigating to the End Trip page, all catches in the "Recorded Catches" list must be validated:
 
-```jsx
-// filepath: src/pages/CatchLog.jsx
-                <ErrorMessage id="species-error-message">
-                  {(submitted && errors.species) || "\u00A0"}
-                </ErrorMessage>
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=287
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  //diff-add-start
+  const recordedErrors = validateRecordedCatches();
+  setRecordedCatchErrors(recordedErrors);
+  //diff-add-end
+
+  // Only proceed if there are no errors in the recorded catches list
+  if (Object.keys(recordedErrors).length === 0) {
+    // Navigate to EndTrip page
+    navigate(`/end`, { state: { tripId: tripId } });
+  }
+};
 ```
 
-## Step 7: Display Weight Error in Catch Log (New Catch)
+**Multi-Record Validation:**
 
-Display the error message for the Weight field in the new catch form.
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=202
+const validateRecordedCatches = () => {
+  const allErrors = {};
+  catches.forEach((catchItem, index) => {
+    const catchErrors = {};
+    // Validate each catch using the same rules as new catches
+    catchErrors.species = validateRequired(catchItem.species, FIELD_SPECIES);
+    catchErrors.weight = validateRequired(catchItem.weight, FIELD_WEIGHT);
+    // ... additional validations
 
-Open `src/pages/CatchLog.jsx`. Locate the `/* Step 7: Display Weight Error */` comment and replace it with the following code:
+    // Only store errors if they exist
+    const filteredCatchErrors = Object.entries(catchErrors).reduce(
+      (acc, [key, value]) => {
+        if (value) acc[key] = value;
+        return acc;
+      },
+      {},
+    );
 
-```jsx
-// filepath: src/pages/CatchLog.jsx
-                    <ErrorMessage id="weight-error-message">
-                      {(submitted && errors.weight) || "\u00A0"}
-                    </ErrorMessage>
+    if (Object.keys(filteredCatchErrors).length > 0) {
+      allErrors[index] = filteredCatchErrors;
+    }
+  });
+  return allErrors;
+};
 ```
 
-## Step 8: Display Length Error in Catch Log (New Catch)
+### 3.3: Error Display for Recorded Catches
 
-Display the error message for the Length field in the new catch form.
+The recorded catches list displays errors with index-specific identifiers:
 
-Open `src/pages/CatchLog.jsx`. Locate the `/* Step 8: Display Length Error */` comment and replace it with the following code:
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=562
+catches.map((catchItem, index) => {
+  const catchErrors = recordedCatchErrors[index] || {};
 
-```jsx
-// filepath: src/pages/CatchLog.jsx
-                    <ErrorMessage id="length-error-message">
-                      {(submitted && errors.length) || "\u00A0"}
-                    </ErrorMessage>
+  return (
+    <div key={catchItem.id || index}>
+      //diff-remove-start
+      <FormGroup>
+      //diff-remove-end
+      //diff-add-start
+      <FormGroup error={!!catchErrors.species}>
+      //diff-add-end
+        <Label
+          htmlFor={`recorded-species-${index}`}
+          //diff-add-start
+          error={!!catchErrors.species}
+          //diff-add-end
+        >
+          Species
+          <span className="text-secondary-vivid margin-left-05">*</span>
+        </Label>
+        <Select
+          id={`recorded-species-${index}`}
+          //diff-add-start
+          validationStatus={catchErrors.species ? "error" : undefined}
+          aria-describedby={`species-hint recorded-species-${index}-error-message`}
+          //diff-add-end
+          // ... other props
+        >
+          {/* options */}
+        </Select>
+        <span id="species-hint" className="usa-sr-only">
+          Please select the species of the catch.
+        </span>
+        //diff-add-start
+        {catchErrors.species && (
+          <ErrorMessage id={`recorded-species-${index}-error-message`}>
+            {catchErrors.species}
+          </ErrorMessage>
+        )}
+        //diff-add-end
+      </FormGroup>
+    </div>
+  );
+})
 ```
 
-## Step 9: Display Time Error in Catch Log (New Catch)
+## Step 4: Apply Validation to End Trip (Practice Exercise)
 
-Display the error message for the Time field in the new catch form.
+Now it's your turn! Apply the validation patterns you've learned to the End Trip form. This form needs validation for the trip's end time and weather conditions before allowing users to review their complete trip data.
 
-Open `src/pages/CatchLog.jsx`. Locate the `/* Step 9: Display Time Error */` comment and replace it with the following code:
+However, before we can add validation, we need to complete the End Trip form implementation since it's currently missing the required fields and components.
 
-```jsx
-// filepath: src/pages/CatchLog.jsx
-                <ErrorMessage id="time-error-message">
-                  {(submitted && errors.time) || "\u00A0"}
-                </ErrorMessage>
-```
+### 4.1: Update the Data Model
 
-## Step 10: Display Latitude Error in Catch Log (New Catch)
+First, you need to enable the `endTime` and `endWeather` fields in the data model.
 
-Display the error message for the Latitude field (optional field, but validation applies if entered).
+Your task is to add the `endTime` and `endWeather` fields to the trip model.
 
-Open `src/pages/CatchLog.jsx`. Locate the `/* Step 10: Display Latitude Error */` comment and replace it with the following code:
+:::info Hint
+Models are defined in `src/index.jsx`.
+:::
 
-```jsx
-// filepath: src/pages/CatchLog.jsx
-                    <ErrorMessage id="latitude-error-message">
-                      {(submitted && errors.latitude) || "\u00A0"}
-                    </ErrorMessage>
-```
+### 4.2: Import Required Components
 
-## Step 11: Display Longitude Error in Catch Log (New Catch)
+Open `src/pages/EndTrip.jsx` and add the missing component imports.
 
-Display the error message for the Longitude field (optional field, but validation applies if entered).
+**Your task:** Add the necessary imports at the top of the file.
 
-Open `src/pages/CatchLog.jsx`. Locate the `/* Step 11: Display Longitude Error */` comment and replace it with the following code:
+**Components you'll need:**
+:::info Hint  
+Look at `src/pages/StartTrip.jsx` to see what components are needed for:
 
-```jsx
-// filepath: src/pages/CatchLog.jsx
-                    <ErrorMessage id="longitude-error-message">
-                      {(submitted && errors.longitude) || "\u00A0"}
-                    </ErrorMessage>
-```
+- Time input field
+- Weather dropdown
+- Error message display
+  :::
 
-## Step 12: Set validation errors for recorded catches in Catch Log
+### 4.3: Add Form Fields to the Component
 
-Before navigating to the next step (End Trip), we must validate *all* the catches already recorded in the list.
+The End Trip form currently only has navigation buttons. You need to add the actual form fields.
 
-Open `src/pages/CatchLog.jsx`. Locate the `/* Step 12: Set validation errors for recorded catches */` comment and replace it with the following code:
+**Fields to add:**
 
-```jsx
-// filepath: src/pages/CatchLog.jsx
-    const recordedErrors = validateRecordedCatches();
-    setRecordedCatchErrors(recordedErrors);
-```
+1. **End Time field** - similar to the startTime field in Start Trip
+2. **End Weather field** - similar to the weather field in Start Trip
 
-This calls a separate validation function (`validateRecordedCatches`) and stores the errors in the `recordedCatchErrors` state, which is structured to hold errors per catch item index.
+:::info Hint
+You'll need:
 
-## Step 13: Display Recorded Species Error in Catch Log (List)
+- FormGroup with proper error state
+- Label with required marker and error state
+- Input component with validation status
+- Conditional ErrorMessage component
+  :::
 
-Now, we'll add error displays within the list of recorded catches. This is slightly different as we need to access errors based on the catch's index.
+### 4.4: Add Form State Management
 
-Open `src/pages/CatchLog.jsx`. Locate the `/* Step 13: Display Recorded Species Error */` comment and replace it with the following code:
+You'll need to add state management for the form data and handle changes.
 
-```jsx
-// filepath: src/pages/CatchLog.jsx
-                            {catchErrors.species && (
-                              <ErrorMessage id={`recorded-species-${index}-error-message`}>
-                                {catchErrors.species}
-                              </ErrorMessage>
-                            )}
-```
+:::info Hint
+You'll need to add the following:
 
-Here, `catchErrors` is an object containing validation errors for the *current* catch item being rendered in the loop (at `index`). We conditionally render the `ErrorMessage` only if `catchErrors.species` exists.
+- formData state for storing field values
+- handleTimeChange function for time picker
+- handleSelectChange function for dropdowns
+- Form initialization from database/localStorage
+  :::
 
-## Step 14: Display Recorded Weight Error in Catch Log (List)
+### 4.5: Implement Validation Logic
 
-Add the error display for Weight in the recorded catches list.
+Finally, add the validation patterns you learned from the previous forms.
 
-Open `src/pages/CatchLog.jsx`. Locate the `/* Step 14: Display Recorded Weight Error */` comment and replace it with the following code:
+**For validation functions:**
 
-```jsx
-// filepath: src/pages/CatchLog.jsx
-                                {catchErrors.weight && (
-                                  <ErrorMessage id={`recorded-weight-${index}-error-message`}>
-                                    {catchErrors.weight}
-                                  </ErrorMessage>
-                                )}
-```
+:::info Hint
+- Copy the validateRequired helper from `src/pages/StartTrip.jsx`
+- Add validateForm function that checks both endTime and endWeather
+- Use the same field constants pattern (FIELD_END_TIME, FIELD_END_WEATHER)
+:::
 
-## Step 15: Display Recorded Length Error in Catch Log (List)
+**For setting validation errors:**
 
-Add the error display for Length in the recorded catches list.
+:::info Hint
+- Use the same pattern as Start Trip
+- const newErrors = validateForm();
+:::
 
-Open `src/pages/CatchLog.jsx`. Locate the `/* Step 15: Display Recorded Length Error */` comment and replace it with the following code:
+**For displaying error messages:**
 
-```jsx
-// filepath: src/pages/CatchLog.jsx
-                                {catchErrors.length && (
-                                  <ErrorMessage id={`recorded-length-${index}-error-message`}>
-                                    {catchErrors.length}
-                                  </ErrorMessage>
-                                )}
-```
+:::info Hint
+- Follow the same pattern as previous forms
+- Remember to:
+  - Add error prop to FormGroup
+  - Add error prop to Label
+  - Add validationStatus to the input component
+  - Add conditional ErrorMessage component
+  - Use proper aria-describedby for accessibility
+:::
 
-## Step 16: Display Recorded Time Error in Catch Log (List)
+## Step 5: Testing Complete Validation Flow
 
-Add the error display for Time in the recorded catches list.
+Test the validation system with both invalid and valid data to ensure it works correctly:
 
-Open `src/pages/CatchLog.jsx`. Locate the `/* Step 16: Display Recorded Time Error */` comment and replace it with the following code:
+### 5.1: Complete Validation Test
 
-```jsx
-// filepath: src/pages/CatchLog.jsx
-                            {catchErrors.time && (
-                              <ErrorMessage id={`recorded-time-${index}-error-message`}>
-                                {catchErrors.time}
-                              </ErrorMessage>
-                            )}
-```
+1. **Start Trip (`/start`)**:
 
-## Step 17: Display Recorded Latitude Error in Catch Log (List)
+   - Try submitting empty form → verify error messages appear
+   - Fill fields correctly → proceeds to Catch Log
 
-Add the error display for Latitude in the recorded catches list.
+2. **Catch Log (`/catch`)**:
 
-Open `src/pages/CatchLog.jsx`. Locate the `/* Step 17: Display Recorded Latitude Error */` comment and replace it with the following code:
+   - Try "Add Catch" with empty fields → verify validation errors
+   - Test invalid coordinates (latitude > 90) → verify range validation
+   - Add valid catches → try "Next" with invalid recorded catches → verify list validation
+   - Ensure all catches are valid → proceeds to End Trip
 
-```jsx
-// filepath: src/pages/CatchLog.jsx
-                                {catchErrors.latitude && (
-                                  <ErrorMessage id={`recorded-latitude-${index}-error-message`}>
-                                    {catchErrors.latitude}
-                                  </ErrorMessage>
-                                )}
-```
+3. **End Trip (`/end`)**:
+   - Try submitting without end time/weather → verify validation blocks navigation
+   - Fill fields correctly → proceeds to Review page
 
-## Step 18: Display Recorded Longitude Error in Catch Log (List)
+**Expected Results:**
 
-Add the error display for Longitude in the recorded catches list.
+- ✅ Errors appear only after submission attempts
+- ✅ Invalid data blocks navigation between steps
+- ✅ Error styling applied consistently across all forms
+- ✅ Valid data clears errors and allows progression
 
-Open `src/pages/CatchLog.jsx`. Locate the `/* Step 18: Display Recorded Longitude Error */` comment and replace it with the following code:
+## Conclusion
 
-```jsx
-// filepath: src/pages/CatchLog.jsx
-                                {catchErrors.longitude && (
-                                  <ErrorMessage id={`recorded-longitude-${index}-error-message`}>
-                                    {catchErrors.longitude}
-                                  </ErrorMessage>
-                                )}
-```
+You have successfully implemented comprehensive form validation across all three steps of the trip logging process!
 
-## Step 19: Set validation errors in End Trip
+**Key Benefits:**
 
-Move to the final form step. We need to set the validation errors when submitting the End Trip form.
+- **Data quality**: Ensures complete, accurate trip information
+- **User experience**: Clear guidance when data doesn't meet requirements
+- **Accessibility**: Screen reader compatible with proper labeling
+- **Progressive enhancement**: Validation works even if JavaScript fails
 
-Open `src/pages/EndTrip.jsx`. Locate the `/* Step 19: Set validation errors */` comment and replace it with the following code:
-
-```jsx
-// filepath: src/pages/EndTrip.jsx
-    const newErrors = validateForm();
-    setErrors(newErrors);
-```
-
-## Step 20: Display End Time Error in End Trip
-
-Display the error message for the End Time field.
-
-Open `src/pages/EndTrip.jsx`. Locate the `/* Step 20: Display End Time Error */` comment and replace it with the following code:
-
-```jsx
-// filepath: src/pages/EndTrip.jsx
-              <ErrorMessage id="endTime-error-message">
-                {(submitted && errors.endTime) || "\u00A0"}
-              </ErrorMessage>
-```
-
-## Step 21: Display End Weather Error in End Trip
-
-Display the error message for the End Weather field.
-
-Open `src/pages/EndTrip.jsx`. Locate the `/* Step 21: Display End Weather Error */` comment and replace it with the following code:
-
-```jsx
-// filepath: src/pages/EndTrip.jsx
-              <ErrorMessage id="endWeather-error-message">
-                {(submitted && errors.endWeather) || "\u00A0"}
-              </ErrorMessage>
-```
-
-# Conclusion
-
-You have now implemented validation logic and error message displays across all three form steps (Start Trip, Catch Log, End Trip). This involves:
-*   Defining validation rules (required fields, number ranges, coordinates).
-*   Storing validation results in the component state (`errors` and `recordedCatchErrors`).
-*   Conditionally displaying `ErrorMessage` components based on the submission status and validation results.
-*   Preventing navigation to the next step if validation fails.
-
-This makes the application more robust by guiding the user to provide complete and correct data. In the next lesson, we'll focus on reviewing the collected data before final submission.
+In the next lesson, we'll implement the review page where users can see all their trip data before final submission.
