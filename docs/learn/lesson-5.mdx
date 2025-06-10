@@ -322,50 +322,94 @@ catches.map((catchItem, index) => {
 
 Now it's your turn! Apply the validation patterns you've learned to the End Trip form. This form needs validation for the trip's end time and weather conditions before allowing users to review their complete trip data.
 
-### 4.1: Your Task
+However, before we can add validation, we need to complete the End Trip form implementation since it's currently missing the required fields and components.
 
-Open `src/pages/EndTrip.jsx` and apply the same validation patterns you learned from the Start Trip and Catch Log forms.
+### 4.1: Update the Data Model
 
-**What you need to do:**
+First, you need to enable the `endTime` and `endWeather` fields in the data model.
 
-1. **Set validation errors** in the `handleSubmit` function
-2. **Add error display** for the end time field
-3. **Add error display** for the end weather field
+Your task is to add the `endTime` and `endWeather` fields to the trip model.
 
-### 4.2: Hints for Implementation
+:::info Hint
+Models are defined in `src/index.jsx`.
+:::
+
+### 4.2: Import Required Components
+
+Open `src/pages/EndTrip.jsx` and add the missing component imports.
+
+**Your task:** Add the necessary imports at the top of the file.
+
+**Components you'll need:**
+:::info Hint  
+Look at `src/pages/StartTrip.jsx` to see what components are needed for:
+
+- Time input field
+- Weather dropdown
+- Error message display
+  :::
+
+### 4.3: Add Form Fields to the Component
+
+The End Trip form currently only has navigation buttons. You need to add the actual form fields.
+
+**Fields to add:**
+
+1. **End Time field** - similar to the startTime field in Start Trip
+2. **End Weather field** - similar to the weather field in Start Trip
+
+:::info Hint
+You'll need:
+
+- FormGroup with proper error state
+- Label with required marker and error state
+- Input component with validation status
+- Conditional ErrorMessage component
+  :::
+
+### 4.4: Add Form State Management
+
+You'll need to add state management for the form data and handle changes.
+
+:::info Hint
+You'll need to add the following:
+
+- formData state for storing field values
+- handleTimeChange function for time picker
+- handleSelectChange function for dropdowns
+- Form initialization from database/localStorage
+  :::
+
+### 4.5: Implement Validation Logic
+
+Finally, add the validation patterns you learned from the previous forms.
+
+**For validation functions:**
+
+:::info Hint
+- Copy the validateRequired helper from `src/pages/StartTrip.jsx`
+- Add validateForm function that checks both endTime and endWeather
+- Use the same field constants pattern (FIELD_END_TIME, FIELD_END_WEATHER)
+:::
 
 **For setting validation errors:**
-```jsx
-// Hint: Use the same pattern as Start Trip
-const newErrors = validateForm();
-// Add your code here to update the errors state
-```
+
+:::info Hint
+- Use the same pattern as Start Trip
+- const newErrors = validateForm();
+:::
 
 **For displaying error messages:**
-```jsx
-// Hint: Follow the same pattern as previous forms
-// Remember to:
-// - Add error prop to FormGroup
-// - Add error prop to Label  
-// - Add validationStatus to the input component
-// - Add conditional ErrorMessage component
-```
 
-### 4.3: Check Your Work
-
-After implementing validation:
-
-1. Navigate to `/end` (after completing previous steps)
-2. Click "Next" without filling any fields
-3. You should see error messages for both End Time and End Weather
-4. Fill in the fields - errors should disappear
-5. Form should proceed to Review page when valid
-
-**Expected Behavior:**
-- ✅ Error messages appear only after clicking "Next" 
-- ✅ Error styling applied to FormGroup, Label, and input components
-- ✅ Screen readers can access error messages via `aria-describedby`
-- ✅ Navigation blocked until all fields are valid
+:::info Hint
+- Follow the same pattern as previous forms
+- Remember to:
+  - Add error prop to FormGroup
+  - Add error prop to Label
+  - Add validationStatus to the input component
+  - Add conditional ErrorMessage component
+  - Use proper aria-describedby for accessibility
+:::
 
 ## Step 5: Testing Complete Validation Flow
 
@@ -374,10 +418,12 @@ Test the validation system with both invalid and valid data to ensure it works c
 ### 5.1: Complete Validation Test
 
 1. **Start Trip (`/start`)**:
+
    - Try submitting empty form → verify error messages appear
    - Fill fields correctly → proceeds to Catch Log
 
 2. **Catch Log (`/catch`)**:
+
    - Try "Add Catch" with empty fields → verify validation errors
    - Test invalid coordinates (latitude > 90) → verify range validation
    - Add valid catches → try "Next" with invalid recorded catches → verify list validation
@@ -388,16 +434,18 @@ Test the validation system with both invalid and valid data to ensure it works c
    - Fill fields correctly → proceeds to Review page
 
 **Expected Results:**
+
 - ✅ Errors appear only after submission attempts
-- ✅ Invalid data blocks navigation between steps  
+- ✅ Invalid data blocks navigation between steps
 - ✅ Error styling applied consistently across all forms
 - ✅ Valid data clears errors and allows progression
 
 ## Conclusion
 
-You have successfully implemented comprehensive form validation across all three steps of the trip logging process! 
+You have successfully implemented comprehensive form validation across all three steps of the trip logging process!
 
 **Key Benefits:**
+
 - **Data quality**: Ensures complete, accurate trip information
 - **User experience**: Clear guidance when data doesn't meet requirements
 - **Accessibility**: Screen reader compatible with proper labeling
