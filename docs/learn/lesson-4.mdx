@@ -12,7 +12,7 @@ RADFish organizes different types of data into separate **collections**. While o
 
 Open `src/index.jsx` and locate the `collections` section within the trip store. **You'll need to add the Catch collection schema after the Form collection as shown in the highlighted lines below:**
 
-```jsx title="src/index.jsx" showLineNumbers=60
+```jsx title="src/index.jsx" showLineNumbers=66
         },
       },
       // diff-add-start
@@ -91,8 +91,7 @@ First, we need to access the RADFish Catch collection within our form submission
 
 Open `src/pages/CatchLog.jsx` and locate the `handleAddCatch` function. Find the comment `// Create record in RADFish/IndexedDB` and replace it with the following code:
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=247
-// Create record in RADFish/IndexedDB
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=265
 // diff-add-start
 await Catch.create(newCatchData);
 // diff-add-end
@@ -111,7 +110,7 @@ After successfully saving to IndexedDB, we need to update React's component stat
 
 In the same `handleAddCatch` function, below the `await Catch.create(newCatchData)`, add the following code:
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=250
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=269
 // diff-add-start
 setCatches(prev => [newCatchData, ...prev]);
 // diff-add-end
@@ -133,8 +132,7 @@ This triggers React's re-rendering process, immediately updating the "Recorded C
 
 The complete `handleAddCatch` function also handles form cleanup after successful submission. Here's how the full process works:
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=252
-// Reset the form
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=272
 setCurrentCatch({ species: "", weight: "", length: "", latitude: "", longitude: "", time: "" });
 setCatchTimeKey(prevKey => prevKey + 1); // Reset TimePicker
 setSubmitted(false); // Reset submission status

@@ -41,11 +41,16 @@ The Start Trip form uses React state to store validation errors. When the form i
 
 Open `src/pages/StartTrip.jsx` and locate the `handleSubmit` function.
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=191
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=190
 const newErrors = validateForm();
-//diff-add-start
-setErrors(newErrors);
-//diff-add-end
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default browser form submission
+    setSubmitted(true); // Mark form as submitted to show errors
+
+    //diff-add-start
+    const newErrors = validateForm();
+    setErrors(newErrors);
+    //diff-add-end
 ```
 
 **Explanation:**
@@ -58,8 +63,7 @@ setErrors(newErrors);
 
 The Start Trip form validates three required fields using a standardized validation helper:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=172
-// Simple required field validation
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=166
 const validateRequired = (value, fieldName) => {
   if (!value || String(value).trim() === "") {
     return `${fieldName} is required`;
@@ -95,7 +99,7 @@ const validateForm = () => {
 
 The Start Trip form displays validation errors using USWDS `ErrorMessage` components. Each form field has an associated error display:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=262
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=274
 //diff-remove-start
 <FormGroup>
 //diff-remove-end
@@ -164,8 +168,8 @@ const handleAddCatch = async (e) => {
   e.preventDefault();
   setSubmitted(true);
 
-  const formErrors = validateForm();
   //diff-add-start
+  const formErrors = validateForm();
   setErrors(formErrors);
   //diff-add-end
 
@@ -180,7 +184,7 @@ const handleAddCatch = async (e) => {
 
 The Catch Log uses multiple validation types beyond simple required field checks:
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=50
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=42
 const validateNumberRange = (value, min, max, fieldName, allowZero = true) => {
   if (value === "" || value === null || value === undefined) return null;
   const numValue = Number(value);
@@ -217,13 +221,12 @@ const validateLatitude = (value) => {
 
 Before navigating to the End Trip page, all catches in the "Recorded Catches" list must be validated:
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=315
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=287
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  // Validate all recorded catches first
-  const recordedErrors = validateRecordedCatches();
   //diff-add-start
+  const recordedErrors = validateRecordedCatches();
   setRecordedCatchErrors(recordedErrors);
   //diff-add-end
 
@@ -237,7 +240,7 @@ const handleSubmit = async (e) => {
 
 **Multi-Record Validation:**
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=173
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=202
 const validateRecordedCatches = () => {
   const allErrors = {};
   catches.forEach((catchItem, index) => {
@@ -268,7 +271,7 @@ const validateRecordedCatches = () => {
 
 The recorded catches list displays errors with index-specific identifiers:
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=580
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=562
 catches.map((catchItem, index) => {
   const catchErrors = recordedCatchErrors[index] || {};
 
