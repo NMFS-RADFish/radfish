@@ -1,78 +1,169 @@
-# Lesson 6: Review Computed Fields & Table Component
+# Lesson 6: Computed Fields, Table Component, and Offline Detection
 
-In this lesson, we will focus on reading data from IndexedDB, aggregating catch data, and displaying it using the RADFish Table component. We will also validate that the entire form is valid before proceeding.
-
-## Getting Started
-
-Ensure you have all dependencies installed by running `npm install` in the project root. If you want to see the application in action, run `npm run start` and open your browser to the specified local development server address.
+In this lesson, we will build a review page that fetches trip and catch data from RADFish stores, aggregates catch statistics by species, and displays the results using the RADFish Table component. We'll also implement offline detection using the `useOfflineStatus` hook to provide dynamic UI feedback based on network connectivity.
 
 ## Step 1: Access RADFish stores and fetch trip/catch data
 
-We need to fetch the trip and catch data from their respective RADFish stores to display on the review page.
+We need to fetch the trip and catch data from their respective RADFish stores to display on the review page. This data loading happens inside a `useEffect` hook, which is React's way of performing side effects like data fetching when a component mounts or when certain values change.
 
-Open `src/pages/ReviewSubmit.jsx`. Locate the `/* Step 1: Access RADFish stores and fetch trip/catch data */` comment and replace it with the following code:
+### 1.1: Understanding useEffect for Data Loading
 
-```javascript
-// ...existing code...
-        /* Step 1: Access RADFish stores and fetch trip/catch data */
-        const tripStore = app.stores["trip"];
-        const Form = tripStore.getCollection("Form");
-        const Catch = tripStore.getCollection("Catch");
+The data fetching code is wrapped inside a `useEffect` hook that runs when the component first loads:
 
-        // Fetch the trip details
-        const trips = await Form.find({ id: tripId });
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=55
+useEffect(() => {
+  const loadTripData = async () => {
+    setLoading(true);
+    setError(null); // Reset error state on new load attempt
 
-        // Handle trip not found
-        if (trips.length === 0) {
-          setError(`Trip with ID ${tripId} not found`);
-          navigate("/"); // Redirect home if trip doesn't exist
-          return;
-        }
+    // Guard clause: Ensure app and tripId are available before proceeding
+    if (!app || !tripId) {
+      console.warn("App or Trip ID not available in state, cannot load review data.");
+      navigate("/"); // Redirect home if essential data is missing
+      return;
+    }
 
-        const selectedTrip = trips[0];
-        setTrip(selectedTrip); // Store fetched trip data in state
+    try {
+      //diff-add-start
+      // Access RADFish collections
+      const tripStore = app.stores["trip"];
+      const Form = tripStore.getCollection("Form");
+      const Catch = tripStore.getCollection("Catch");
 
-        // Fetch all catches associated with this trip
-        const tripCatches = await Catch.find({ tripId: selectedTrip.id });
-// ...existing code...
+      // Fetch the trip details
+      const trips = await Form.find({ id: tripId });
+
+      // Handle trip not found
+      if (trips.length === 0) {
+        setError(`Trip with ID ${tripId} not found`);
+        navigate("/"); // Redirect home if trip doesn't exist
+        return;
+      }
+
+      const selectedTrip = trips[0];
+      setTrip(selectedTrip); // Store fetched trip data in state
+
+      // Fetch all catches associated with this trip
+      const tripCatches = await Catch.find({ tripId: selectedTrip.id });
+      //diff-add-end
+
+      //diff-add-start
+      // Store catches for API submission
+      setCatches(tripCatches);
+      //diff-add-end
+
+      // Process and store the aggregated data...
+    } catch (err) {
+      console.error("Error loading trip data:", err);
+      setError("Failed to load trip data");
+      navigate("/"); // Redirect home on critical error
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  loadTripData();
+}, [app, tripId, navigate]); // Dependencies for the effect
 ```
 
-**Explanation:**
-- We access the `trip` store from the `app` instance.
-- We then get the `Form` and `Catch` collections from the `tripStore`.
-- `Form.find({ id: tripId })` fetches the specific trip by its ID.
-- If the trip is not found, an error is set, and the user is redirected to the home page.
-- The fetched trip data is stored in the `trip` state variable.
-- `Catch.find({ tripId: selectedTrip.id })` fetches all catch records associated with the current trip's ID.
+**Understanding useEffect and Data Loading:**
+
+1. **useEffect Hook**: The [`useEffect`](https://react.dev/reference/react/useEffect) hook lets you perform side effects in functional components. It runs after the component renders and can be configured to run only when specific values change.
+
+2. **Dependency Array**: The `[app, tripId, navigate]` array tells React to re-run this effect only when `app`, `tripId`, or `navigate` change. This prevents unnecessary re-fetching of data.
+
+3. **Async Function Pattern**: Since `useEffect` cannot be async directly, we define an async function (`loadTripData`) inside it and call it immediately.
+
+4. **State Management**: The effect manages multiple pieces of state:
+   - `setLoading(true)` - Shows loading indicator while fetching
+   - `setError(null)` - Clears any previous errors
+   - `setTrip(selectedTrip)` - Stores the fetched trip data
+   - `setCatches(tripCatches)` - Stores raw catch data for API submission
+   - `setLoading(false)` - Hides loading indicator when done
+
+### 1.2: RADFish Data Access Pattern
+
+The highlighted code demonstrates the core data access pattern in RADFish applications:
+
+1. **Store Access**: `app.stores["trip"]` gets the RADFish store that contains our trip and catch data
+2. **Collection References**: We obtain references to both the `Form` (trip data) and `Catch` (individual catch records) collections
+3. **Trip Lookup**: `Form.find({ id: tripId })` searches for the specific trip using the ID passed from the previous page
+4. **Error Handling**: If no trip is found, we set an error message and redirect to prevent displaying invalid data
+5. **Data Storage**: The found trip is stored in React state (`setTrip`) for use throughout the component
+6. **Related Data**: `Catch.find({ tripId: selectedTrip.id })` fetches all catch records that belong to this trip
+
+### 1.3: State Variables for Data Management
+
+The component uses several state variables to manage the data loading process:
+
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=40
+// Stores the fetched trip data object
+const [trip, setTrip] = useState(null);
+// Stores the aggregated catch data (grouped by species) for display in the table
+const [aggregatedCatches, setAggregatedCatches] = useState([]);
+// Stores the catch data for API submission
+const [catches, setCatches] = useState([]);
+// Loading state while fetching data
+const [loading, setLoading] = useState(true);
+// Error state for data fetching issues
+const [error, setError] = useState(null);
+```
+
+**State Management Flow:**
+1. **Initial State**: Component starts with `loading: true`, `trip: null`, `error: null`
+2. **Data Fetching**: useEffect runs and fetches data from RADFish stores
+3. **Success**: Data is stored in state (`setTrip`), loading is set to false
+4. **Error**: Error message is stored in state, user is redirected
+5. **Rendering**: Component renders based on current state (loading, error, or data)
+
+This pattern ensures we have all the necessary data loaded and properly managed in React state before attempting to display the review page.
+
+**Learn More:**
+- [React useEffect Documentation](https://react.dev/reference/react/useEffect) - Comprehensive guide to using useEffect for side effects
+- [Synchronizing with Effects](https://react.dev/learn/synchronizing-with-effects) - Learn when and how to use Effects in React
 
 ## Step 2: Call the aggregation function
 
 After fetching the raw catch data, we need to process it to calculate summary statistics for display. This involves grouping catches by species and calculating totals and averages.
 
-In the same file, `src/pages/ReviewSubmit.jsx`, locate the `/* Step 2: Call the aggregation function */` comment and replace it with the following code:
-
-```javascript
-// ...existing code...
-        /* Step 2: Call the aggregation function */
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=100
+        //diff-add-start
         const aggregatedData = aggregateCatchesBySpecies(tripCatches);
         setAggregatedCatches(aggregatedData);
-// ...existing code...
+        //diff-add-end
 ```
 
-**Explanation:**
-- `aggregateCatchesBySpecies(tripCatches)` is a helper function (already defined in the file) that takes the raw `tripCatches` array as input.
-- This function groups the catches by species and calculates the total count, total weight, and average length for each species.
-- The returned `aggregatedData` is then stored in the `aggregatedCatches` state variable, which will be used by the Table component.
+**Understanding the Data Aggregation Process:**
+
+1. **Function Call**: `aggregateCatchesBySpecies(tripCatches)` processes the array of individual catch records
+2. **Data Grouping**: The helper function groups catches by species (e.g., all "Bass" catches together)
+3. **Statistical Calculations**: For each species, it calculates:
+   - **Total Count**: How many fish of this species were caught
+   - **Total Weight**: Combined weight of all fish of this species  
+   - **Average Length**: Mean length across all fish of this species
+4. **State Update**: `setAggregatedCatches(aggregatedData)` stores the processed data in React state
+
+This aggregation transforms individual catch records like:
+```
+Bluefin:  2 lbs,  12 in
+Bluefin:  3 lbs,  14 in  
+Salmon:   1 lb,   8 in
+Salmon:   2 lbs,  10 in
+```
+
+Into summary data like:
+```
+Bluefin:  Count=2, Total Weight=5 lbs, Avg Length=13 in
+Salmon:   Count=2, Total Weight=3 lbs, Avg Length=9 in
+```
 
 ## Step 3: Use the RADFish Table component to display aggregated data
 
 Now that we have the aggregated catch data, we will use the RADFish `Table` component to display it in a structured and user-friendly way.
 
-Still in `src/pages/ReviewSubmit.jsx`, find the `/* Step 3: Use the RADFish Table component to display aggregated data */` comment and replace it with the following code:
 
-```javascript
-// ...existing code...
-                /* Step 3: Use the RADFish Table component to display aggregated data */
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=100
+        //diff-add-start
                 <Table
                   // Map aggregated data to the format expected by the Table component
                   data={aggregatedCatches.map((item, index) => ({
@@ -92,18 +183,128 @@ Still in `src/pages/ReviewSubmit.jsx`, find the `/* Step 3: Use the RADFish Tabl
                   // Enable striped rows for better readability
                   striped
                 />
-// ...existing code...
+        //diff-add-end
 ```
 
-**Explanation:**
-- The `<Table>` component is used to render the catch data.
-- The `data` prop is populated by mapping over the `aggregatedCatches` state. We transform the data slightly to add units (`lbs`, `in`) and provide a unique `id` for each row (using the array index here for simplicity).
-- The `columns` prop defines the table structure:
-    - `key`: Matches the keys in the `data` objects.
-    - `label`: The header text for the column.
-    - `sortable`: Allows the user to sort the table by clicking on the column header.
-- `striped`: Adds alternating row colors for better readability.
+**Understanding the RADFish Table Component:**
+
+The highlighted code demonstrates how to use the RADFish `Table` component for displaying structured data:
+
+1. **Data Transformation**: The `data` prop maps over `aggregatedCatches` to format it for table display:
+   - **Row IDs**: Each row gets a unique `id` (using array index)
+   - **Unit Labels**: Weight and length values get proper units (`lbs`, `in`)
+   - **Clean Formatting**: Data is structured to match the table's expected format
+
+2. **Column Configuration**: The `columns` prop defines the table structure:
+   - **Key Mapping**: Each column's `key` matches a property in the data objects
+   - **Header Labels**: `label` sets the user-friendly column header text
+   - **Sorting**: `sortable: true` enables click-to-sort functionality for each column
+
+3. **Visual Enhancement**: `striped` prop adds alternating row colors for easier reading
+
+
+This creates a professional, sortable data table that users can interact with to review their trip's catch summary.
+
+![Table Component](./src/assets/lesson-6_step-3.png)
+
+## Step 4: Testing Offline Functionality
+
+Now let's test how the application automatically adapts to network changes using RADFish's offline detection capabilities.
+
+### 4.1: Understanding Offline Detection
+
+The Review page uses RADFish's `useOfflineStatus` hook to detect network changes and adapt the UI accordingly.
+
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=5
+import {
+  useApplication,
+  Table,
+  //diff-add-start
+  useOfflineStatus,
+  //diff-add-end
+} from "@nmfs-radfish/react-radfish";
+
+function ReviewSubmit() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const app = useApplication();
+  //diff-add-start
+  const { isOffline } = useOfflineStatus();
+  //diff-add-end
+```
+
+**Button Display Logic:**
+
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=200
+if (isOffline) {
+  //diff-add-start
+  defaultProps.nextLabel = "Save";
+  //diff-add-end
+} else {
+  //diff-add-start
+  defaultProps.nextLabel = "Submit";
+  defaultProps.nextButtonProps = { className: "bg-green hover:bg-green" };
+  //diff-add-end
+}
+```
+
+**Submission Logic:**
+
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=220
+//diff-add-start
+const finalStatus = isOffline ? "Not Submitted" : "submitted";
+//diff-add-end
+
+await Form.update({ id: trip.id, status: finalStatus, step: 4 });
+
+//diff-add-start
+navigate(isOffline ? "/offline-confirm" : "/online-confirm");
+//diff-add-end
+```
+
+**Summary:**
+- **Online**: Green "Submit" button → `status: "submitted"` → `/online-confirm`
+- **Offline**: Blue "Save" button → `status: "Not Submitted"` → `/offline-confirm`
+- **Pre-built Pages**: Both confirmation pages (`/online-confirm` and `/offline-confirm`) are already created for you. The app automatically navigates to the appropriate one based on your connection status
+
+### 4.2: Test Development Mode
+
+1. **Start the development server**: `npm run start`
+2. **Navigate to the Review page** after completing a trip
+3. **Open Developer Tools** (F12) → Network tab
+4. **Toggle between "No throttling" and "Offline"** in the network dropdown
+5. **Observe the button changes**:
+   - **Online**: Green "Submit" button
+   ![Online Button](./src/assets/lesson-6_step-4.2-online.png)
+   - **Offline**: Blue "Save" button
+   ![Offline Button](./src/assets/lesson-6_step-4.2-offline.png)
+
+### 4.3: Test Production Mode
+
+1. **Build the application**:
+   ```bash
+   npm run build
+   ```
+
+2. **Serve the production build**:
+   ```bash
+   npm run serve
+   ```
+
+3. **Test offline functionality**:
+   - Complete a trip and navigate to Review page
+   - Toggle offline/online in dev tools
+   - Reload the page while offline - it should still work
+   - Submit a trip while offline - it saves locally as "Not Submitted"
 
 ## Conclusion
 
-In this lesson, you learned how to fetch data from multiple RADFish stores, perform data aggregation, and display the results using the RADFish `Table` component. This provides a clear and concise summary of the trip's catch data for the user to review before submission. You also ensured that the form is validated before allowing the user to proceed to the confirmation screen.
+In this lesson, you learned how to fetch data from multiple RADFish stores, perform data aggregation, and display the results using the RADFish `Table` component. You also implemented offline detection using the `useOfflineStatus` hook.
+
+**Key Accomplishments:**
+- **Data Integration**: Fetched and aggregated trip and catch data from multiple RADFish stores
+- **Table Display**: Used the RADFish Table component to present aggregated catch data
+- **Offline Detection**: Implemented dynamic UI changes based on network status using `useOfflineStatus`
+- **Production Testing**: Tested offline functionality in both development and production builds
+
+Your RADFish application now provides a complete offline-capable experience with clear visual feedback for users.
