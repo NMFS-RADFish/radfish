@@ -4,30 +4,84 @@ In this lesson, we will build a review page that fetches trip and catch data fro
 
 ## Step 1: Access RADFish stores and fetch trip/catch data
 
-We need to fetch the trip and catch data from their respective RADFish stores to display on the review page.
+We need to fetch the trip and catch data from their respective RADFish stores to display on the review page. This data loading happens inside a `useEffect` hook, which is React's way of performing side effects like data fetching when a component mounts or when certain values change.
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=100
-        //diff-add-start
-        const tripStore = app.stores["trip"];
-        const Form = tripStore.getCollection("Form");
-        const Catch = tripStore.getCollection("Catch");
+### 1.1: Understanding useEffect for Data Loading
 
-        const trips = await Form.find({ id: tripId });
+The data fetching code is wrapped inside a `useEffect` hook that runs when the component first loads:
 
-        if (trips.length === 0) {
-          setError(`Trip with ID ${tripId} not found`);
-          navigate("/"); // Redirect home if trip doesn't exist
-          return;
-        }
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=55
+useEffect(() => {
+  const loadTripData = async () => {
+    setLoading(true);
+    setError(null); // Reset error state on new load attempt
 
-        const selectedTrip = trips[0];
-        setTrip(selectedTrip);
+    // Guard clause: Ensure app and tripId are available before proceeding
+    if (!app || !tripId) {
+      console.warn("App or Trip ID not available in state, cannot load review data.");
+      navigate("/"); // Redirect home if essential data is missing
+      return;
+    }
 
-        const tripCatches = await Catch.find({ tripId: selectedTrip.id });
-        //diff-add-end
+    try {
+      //diff-add-start
+      // Access RADFish collections
+      const tripStore = app.stores["trip"];
+      const Form = tripStore.getCollection("Form");
+      const Catch = tripStore.getCollection("Catch");
+
+      // Fetch the trip details
+      const trips = await Form.find({ id: tripId });
+
+      // Handle trip not found
+      if (trips.length === 0) {
+        setError(`Trip with ID ${tripId} not found`);
+        navigate("/"); // Redirect home if trip doesn't exist
+        return;
+      }
+
+      const selectedTrip = trips[0];
+      setTrip(selectedTrip); // Store fetched trip data in state
+
+      // Fetch all catches associated with this trip
+      const tripCatches = await Catch.find({ tripId: selectedTrip.id });
+      //diff-add-end
+
+      //diff-add-start
+      // Store catches for API submission
+      setCatches(tripCatches);
+      //diff-add-end
+
+      // Process and store the aggregated data...
+    } catch (err) {
+      console.error("Error loading trip data:", err);
+      setError("Failed to load trip data");
+      navigate("/"); // Redirect home on critical error
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  loadTripData();
+}, [app, tripId, navigate]); // Dependencies for the effect
 ```
 
-**Understanding the Data Fetching Process:**
+**Understanding useEffect and Data Loading:**
+
+1. **useEffect Hook**: The [`useEffect`](https://react.dev/reference/react/useEffect) hook lets you perform side effects in functional components. It runs after the component renders and can be configured to run only when specific values change.
+
+2. **Dependency Array**: The `[app, tripId, navigate]` array tells React to re-run this effect only when `app`, `tripId`, or `navigate` change. This prevents unnecessary re-fetching of data.
+
+3. **Async Function Pattern**: Since `useEffect` cannot be async directly, we define an async function (`loadTripData`) inside it and call it immediately.
+
+4. **State Management**: The effect manages multiple pieces of state:
+   - `setLoading(true)` - Shows loading indicator while fetching
+   - `setError(null)` - Clears any previous errors
+   - `setTrip(selectedTrip)` - Stores the fetched trip data
+   - `setCatches(tripCatches)` - Stores raw catch data for API submission
+   - `setLoading(false)` - Hides loading indicator when done
+
+### 1.2: RADFish Data Access Pattern
 
 The highlighted code demonstrates the core data access pattern in RADFish applications:
 
@@ -38,7 +92,35 @@ The highlighted code demonstrates the core data access pattern in RADFish applic
 5. **Data Storage**: The found trip is stored in React state (`setTrip`) for use throughout the component
 6. **Related Data**: `Catch.find({ tripId: selectedTrip.id })` fetches all catch records that belong to this trip
 
-This pattern ensures we have all the necessary data loaded before attempting to display the review page.
+### 1.3: State Variables for Data Management
+
+The component uses several state variables to manage the data loading process:
+
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=40
+// Stores the fetched trip data object
+const [trip, setTrip] = useState(null);
+// Stores the aggregated catch data (grouped by species) for display in the table
+const [aggregatedCatches, setAggregatedCatches] = useState([]);
+// Stores the catch data for API submission
+const [catches, setCatches] = useState([]);
+// Loading state while fetching data
+const [loading, setLoading] = useState(true);
+// Error state for data fetching issues
+const [error, setError] = useState(null);
+```
+
+**State Management Flow:**
+1. **Initial State**: Component starts with `loading: true`, `trip: null`, `error: null`
+2. **Data Fetching**: useEffect runs and fetches data from RADFish stores
+3. **Success**: Data is stored in state (`setTrip`), loading is set to false
+4. **Error**: Error message is stored in state, user is redirected
+5. **Rendering**: Component renders based on current state (loading, error, or data)
+
+This pattern ensures we have all the necessary data loaded and properly managed in React state before attempting to display the review page.
+
+**Learn More:**
+- [React useEffect Documentation](https://react.dev/reference/react/useEffect) - Comprehensive guide to using useEffect for side effects
+- [Synchronizing with Effects](https://react.dev/learn/synchronizing-with-effects) - Learn when and how to use Effects in React
 
 ## Step 2: Call the aggregation function
 
