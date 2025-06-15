@@ -1,0 +1,326 @@
+# Lesson 7: Server Submission
+
+In this lesson, we'll enhance the submission process to handle both offline storage and online server submission. We'll set up a JSON server to simulate a backend API and modify our Review page to automatically submit data to the server when online, while gracefully falling back to local storage when offline.
+
+## Getting Started
+
+Before we begin, make sure you have completed the previous lessons and have the development server running. We'll be working primarily with the Review page submission logic and setting up a mock backend server.
+
+## Step 1: Setting Up the JSON Server
+
+We'll use `json-server` to create a mock REST API that simulates a real backend server for testing online submission.
+
+### 1.1: Understanding the Server Setup
+
+The project already includes the necessary configuration for running a JSON server:
+
+**json-server has already been installed as a development dependency. Here is the command for your reference:**
+
+```bash
+npm install --save-dev json-server
+```
+
+**Package.json script:**
+
+```json title="package.json"
+{
+  "scripts": {
+    "server": "json-server --watch db.json --port 3002"
+  }
+}
+```
+
+**Database file:**
+
+```json title="db.json"
+{
+  "trips": []
+}
+```
+
+### 1.2: Start the JSON Server
+
+Open a **new terminal window** (keep your development server running in the original terminal) and run:
+
+```bash
+npm run server
+```
+
+You should see output similar to:
+
+```
+JSON Server started on PORT :3002
+Press CTRL-C to stop
+Watching db.json...
+
+Index:
+http://localhost:3002/
+
+Static files:
+Serving ./public directory if it exists
+
+Endpoints:
+http://localhost:3002/trips
+
+```
+
+**Understanding the Setup:**
+
+- **Port 3002**: The server runs on a different port than your React app (3000) to avoid conflicts
+- **Watch mode**: The server automatically reloads when `db.json` changes
+- **REST endpoints**: Automatically creates GET, POST, PUT, DELETE endpoints for the `trips` resource
+
+## Step 2: Understanding Server Submission Logic
+
+The Review page needs to detect whether the user is online or offline and handle submission accordingly.
+
+### 2.1: Current Submission Logic
+
+Let's examine the current submission logic in the Review page:
+
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=220
+const handleSubmit = async () => {
+  if (!trip) return;
+
+  try {
+    const tripStore = app.stores["trip"];
+    const Form = tripStore.getCollection("Form");
+    const finalStatus = isOffline ? "Not Submitted" : "submitted";
+
+    await Form.update({
+      id: trip.id,
+      status: finalStatus,
+      step: 4,
+    });
+
+    navigate(isOffline ? "/offline-confirm" : "/online-confirm");
+  } catch (error) {
+    console.error("Error submitting trip:", error);
+    setError("Failed to submit trip. Please try again.");
+  }
+};
+```
+
+**Current Behavior:**
+
+- **Offline**: Sets status to "Not Submitted" and saves locally
+- **Online**: Sets status to "submitted" but only saves locally
+- **Missing**: Actual server submission when online
+
+### 2.2: Enhanced Submission Strategy
+
+We need to modify this logic to actually submit to the server when online:
+
+1. **Check online status** using `useOfflineStatus`
+2. **If offline**: Save locally with "Not Submitted" status
+3. **If online**: Submit to server AND save locally with "submitted" status
+4. **Handle errors**: Fall back to offline mode if server submission fails
+
+## Step 3: Implementing Server Submission
+
+### 3.1: Update the Submission Handler
+
+Now let's modify the `handleSubmit` function to include both trip and catch data in the server submission. Note that the `catches` state variable is already available from Lesson 6, where we added it to store catch data for API submission:
+
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=220
+const handleSubmit = async () => {
+  if (!trip) return; // Guard clause if trip data isn't loaded
+
+  const tripStore = app.stores["trip"];
+  const Form = tripStore.getCollection("Form");
+
+  if (isOffline) {
+    // Offline: Save status as "Not Submitted" locally
+    //diff-add-start
+    try {
+      await Form.update({
+        id: trip.id,
+        status: "Not Submitted",
+        step: 4, // Mark as completed step 4 (review)
+      });
+      navigate("/offline-confirm");
+    } catch (error) {
+      console.error("Error saving trip offline:", error);
+      setError("Failed to save trip for offline submission. Please try again.");
+    }
+    //diff-add-end
+  } else {
+    // Online: Attempt to submit to the backend
+    //diff-add-start
+    try {
+      // Prepare submission data with trip and associated catches
+      const submissionData = {
+        trip: trip,
+        catches: catches,
+      };
+
+      const response = await fetch("/api/trips", {
+        // Assuming '/api/trips' is your JSON server endpoint
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(submissionData),
+      });
+
+      if (!response.ok) {
+        const status = response.status;
+        const statusText = response.statusText
+          ? response.statusText.trim()
+          : "";
+        const errorDetail = statusText
+          ? `${status} ${statusText}`
+          : `${status} Server error occurred`;
+
+        console.error("Server submission failed:", errorDetail);
+        setError(`Server submission failed: ${errorDetail}`);
+        return;
+      }
+
+      // If server submission is successful, update local status to "submitted"
+      await Form.update({
+        id: trip.id,
+        status: "submitted",
+        step: 4,
+      });
+      navigate("/online-confirm");
+    } catch (error) {
+      // Catch network errors or other issues with the fetch call
+      console.error("Error submitting trip online:", error);
+      setError(
+        "Failed to submit trip. Check your internet connection or try saving offline.",
+      );
+    }
+    //diff-add-end
+  }
+};
+```
+
+**Understanding the Enhanced Logic:**
+
+1. **Offline Path**: Simple local save with "Not Submitted" status
+2. **Online Path**:
+   - Prepare submission data combining trip details and associated catches
+   - Submit complete data structure to server using fetch API
+   - Handle detailed error responses with status codes and messages
+   - If successful: Update local status to "submitted"
+   - If server fails: Display error message to user
+3. **Error Handling**: Provides detailed feedback about server submission failures
+
+**Submission Data Structure:**
+The server receives a JSON object containing both trip information and all associated catches:
+
+```json
+{
+  "trip": {
+    "id": "6e121657-17f6-49cf-a4de-7d6dbe6fadcb",
+    "tripDate": "06/12/2025",
+    "startWeather": "Cloudy",
+    "startTime": "00:15",
+    "status": "in-progress",
+    "step": 4,
+    "endTime": "00:15",
+    "endWeather": "Rainy"
+  },
+  "catches": [
+    {
+      "species": "Salmon",
+      "weight": 123,
+      "length": 123,
+      "time": "00:30",
+      "id": "1a2d8465-7f6e-4270-af5d-5116e6403ffc",
+      "tripId": "6e121657-17f6-49cf-a4de-7d6dbe6fadcb",
+      "createdAt": "2025-06-13T22:34:35.609Z"
+    }
+    // ... other catches
+  ]
+}
+```
+
+## Step 4: Testing Server Submission
+
+### 4.1: Test Online Submission
+
+1. **Ensure JSON server is running**: Check that `npm run server` is still active
+2. **Complete a trip**: Navigate through all steps and reach the Review page
+3. **Verify online status**: Ensure you see the green "Submit" button
+4. **Submit the trip**: Click the submit button
+5. **Check the server**: Visit `http://localhost:3002/trips` in your browser to see the submitted data
+
+**Expected Results:**
+
+- Trip data appears in the JSON server at `http://localhost:3002/trips`
+- User is navigated to `/online-confirm`
+- Local storage shows status as "submitted"
+
+### 4.2: Test Offline Mode
+
+1. **Go offline**: Use browser dev tools (F12 → Network → Offline)
+2. **Submit a trip**: Notice the blue "Save" button appears
+3. **Click save**: Trip should save locally as "Not Submitted"
+4. **Check server**: No new data should appear at `http://localhost:3002/trips`
+
+### 4.3: Test Server Failure Gracefully
+
+1. **Stop the JSON server**: Terminate the `npm run server` process
+2. **Try to submit online**: The app should detect server failure
+3. **Verify fallback**: Should save locally as "Not Submitted" and show error message
+
+**Expected Behavior:**
+
+- ✅ Graceful degradation when server is unavailable
+- ✅ User feedback about server status
+- ✅ Data never lost - always saved locally
+
+## Step 5: Viewing Submitted Data
+
+### 5.1: Inspect Server Data
+
+Visit `http://localhost:3002/trips` in your browser to see all submitted trips in JSON format:
+
+```json
+[
+  {
+    "trip": {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "tripDate": "2024-01-15",
+      "startTime": "06:00",
+      "startWeather": "Sunny",
+      "endTime": "14:00",
+      "endWeather": "Cloudy",
+      "status": "submitted"
+    },
+    "catches": [
+      {
+        "species": "Bass",
+        "weight": 3.5,
+        "length": 14,
+        "tripId": "123e4567-e89b-12d3-a456-426614174000"
+      }
+    ],
+    "id": 1
+  }
+]
+```
+
+### 5.2: Monitor Local vs Server Data
+
+Compare what's stored locally (IndexedDB) versus what's submitted to the server:
+
+- **Local data**: Always present for offline capability
+- **Server data**: Only present for successfully submitted trips
+- **Status field**: Indicates whether trip needs server submission
+
+## Conclusion
+
+You have successfully implemented a robust submission system that handles both online and offline scenarios! Your RADFish application now:
+
+**Key Accomplishments:**
+
+- **Dual-mode submission**: Automatically submits to server when online, saves locally when offline
+- **Graceful degradation**: Falls back to offline mode when server is unavailable
+- **Data persistence**: Ensures user data is never lost regardless of connectivity
+- **User feedback**: Provides clear visual indicators of submission status
+- **Error handling**: Manages server failures without breaking the user experience
+
+Your application now provides a production-ready experience that works reliably in any network condition, making it suitable for field work where connectivity may be intermittent.
