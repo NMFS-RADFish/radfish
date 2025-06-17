@@ -53,26 +53,16 @@ In `src/pages/Home.jsx`, update your import statement from `@trussworks/react-us
 
 Next, modify the `return` statement of your `HomePage` component to incorporate the USWDS grid. You will wrap your main page content (everything inside the main `<>...</>` fragment, except for the sticky footer) with these components.
 
-**Add this `GridContainer` and `Grid` structure around your main page content:**
-```jsx
-<GridContainer className="padding-y-4 padding-x-2 text-center">
-  <Grid row>
-    <Grid col="fill">
-      {/* Your existing main page content (headings, lists, etc.) goes here */}
-    </Grid>
-  </Grid>
-</GridContainer>
-```
+**Add the `GridContainer` structure around your main page content:**
 
-**The complete `return` statement with the new Grid structure will look like this:**
 ```jsx title="src/pages/Home.jsx" showLineNumbers=212
 return (
   <>
     //diff-add-start
     <GridContainer className="padding-y-4 padding-x-2 text-center">
+    //diff-add-end
       <Grid row>
         <Grid col="fill">
-    //diff-add-end
           {/* All your main page content (headings, lists, etc.) goes here */}
           <h1 className="font-heading-xl text-center margin-0">
             Hi, Captain
@@ -81,9 +71,9 @@ return (
             Recent Trips
           </h2>
           {/* Example: trips.map(...) or conditional messages */}
-    //diff-add-start
         </Grid>
       </Grid>
+    //diff-add-start
     </GridContainer>
     //diff-add-end
 
