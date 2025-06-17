@@ -314,12 +314,11 @@ const getFooterProps = () => {
 **Submission Logic:**
 
 ```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=201
-//diff-add-start
   const handleSubmit = async () => {
     if (!trip) return; // Guard clause if trip data isn't loaded
 
     const tripStore = app.stores["trip"];
-    const Form = tripStore.getCollection("Form")
+    const Form = tripStore.getCollection("Form");
     
     //diff-add-start
     const finalStatus = isOffline ? "Not Submitted" : "submitted";
@@ -329,8 +328,6 @@ const getFooterProps = () => {
       status: finalStatus,
       step: 4,
     });
-
-    await Form.update({ id: trip.id, status: finalStatus, step: 4 });
 
     navigate(isOffline ? "/offline-confirm" : "/online-confirm");
     //diff-add-end
