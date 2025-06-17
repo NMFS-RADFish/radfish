@@ -30,13 +30,20 @@ Before we begin coding, let's build the application and serve it locally to see 
 
 We'll begin by structuring our `HomePage` using `GridContainer` and `Grid` components from the U.S. Web Design System (USWDS). This is a common practice in RADFish applications to ensure consistent layout, responsiveness, and alignment with USWDS standards. These components help center content and manage its maximum width.
 
-For more detailed information on the React components (`GridContainer`, `Grid`) from `@trussworks/react-uswds` that we are using, please see the [Trussworks React USWDS Grid documentation](https://trussworks.github.io/react-uswds/?path=/docs/components-grid--docs). To understand the foundational CSS grid system and its principles upon which these components are built, the [official USWDS Layout Grid documentation](https://designsystem.digital.gov/utilities/layout-grid/) is also a valuable resource.
+For more detailed information on the grid components we are using, see these resources:
+
+- **[Trussworks React USWDS Grid documentation](https://trussworks.github.io/react-uswds/?path=/docs/components-grid--docs)** - Detailed information on the React components (`GridContainer`, `Grid`) from `@trussworks/react-uswds`
+- **[Official USWDS Layout Grid documentation](https://designsystem.digital.gov/utilities/layout-grid/)** - Understanding the foundational CSS grid system and principles upon which these components are built
 
 ### 1.1: Import Grid Components
 
-In `src/pages/Home.jsx`, update your import statement from `@trussworks/react-uswds` to also include `GridContainer` and `Grid`. Your existing import for `Button` will be modified as follows:
+In `src/pages/Home.jsx`, update your import statement from `@trussworks/react-uswds` to also include `GridContainer`. Your existing import for `Button` and `Grid` will be modified as follows:
 
-```jsx title="src/pages/Home.jsx" showLineNumbers=5
+```jsx title="src/pages/Home.jsx" showLineNumbers=1
+  import "../index.css";
+  import React, { useState, useEffect } from "react";
+  import { useApplication, useOfflineStatus } from "@nmfs-radfish/react-radfish";
+  import { useNavigate } from "react-router-dom";
   //diff-add-start
   import { Button, GridContainer, Grid } from "@trussworks/react-uswds";
   //diff-add-end
@@ -58,7 +65,7 @@ Next, modify the `return` statement of your `HomePage` component to incorporate 
 ```
 
 **The complete `return` statement with the new Grid structure will look like this:**
-```jsx title="src/pages/Home.jsx" showLineNumbers=222
+```jsx title="src/pages/Home.jsx" showLineNumbers=212
 return (
   <>
     //diff-add-start
@@ -95,7 +102,25 @@ The `GridContainer` component from USWDS is crucial for maintaining a consistent
 
 Currently, the "Start New Trip" button on the home page doesn't do anything. We need to make it navigate the user to the first step of the trip logging process, which will be at the `/start` route. We'll use the `useNavigate` hook from `react-router-dom` for this.
 
-Open `src/pages/Home.jsx`. You will add an `onClick` handler to the `Button` component for "Start New Trip" (around line 293). The snippet below shows the `onClick` handler code you will add. Following that, you'll see how this handler is integrated into the complete `Button` component, with the added lines highlighted.
+### Understanding React Router Navigation
+
+React Router provides the `useNavigate` hook for programmatic navigation. Let's look at how it's already set up in your component:
+
+**1. Import Statement (already present):**
+```jsx title="src/pages/Home.jsx" showLineNumbers=4
+import { useNavigate } from "react-router-dom";
+```
+
+**2. Hook Initialization (already present):**
+```jsx title="src/pages/Home.jsx" showLineNumbers=29
+const navigate = useNavigate();
+```
+
+The `useNavigate` hook returns a function that we store in the `navigate` variable. This function allows us to programmatically change the current route (URL) in our application.
+
+### 2.1: Add the Navigation Handler
+
+Now we'll use the `navigate` function to make the "Start New Trip" button functional. Find the `Button` component for "Start New Trip".
 
 **Add this `onClick` handler code:**
 ```jsx
@@ -105,7 +130,7 @@ onClick={() => {
 ```
 
 **The complete `Button` component with the new `onClick` handler will look like this:**
-```jsx title="src/pages/Home.jsx" showLineNumbers=309
+```jsx title="src/pages/Home.jsx" showLineNumbers=297
 <Button
   type="button"
   className="bg-primary hover:bg-primary-darker width-full"
