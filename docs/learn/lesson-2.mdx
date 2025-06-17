@@ -17,7 +17,9 @@ import {
   Button,
   //diff-add-start
   DatePicker,
+  //diff-add-end
   Form,
+  //diff-add-start
   FormGroup,
   //diff-add-end
   Grid,
@@ -45,7 +47,7 @@ These components work together to create accessible, well-structured forms that 
 
 **Add the `FormGroup`, `Label`, and `DatePicker` input within the `Form` component:**
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=241
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=217
 <Form onSubmit={handleSubmit} large>
   // diff-add-start
   <FormGroup>
@@ -79,13 +81,13 @@ Let's look at two key aspects of how React manages state with this form:
 
 1. **Initial State with `defaultValue`**:
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=254
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=239
    defaultValue={formData.tripDate}
    ```
 
    - The component initializes form data using React's useState hook:
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=69
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=56
    const [formData, setFormData] = useState({
      tripDate: "",
      startWeather: "",
@@ -99,14 +101,14 @@ Let's look at two key aspects of how React manages state with this form:
 
 2. **Updating State with `onChange`**:
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=255
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=240
    onChange = { handleDateChange };
    ```
 
    - The `onChange` attribute is a required prop for controlled inputs. It is called whenever the input's value changes (on every keystroke or selection). Without this handler, React would revert the input to its original value after each change.
    - When a user selects a date, the `handleDateChange` function is called
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=147
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=132
    const handleDateChange = (value) => {
      setFormData((prevData) => ({ ...prevData, tripDate: value || "" }));
    };
@@ -144,7 +146,7 @@ import {
 
 Let's add the `TimePicker` input below the `DatePicker` form group:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=264
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=249
 // diff-add-start
 <FormGroup>
   <Label htmlFor="startTime" className="input-time-label" requiredMarker>
@@ -204,7 +206,7 @@ import {
 
 Add the following code below the `TimePicker` form group:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=287
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=272
 // diff-add-start
 <FormGroup>
   <Label htmlFor="startWeather" requiredMarker>
@@ -237,7 +239,7 @@ Add the following code below the `TimePicker` form group:
 
 The complete **Form** will look like this:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=243
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=228
 // diff-add-start
 <Form onSubmit={handleSubmit} large>
   <FormGroup>
@@ -311,7 +313,7 @@ Before we learn how to save data to storage in the next lesson, let's first see 
 
 Locate the `handleSubmit` function. Replace the existing submission logic with the following code that will log the form data to the console:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=198
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=183
 if (Object.keys(newErrors).length === 0) {
   let navigateToId = currentTripId;
   //diff-add-start

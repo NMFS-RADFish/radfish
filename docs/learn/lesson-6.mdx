@@ -10,7 +10,7 @@ We need to fetch the trip and catch data from their respective RADFish stores to
 
 The data fetching code is wrapped inside a `useEffect` hook that runs when the component first loads:
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=55
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=37
 useEffect(() => {
   const loadTripData = async () => {
     setLoading(true);
@@ -104,7 +104,7 @@ The highlighted code demonstrates the core data access pattern in RADFish applic
 
 After fetching the raw catch data, we need to process it to calculate summary statistics for display. This involves grouping catches by species and calculating totals and averages.
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=100
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=65
         const selectedTrip = trips[0];
         setTrip(selectedTrip); // Store fetched trip data in state
 
@@ -181,7 +181,7 @@ To learn more about the Table component, see the [RADFish Table documentation](h
 
 Now that we have imported the Table component, we can use it to display the aggregated catch data in a structured and user-friendly way.
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=100
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=349
 <div className="padding-0">
   {aggregatedCatches.length > 0 ? (
     //diff-remove-start
@@ -240,7 +240,7 @@ Now let's test how the application automatically adapts to network changes using
 
 The Review page uses RADFish's `useOfflineStatus` hook to detect network changes and adapt the UI accordingly.
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=5
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=4
 import {
   useApplication,
   Table,
@@ -248,6 +248,13 @@ import {
   useOfflineStatus,
   //diff-add-end
 } from "@nmfs-radfish/react-radfish";
+import {
+  Button,
+  StepIndicator,
+  StepIndicatorStep,
+  GridContainer,
+  Grid,
+} from "@trussworks/react-uswds";
 
 function ReviewSubmit() {
   const navigate = useNavigate();
@@ -260,7 +267,7 @@ function ReviewSubmit() {
 
 **Footer Button Display Logic:**
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=200
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=215
 const getFooterProps = () => {
   // Default props
   const defaultProps = {
@@ -306,7 +313,7 @@ const getFooterProps = () => {
 
 **Submission Logic:**
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=220
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=201
 //diff-add-start
   const handleSubmit = async () => {
     if (!trip) return; // Guard clause if trip data isn't loaded

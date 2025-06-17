@@ -62,7 +62,7 @@ Open `src/pages/StartTrip.jsx` and locate the `handleSubmit` function.
 
 The Start Trip form validates three required fields using a standardized validation helper:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=154
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=152
 const validateRequired = (value, fieldName) => {
   if (!value || String(value).trim() === "") {
     return `${fieldName} is required`;
@@ -97,7 +97,7 @@ const validateForm = () => {
 
 The Start Trip form applies validation states to form components to provide visual feedback when errors occur:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=256
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=254
 //diff-remove-start
 <FormGroup>
 //diff-remove-end
@@ -165,7 +165,7 @@ import {
 
 **Then, add the conditional ErrorMessage component to each form field:**
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=257
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=255
 <FormGroup error={errors.tripDate}>
   <Label
     htmlFor="tripDate"
@@ -299,7 +299,7 @@ Now let's apply the validation display pattern you learned from the Start Trip f
 **Note:** The `ErrorMessage` component has already been imported for you, and all other form fields in this component already have error validation set up. We'll focus on just the Species field as an example.
 Locate the Species FormGroup and apply the same error display pattern from the Start Trip form:
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=464
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=461
 //diff-remove-start
 <FormGroup >
 //diff-remove-end

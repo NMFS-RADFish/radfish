@@ -107,7 +107,7 @@ The Review page needs to detect whether the user is online or offline and handle
 
 Let's examine the current submission logic in the Review page:
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=220
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=201
 const handleSubmit = async () => {
   if (!trip) return;
 
@@ -151,7 +151,7 @@ We need to modify this logic to actually submit to the server when online:
 
 Now let's modify the `handleSubmit` function to include both trip and catch data in the server submission. Note that the `catches` state variable is already available from Lesson 6, where we added it to store catch data for API submission:
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=220
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=201
 const handleSubmit = async () => {
   if (!trip) return; // Guard clause if trip data isn't loaded
 
@@ -230,8 +230,8 @@ const handleSubmit = async () => {
         "Failed to submit trip. Check your internet connection or try saving offline.",
       );
     }
-    //diff-add-end
   }
+  //diff-add-end
 };
 ```
 

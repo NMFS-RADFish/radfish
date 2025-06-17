@@ -12,7 +12,7 @@ RADFish organizes different types of data into separate **collections**. While o
 
 Open `src/index.jsx` and locate the `collections` section within the trip store. **You'll need to add the Catch collection schema after the Form collection as shown in the highlighted lines below:**
 
-```jsx title="src/index.jsx" showLineNumbers=53
+```jsx title="src/index.jsx" showLineNumbers=40
         },
       },
       // diff-add-start
@@ -91,7 +91,7 @@ First, we need to access the RADFish Catch collection within our form submission
 
 Open `src/pages/CatchLog.jsx` and locate the `handleAddCatch` function. Add the following the create method to save the new catch data to the RADFish Catch collection.
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=284
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=280
     if (Object.keys(formErrors).length === 0 && tripId) {
       try {
         const Catch = app.stores["trip"].getCollection("Catch");
@@ -159,7 +159,7 @@ After successfully saving to IndexedDB, we need to update React's component stat
 
 In the same `handleAddCatch` function, below the `await Catch.create(newCatchData)`, add the following code:
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=284
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=280
     if (Object.keys(formErrors).length === 0 && tripId) {
       try {
         const Catch = app.stores["trip"].getCollection("Catch");
