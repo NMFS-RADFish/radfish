@@ -70,6 +70,35 @@ http://localhost:3002/trips
 - **Watch mode**: The server automatically reloads when `db.json` changes
 - **REST endpoints**: Automatically creates GET, POST, PUT, DELETE endpoints for the `trips` resource
 
+:::tip Dev Tip: Proxy Configuration
+
+The React app can communicate with the JSON server through a proxy configuration in `vite.config.js`:
+
+```js title="vite.config.js" showLineNumbers=55
+server: {
+  open: true,
+  port: 3000,
+  proxy: {
+    "/api": {
+      target: "http://localhost:3002",
+      changeOrigin: true,
+      rewrite: (path) => path.replace(/^\/api/, ""),
+    },
+  },
+},
+```
+
+**How the Proxy Works:**
+
+- **Request**: When your React app makes a request to `/api/trips`
+- **Proxy intercepts**: Vite development server catches requests starting with `/api`
+- **Rewrites URL**: Removes `/api` prefix, so `/api/trips` becomes `/trips`
+- **Forwards**: Sends the request to `http://localhost:3002/trips` (JSON server)
+- **Response**: JSON server response is sent back to your React app
+
+This allows your frontend to use `/api/trips` in fetch calls while the actual JSON server runs on a different port without CORS issues.
+:::
+
 ## Step 2: Understanding Server Submission Logic
 
 The Review page needs to detect whether the user is online or offline and handle submission accordingly.
@@ -129,9 +158,20 @@ const handleSubmit = async () => {
   const tripStore = app.stores["trip"];
   const Form = tripStore.getCollection("Form");
 
+    //diff-remove-start
+    const finalStatus = isOffline ? "Not Submitted" : "submitted";
+
+    await Form.update({
+      id: trip.id,
+      status: finalStatus,
+      step: 4,
+    });
+
+    navigate(isOffline ? "/offline-confirm" : "/online-confirm");
+    //diff-remove-end
+    //diff-add-start
   if (isOffline) {
     // Offline: Save status as "Not Submitted" locally
-    //diff-add-start
     try {
       await Form.update({
         id: trip.id,
@@ -143,10 +183,9 @@ const handleSubmit = async () => {
       console.error("Error saving trip offline:", error);
       setError("Failed to save trip for offline submission. Please try again.");
     }
-    //diff-add-end
+
   } else {
     // Online: Attempt to submit to the backend
-    //diff-add-start
     try {
       // Prepare submission data with trip and associated catches
       const submissionData = {

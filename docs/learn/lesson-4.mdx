@@ -223,7 +223,6 @@ The complete `handleAddCatch` function also handles form cleanup after successfu
           time: "",
         });
         setCatchTimeKey((prevKey) => prevKey + 1);  
-        setSubmitted(false); 
         setErrors({}); 
       } catch (error) {
         console.error("Error adding catch:", error);
@@ -236,7 +235,6 @@ The complete `handleAddCatch` function also handles form cleanup after successfu
 
 - **`setCurrentCatch(...)`**: Clears all form input values back to empty strings
 - **`setCatchTimeKey(prevKey => prevKey + 1)`**: Forces the TimePicker component to re-render with a new React key
-- **`setSubmitted(false)`**: Resets form submission state for validation display
 
 This provides immediate feedback to users and prepares the form for entering additional catches.
 
