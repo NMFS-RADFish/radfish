@@ -12,7 +12,7 @@ RADFish organizes different types of data into separate **collections**. While o
 
 Open `src/index.jsx` and locate the `collections` section within the trip store. **You'll need to add the Catch collection schema after the Form collection as shown in the highlighted lines below:**
 
-```jsx title="src/index.jsx" showLineNumbers=66
+```jsx title="src/index.jsx" showLineNumbers=53
         },
       },
       // diff-add-start
@@ -89,20 +89,69 @@ Now we'll implement the logic to save new catch records when users submit the "A
 
 First, we need to access the RADFish Catch collection within our form submission handler.
 
-Open `src/pages/CatchLog.jsx` and locate the `handleAddCatch` function. Find the comment `// Create record in RADFish/IndexedDB` and replace it with the following code:
+Open `src/pages/CatchLog.jsx` and locate the `handleAddCatch` function. Add the following the create method to save the new catch data to the RADFish Catch collection.
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=265
-// diff-add-start
-await Catch.create(newCatchData);
-// diff-add-end
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=284
+    if (Object.keys(formErrors).length === 0 && tripId) {
+      try {
+        const Catch = app.stores["trip"].getCollection("Catch");
+
+        const newCatchData = {
+          ...currentCatch,
+          id: crypto.randomUUID(),
+          tripId: tripId,
+          weight: Number(currentCatch.weight),
+          length: Number(currentCatch.length),
+          latitude: currentCatch.latitude
+            ? Number(currentCatch.latitude)
+            : undefined,
+          longitude: currentCatch.longitude
+            ? Number(currentCatch.longitude)
+            : undefined,
+          createdAt: new Date().toISOString(),
+        };
+
+        // diff-add-start
+        await Catch.create(newCatchData);
+        // diff-add-end
+
+        setCurrentCatch({
+          species: "",
+          weight: "",
+          length: "",
+          latitude: "",
+          longitude: "",
+          time: "",
+        });
 ```
 
 **Explanation:**
 
-- `Catch.create(newCatchData)`: Calls the `create` method on the RADFish Catch collection
-- The `newCatchData` object contains all form values plus generated metadata (ID, tripId, timestamp)
-- RADFish validates the data against our schema and saves it to IndexedDB
-- The operation is asynchronous, so we use `await` to ensure completion before proceeding
+**1. Accessing the Catch Collection:**
+```jsx
+const Catch = app.stores["trip"].getCollection("Catch");
+```
+This line retrieves the Catch collection from RADFish's trip store. The `app.stores["trip"]` accesses our trip store (defined in `src/index.jsx`), and `getCollection("Catch")` gets the specific Catch collection we defined in our schema.
+
+**2. Creating the Data Object:**
+```jsx
+const newCatchData = {
+  ...currentCatch,           // Spread all form input values
+  id: crypto.randomUUID(),   // Generate unique ID
+  tripId: tripId,           // Link to parent trip
+  weight: Number(currentCatch.weight),    // Convert to number
+  length: Number(currentCatch.length),    // Convert to number
+  // Handle optional coordinates...
+  createdAt: new Date().toISOString(),    // Add timestamp
+};
+```
+We create a new object that combines the user's form inputs (`currentCatch`) with additional metadata. The spread operator (`...currentCatch`) copies all form values, then we add/override specific fields like converting weight/length to numbers and generating a unique ID.
+
+**3. Saving to RADFish:**
+```jsx
+await Catch.create(newCatchData);
+```
+The `Catch.create()` method saves our data object to IndexedDB through RADFish. This method validates the data against our schema, ensures required fields are present, and stores it persistently. We use `await` because this is an asynchronous database operation.
 
 ### 2.2: Update Component State for UI Rendering
 
@@ -110,10 +159,40 @@ After successfully saving to IndexedDB, we need to update React's component stat
 
 In the same `handleAddCatch` function, below the `await Catch.create(newCatchData)`, add the following code:
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=269
-// diff-add-start
-setCatches(prev => [newCatchData, ...prev]);
-// diff-add-end
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=284
+    if (Object.keys(formErrors).length === 0 && tripId) {
+      try {
+        const Catch = app.stores["trip"].getCollection("Catch");
+
+        const newCatchData = {
+          ...currentCatch,
+          id: crypto.randomUUID(),
+          tripId: tripId,
+          weight: Number(currentCatch.weight),
+          length: Number(currentCatch.length),
+          latitude: currentCatch.latitude
+            ? Number(currentCatch.latitude)
+            : undefined,
+          longitude: currentCatch.longitude
+            ? Number(currentCatch.longitude)
+            : undefined,
+          createdAt: new Date().toISOString(),
+        };
+        
+        await Catch.create(newCatchData);
+        
+        // diff-add-start
+        setCatches((prev) => [newCatchData, ...prev]);
+        // diff-add-end
+        
+        setCurrentCatch({
+          species: "",
+          weight: "",
+          length: "",
+          latitude: "",
+          longitude: "",
+          time: "",
+        });
 ```
 
 **React State Management Explanation:**
@@ -132,10 +211,25 @@ This triggers React's re-rendering process, immediately updating the "Recorded C
 
 The complete `handleAddCatch` function also handles form cleanup after successful submission. Here's how the full process works:
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=272
-setCurrentCatch({ species: "", weight: "", length: "", latitude: "", longitude: "", time: "" });
-setCatchTimeKey(prevKey => prevKey + 1); // Reset TimePicker
-setSubmitted(false); // Reset submission status
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=305
+        setCatches((prev) => [newCatchData, ...prev]);
+
+        setCurrentCatch({
+          species: "",
+          weight: "",
+          length: "",
+          latitude: "",
+          longitude: "",
+          time: "",
+        });
+        setCatchTimeKey((prevKey) => prevKey + 1);  
+        setSubmitted(false); 
+        setErrors({}); 
+      } catch (error) {
+        console.error("Error adding catch:", error);
+      }
+    }
+  };
 ```
 
 **Understanding the Reset Process:**
