@@ -1,30 +1,46 @@
-import CodeBlock from '@theme/CodeBlock';
+import CodeBlock from "@theme/CodeBlock";
 
 # Lesson 1: Page Structure and Navigation
 
 Welcome to the RADFish tutorial! In this first lesson, we'll structure our main page using USWDS grid components and then implement navigation within the app by making the "Start New Trip" button functional.
 
-```sh
-git clone https://github.com/NMFS-RADFish/learn-radfish.git
-cd learn-radfish
+## Prerequisites
 
-# This step will not be included in the final tutorial
-git reset --hard 7334c0a9c7f77344f723ff2c6c9c60f000bff939
+Before you start, make sure you have the following installed:
+
+- **Node.js** (v20.17.0 or later)
+- **npm** (v10.8.2 or later)
+- **git** (v2.0 or later)
+
+You can verify your installations by running these commands in your terminal:
+
+```bash
+node --version
+npm --version
+git --version
 ```
 
 ## Getting Started
 
-Before we begin coding, let's build the application and serve it locally to see its current state.
+Clone the repository to your local machine and navigate to the project directory:
 
-1.  **Install Dependencies:** If you haven't already, open your terminal in the project root directory and run:
-    ```bash
-    npm install --force # Force flag will be removed in the final tutorial
-    ```
-2.  **Start the Development Server:** Run the following command to start the application:
-    ```bash
-    npm run start
-    ```
-    This command will start the development server and typically make the application available at [http://localhost:3000](http://localhost:3000). Open this URL in your browser.
+```bash
+git clone https://github.com/NMFS-RADFish/learn-radfish.git
+cd learn-radfish
+```
+
+Now let's build the application and serve it locally to see its current state.
+
+1. **Install Dependencies:** Open your terminal in the project root directory and run:
+   ```bash
+   npm install --force # Force flag will be removed in the final tutorial
+   ```
+
+2. **Start the Development Server:** Run the following command to start the application:
+   ```bash
+   npm run start
+   ```
+   This command will start the development server and make the application available at [http://localhost:3000](http://localhost:3000). Open this URL in your browser.
 
 ## Step 1: Structure the Page with USWDS Grid Components
 
@@ -40,13 +56,13 @@ For more detailed information on the grid components we are using, see these res
 In `src/pages/Home.jsx`, update your import statement from `@trussworks/react-uswds` to also include `GridContainer`. Your existing import for `Button` and `Grid` will be modified as follows:
 
 ```jsx title="src/pages/Home.jsx" showLineNumbers=1
-  import "../index.css";
-  import React, { useState, useEffect } from "react";
-  import { useApplication, useOfflineStatus } from "@nmfs-radfish/react-radfish";
-  import { useNavigate } from "react-router-dom";
-  //diff-add-start
-  import { Button, GridContainer, Grid } from "@trussworks/react-uswds";
-  //diff-add-end
+import "../index.css";
+import React, { useState, useEffect } from "react";
+import { useApplication, useOfflineStatus } from "@nmfs-radfish/react-radfish";
+import { useNavigate } from "react-router-dom";
+//diff-add-start
+import { Button, GridContainer, Grid } from "@trussworks/react-uswds";
+//diff-add-end
 ```
 
 ### 1.2: Apply the Grid Structure
@@ -64,9 +80,7 @@ return (
       <Grid row>
         <Grid col="fill">
           {/* All your main page content (headings, lists, etc.) goes here */}
-          <h1 className="font-heading-xl text-center margin-0">
-            Hi, Captain
-          </h1>
+          <h1 className="font-heading-xl text-center margin-0">Hi, Captain</h1>
           <h2 className="font-heading-lg text-center margin-top-4 margin-bottom-2">
             Recent Trips
           </h2>
@@ -78,14 +92,15 @@ return (
     //diff-add-end
 
     {/* Sticky footer remains outside the GridContainer */}
-      <footer className="position-fixed bottom-0 ...">
+    <footer className="position-fixed bottom-0 ...">
       {/* ... footer content ... */}
-      </footer>
+    </footer>
   </>
 );
 ```
 
 **Why `GridContainer`?**
+
 The `GridContainer` component from USWDS is crucial for maintaining a consistent layout. It centers your content on the page and applies a maximum width (e.g., 1024px on desktop by default), preventing content from stretching uncomfortably wide on larger screens. The `Grid row` serves as a necessary container for grid columns, and `Grid col="fill"` allows the column to expand and take up the available space within that row.
 
 ## Step 2: Implement "Start New Trip" Navigation
@@ -97,11 +112,13 @@ Currently, the "Start New Trip" button on the home page doesn't do anything. We 
 React Router provides the `useNavigate` hook for programmatic navigation. Let's look at how it's already set up in your component:
 
 **1. Import Statement (already present):**
+
 ```jsx title="src/pages/Home.jsx" showLineNumbers=4
 import { useNavigate } from "react-router-dom";
 ```
 
 **2. Hook Initialization (already present):**
+
 ```jsx title="src/pages/Home.jsx" showLineNumbers=29
 const navigate = useNavigate();
 ```
@@ -113,6 +130,7 @@ The `useNavigate` hook returns a function that we store in the `navigate` variab
 Now we'll use the `navigate` function to make the "Start New Trip" button functional. Find the `Button` component for "Start New Trip".
 
 **Add this `onClick` handler code:**
+
 ```jsx
 onClick={() => {
   navigate("/start");
@@ -120,6 +138,7 @@ onClick={() => {
 ```
 
 **The complete `Button` component with the new `onClick` handler will look like this:**
+
 ```jsx title="src/pages/Home.jsx" showLineNumbers=299
 <Button
   type="button"
@@ -135,12 +154,14 @@ onClick={() => {
 ```
 
 **Explanation:**
-*   We're adding an `onClick` event handler to the `Button`.
-*   Inside the handler, we call the `navigate` function (which we get from the `useNavigate()` hook provided earlier in the component).
-*   We pass the string `"/start"` to `navigate`, telling React Router to change the URL to `/start` when the button is clicked. This will cause the `App` component to render the `StartTrip` page component associated with that route.
+
+- We're adding an `onClick` event handler to the `Button`.
+- Inside the handler, we call the `navigate` function (which we get from the `useNavigate()` hook provided earlier in the component).
+- We pass the string `"/start"` to `navigate`, telling React Router to change the URL to `/start` when the button is clicked. This will cause the `App` component to render the `StartTrip` page component associated with that route.
 
 **Test Navigation:**
-*   Click the "Start New Trip" button. You should now be navigated to a new page (which is currently blank or basic, as we haven't built the `StartTrip` form yet).
+
+- Click the "Start New Trip" button. You should now be navigated to a new page (which is currently blank or basic, as we haven't built the `StartTrip` form yet).
 
 ## Conclusion
 

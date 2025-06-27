@@ -1,0 +1,78 @@
+---
+sidebar_position: 0
+description: Learn to build an offline-first fisheries data collection app with RADFish
+title: Introduction
+---
+
+# Learn RADFish
+
+Welcome to the RADFish tutorial! In this comprehensive guide, you'll learn how to build a complete **Fisheries Trip Logging Application** using RADFish, NOAA's React framework for offline-first data collection.
+
+## The App We're Building
+
+Throughout this tutorial, you'll build a fisheries data collection application that commercial fishermen can use to log their trips and catches. This Progressive Web App (PWA) works offline and syncs data when connectivity is restored.
+
+![Fisheries Trip Logging Application](./src/assets/intro.png)
+
+### Key Features You'll Implement
+
+- **🚢 Trip Management**: Start and end fishing trips with date, time, and weather conditions
+- **🐟 Catch Logging**: Record detailed information about each fish caught (species, weight, length, coordinates, time)
+- **📝 Dynamic Forms**: Build interactive forms with repeatable catch entry
+- **📊 Data Review**: Display aggregated catch statistics organized by species using tables
+- **📱 Offline-First**: Full functionality without internet connection using IndexedDB
+- **🔄 Server Sync**: Send data to backend APIs when online using JSON server
+- **⚡ Progressive Web App**: Offline-first and mobile-optimized
+
+## What You'll Learn
+
+By the end of this tutorial, you'll understand how to:
+
+### RADFish Core Concepts
+- **Offline Storage**: Use IndexedDB with RADFish schemas and collections
+- **State Management**: Manage application state with RADFish hooks
+- **Data Relationships**: Link related data across collections (trips and catches)
+
+### React & USWDS Integration
+- **Component Architecture**: Build accessible forms using Trussworks React USWDS components
+- **Navigation**: Implement multi-step workflows with React Router
+- **Form Validation**: Implement client-side validation with user-friendly error handling
+- **Responsive Design**: Create mobile-first layouts following federal design standards
+
+### Progressive Web App Features
+- **Network Detection**: Provide dynamic UI feedback based on connectivity using `useOfflineStatus`
+- **Data Synchronization**: Handle online/offline data persistence and sync patterns
+
+## Learning Path
+
+This tutorial is divided into 7 progressive lessons:
+
+1. **Page Structure & Navigation** - Set up USWDS grid layouts and routing
+2. **Start Trip Form Inputs** - Build date pickers, time pickers, and select components
+3. **Form Submission** - Save data to offline storage with RADFish
+4. **Dynamic Inputs** - Create repeatable catch logging forms with collection relationships
+5. **Form Validation** - Implement validation rules and error handling across all forms
+6. **Review & Tables** - Display aggregated data with computed fields and offline detection
+7. **Server Submission** - Handle online/offline data synchronization with JSON server
+
+Each lesson builds upon the previous one, gradually introducing new RADFish concepts and React patterns.
+
+## Prerequisites
+
+Before starting this tutorial, you should have:
+
+- **React Knowledge**: Basic understanding of React components, hooks, and state management
+- **JavaScript Fundamentals**: ES6+ syntax, async/await, and modern JavaScript concepts
+- **Terminal Familiarity**: Comfortable running npm commands and navigating file systems
+
+No prior experience with RADFish, PWAs, or offline-first development is required - we'll teach you everything you need to know!
+
+## Ready to Start?
+
+This tutorial takes a hands-on approach. You'll be writing code from the very first lesson, building features incrementally while learning RADFish concepts along the way.
+
+The completed application demonstrates patterns designed for NOAA fisheries applications, making this tutorial valuable whether you're building data collection apps for scientific research, regulatory compliance, or commercial fishing operations.
+
+---
+
+*Having trouble? Check out our [developer documentation](/developer-documentation/getting-started) for additional RADFish resources and troubleshooting guides.*
