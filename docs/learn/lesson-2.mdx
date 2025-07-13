@@ -312,18 +312,21 @@ Before we learn how to save data to storage in the next lesson, let's first see 
 Locate the `handleSubmit` function. Replace the existing submission logic with the following code that will log the form data to the console:
 
 ```jsx title="src/pages/StartTrip.jsx"
-if (Object.keys(newErrors).length === 0) {
-  let navigateToId = currentTripId;
-  //diff-add-start
-  console.log("Form Data:", {
-    tripDate: formData.tripDate,
-    startWeather: formData.startWeather,
-    startTime: formData.startTime,
-    status: "in-progress",
-    step: 2,
-  });
-  //diff-add-end
-}
+const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      let navigateToId = tripId;
+      //diff-add-start
+      console.log("Form Data:", {
+        tripDate: formData.tripDate,
+        startWeather: formData.startWeather,
+        startTime: formData.startTime,
+        status: "in-progress",
+        step: 2,
+      });
+      //diff-add-end
+    } catch (error) {
 ```
 
 **Explanation:**
