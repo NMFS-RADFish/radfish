@@ -73,38 +73,74 @@ stores: {
 
 This schema ensures data consistency and provides validation when we create or update trip records in IndexedDB. To read more about RADFish storage, visit the [RADFish Storage documentation](https://nmfs-radfish.github.io/radfish/design-system/storage).
 
-### 1.2: Declare the trip store and form collection
+### 1.2: Import and access the RADFish application
+
+To access our RADFish stores and collections, we need to import the `useApplication` hook and use it in our component.
+
+First, add these imports at the top of the `StartTrip.jsx` file:
+
+```jsx title="src/pages/StartTrip.jsx"
+import "../index.css";
+import React, { useState, useEffect } from "react";
+//diff-add-start
+import { useApplication } from "@nmfs-radfish/react-radfish";
+import { useTripNavigation, useTripData } from "../hooks";
+//diff-add-end
+```
+
+Then, inside the `StartTrip` component, add the hooks:
+
+```jsx title="src/pages/StartTrip.jsx"
+export default function StartTrip() {
+  //diff-add-start
+  const app = useApplication();
+  const { tripId, navigateHome, navigateWithTripId } = useTripNavigation();
+  //diff-add-end
+```
+
+**Explanation:**
+
+- **`useApplication()`**: This hook provides access to the RADFish application context, including all configured stores and collections
+- **`app`**: The application object that contains our "trip" store and its collections
+- **`useTripNavigation()`**: A custom hook that handles trip-specific navigation and provides:
+  - `tripId`: The current trip ID from the URL parameters
+  - `navigateHome`: Function to navigate back to the home page
+  - `navigateWithTripId`: Function to navigate to other pages while preserving trip context
+
+### 1.3: Declare the trip store and form collection
 
 To save data, we first need to access the appropriate RADFish store and collection within our `handleSubmit` function.
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=183
-    if (Object.keys(newErrors).length === 0) {
-      try {
-        let navigateToId = currentTripId;
+```jsx title="src/pages/StartTrip.jsx"
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-        //diff-add-start
-        const tripStore = app.stores["trip"];
-        const Form = tripStore.getCollection("Form");
-        //diff-add-end
+    try {
+      let navigateToId = tripId;
 
-        console.log("Form Data:", {
-          tripDate: formData.tripDate,
-          startWeather: formData.startWeather,
-          startTime: formData.startTime,
-          status: "in-progress",
-          step: 2,
-        });
+      //diff-add-start
+      const tripStore = app.stores["trip"];
+      const Form = tripStore.getCollection("Form");
+      //diff-add-end
 
-      } catch (error) {
-        console.error(
-          "Error saving trip data:",
-          error,
-          "Trip ID:",
-          currentTripId,
-        );
-      }
+      console.log("Form Data:", {
+        tripDate: formData.tripDate,
+        startWeather: formData.startWeather,
+        startTime: formData.startTime,
+        status: "in-progress",
+        step: 2,
+      });
+
+    } catch (error) {
+      console.error(
+        "Error saving trip data:",
+        error,
+        "Trip ID:",
+        tripId,
+      );
     }
-  };
+  }
+ };
 ```
 
 **Explanation:**
@@ -120,10 +156,12 @@ Before we can save or update the trip, we need to prepare the data object with a
 
 In lesson 2, we used `console.log()` to test our form data collection. Now we'll replace that with actual data preparation for storage.
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=183
-if (Object.keys(newErrors).length === 0) {
+```jsx title="src/pages/StartTrip.jsx"
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
   try {
-    let navigateToId = currentTripId;
+    let navigateToId = tripId;
 
     const tripStore = app.stores["trip"];
     const Form = tripStore.getCollection("Form");
@@ -147,64 +185,60 @@ if (Object.keys(newErrors).length === 0) {
     };
     //diff-add-end
   } catch (error) {
-    console.error("Error saving trip data:", error, "Trip ID:", currentTripId);
+    console.error("Error saving trip data:", error, "Trip ID:", tripId);
   }
-}
+};
 ```
 
 ### 2.2: Update existing trip or create new trip
 
 Now we handle both scenarios: updating an existing trip or creating a brand new one.
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=183
-    if (Object.keys(newErrors).length === 0) {
-      try {
-        let navigateToId = currentTripId;
+```jsx title="src/pages/StartTrip.jsx"
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-        const tripStore = app.stores["trip"];
-        const Form = tripStore.getCollection("Form");
+  try {
+    let navigateToId = tripId;
 
-        const tripData = {
-          tripDate: formData.tripDate,
-          startWeather: formData.startWeather,
-          startTime: formData.startTime,
-          status: "in-progress",
-          step: 2
-        };
+    const tripStore = app.stores["trip"];
+    const Form = tripStore.getCollection("Form");
 
-        //diff-add-start
-        if (currentTripId) {
-          await Form.update({ id: currentTripId, ...tripData });
-        } else {
-          const newTripId = crypto.randomUUID();
-          await Form.create({
-            id: newTripId,
-            ...tripData,
-          });
-          navigateToId = newTripId;
-          setCurrentTripId(newTripId);
-        }
-        //diff-add-end
+    const tripData = {
+      tripDate: formData.tripDate,
+      startWeather: formData.startWeather,
+      startTime: formData.startTime,
+      status: "in-progress",
+      step: 2,
+    };
 
-      } catch (error) {
-        console.error(
-          "Error saving trip data:",
-          error,
-          "Trip ID:",
-          currentTripId,
-        );
-      }
+    //diff-add-start
+    if (tripId) {
+      await Form.update({ id: tripId, ...tripData });
+    } else {
+      const newTripId = crypto.randomUUID();
+      await Form.create({
+        id: newTripId,
+        ...tripData,
+      });
+      navigateToId = newTripId;
     }
-  };
+    //diff-add-end
+  } catch (error) {
+    console.error("Error saving trip data:", error, "Trip ID:", tripId);
+  }
+};
 ```
 
 **Explanation:**
 
-- **Update Path**: If `currentTripId` exists, we call `Form.update()` with the existing ID and our `tripData`. RADFish finds the record in IndexedDB and updates it with the new values.
-- **Create Path**: If no `currentTripId`, it's a new trip:
+- **Update Path**: If `tripId` exists (from the `useTripNavigation` hook), we call `Form.update()` with the existing ID and our `tripData`. RADFish finds the record in IndexedDB and updates it with the new values.
+- **Create Path**: If no `tripId`, it's a new trip:
   - Generate a unique ID using `crypto.randomUUID()`
-  - Call `Form.create()` with the new ID, our `tripData`
-  - Store the new ID for navigation and update our component state
+  - Call `Form.create()` with the new ID and our `tripData`
+  - Store the new ID for navigation
+
+The `tripId` comes from the `useTripNavigation` hook, which manages trip routing and state. This `tripId` is used to check if a trip has already been created - if it exists, we're editing an existing trip; if not, we're creating a new one. For more details about this hook, visit the `/src/hooks/useTripNavigation.jsx` file.
 
 Click the "Next" button to test the form submission. You should see the data being saved in IndexedDB.
 
@@ -228,55 +262,51 @@ After successfully saving the data, we navigate the user to the Catch Log page.
 
 Add the following navigation code after the create/update logic:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=83
-    if (Object.keys(newErrors).length === 0) {
-      try {
-        let navigateToId = currentTripId;
+```jsx title="src/pages/StartTrip.jsx"
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-        const tripStore = app.stores["trip"];
-        const Form = tripStore.getCollection("Form");
+  try {
+    let navigateToId = tripId;
 
-        const tripData = {
-          tripDate: formData.tripDate,
-          startWeather: formData.startWeather,
-          startTime: formData.startTime,
-          status: "in-progress",
-          step: 2
-        };
+    const tripStore = app.stores["trip"];
+    const Form = tripStore.getCollection("Form");
 
-        if (currentTripId) {
-          await Form.update({ id: currentTripId, ...tripData });
-        } else {
-          const newTripId = crypto.randomUUID();
-          await Form.create({
-            id: newTripId,
-            ...tripData,
-          });
-          navigateToId = newTripId;
-          setCurrentTripId(newTripId);
-        }
-          //diff-add-start
-          navigate(`/catch`, { state: { tripId: navigateToId } });
-          //diff-add-end
-      } catch (error) {
-        console.error(
-          "Error saving trip data:",
-          error,
-          "Trip ID:",
-          currentTripId,
-        );
-      }
+    const tripData = {
+      tripDate: formData.tripDate,
+      startWeather: formData.startWeather,
+      startTime: formData.startTime,
+      status: "in-progress",
+      step: 2,
+    };
+
+    if (tripId) {
+      await Form.update({ id: tripId, ...tripData });
+    } else {
+      const newTripId = crypto.randomUUID();
+      await Form.create({
+        id: newTripId,
+        ...tripData,
+      });
+      navigateToId = newTripId;
     }
-  };
+    //diff-add-start
+    navigateWithTripId("/catch", navigateToId);
+    //diff-add-end
+  } catch (error) {
+    console.error("Error saving trip data:", error, "Trip ID:", tripId);
+  }
+};
 ```
 
 Then click the "Next" button to navigate to the Catch Log page.
 
 **Explanation:**
 
-- We use React Router's `navigate` function to go to the `/catch` route
-- We pass the `tripId` (either existing or newly created) in the navigation state
-- This allows the Catch Log page to know which trip it's associated with
+- We use the `navigateWithTripId()` function from our custom `useTripNavigation` hook to go to the `/catch` route
+- This custom function internally uses React Router's `navigate` function but adds trip-specific logic
+- We pass the `tripId` (either existing or newly created) as the second parameter
+- This ensures the Catch Log page receives the correct trip context and knows which trip it's associated with
 
 ## Conclusion
 
