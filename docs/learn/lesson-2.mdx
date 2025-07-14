@@ -316,7 +316,6 @@ const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      let navigateToId = tripId;
       //diff-add-start
       console.log("Form Data:", {
         tripDate: formData.tripDate,
@@ -327,6 +326,8 @@ const handleSubmit = async (e) => {
       });
       //diff-add-end
     } catch (error) {
+      console.error("Error:", error);
+    }
 ```
 
 **Explanation:**

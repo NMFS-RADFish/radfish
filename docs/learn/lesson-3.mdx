@@ -116,8 +116,6 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
     try {
-      let navigateToId = tripId;
-
       //diff-add-start
       const tripStore = app.stores["trip"];
       const Form = tripStore.getCollection("Form");
@@ -161,8 +159,6 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    let navigateToId = tripId;
-
     const tripStore = app.stores["trip"];
     const Form = tripStore.getCollection("Form");
 
@@ -199,8 +195,6 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    let navigateToId = tripId;
-
     const tripStore = app.stores["trip"];
     const Form = tripStore.getCollection("Form");
 
@@ -211,6 +205,10 @@ const handleSubmit = async (e) => {
       status: "in-progress",
       step: 2,
     };
+
+    //diff-add-start
+    let navigateToId = tripId;
+    //diff-add-end
 
     //diff-add-start
     if (tripId) {
@@ -267,8 +265,6 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    let navigateToId = tripId;
-
     const tripStore = app.stores["trip"];
     const Form = tripStore.getCollection("Form");
 
@@ -279,6 +275,8 @@ const handleSubmit = async (e) => {
       status: "in-progress",
       step: 2,
     };
+
+    let navigateToId = tripId;
 
     if (tripId) {
       await Form.update({ id: tripId, ...tripData });
