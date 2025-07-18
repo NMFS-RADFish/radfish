@@ -75,76 +75,147 @@ This schema ensures data consistency and provides validation when we create or u
 
 ### 1.2: Import and access the RADFish application
 
-To access our RADFish stores and collections, we need to import the `useApplication` hook and use it in our component.
+To access our RADFish stores and collections, we need to import the `useApplication` hook and React Router navigation tools.
 
 First, add these imports at the top of the `StartTrip.jsx` file:
 
 ```jsx title="src/pages/StartTrip.jsx"
 import "../index.css";
-import React, { useState, useEffect } from "react";
 //diff-add-start
+import React, { useState, useEffect } from "react";
 import { useApplication } from "@nmfs-radfish/react-radfish";
-import { useTripNavigation, useTripData } from "../hooks";
+import { useNavigate, useLocation } from "react-router-dom";
 //diff-add-end
 ```
 
-Then, inside the `StartTrip` component, add the hooks:
+Then, inside the `StartTrip` component, add the hooks and state:
 
 ```jsx title="src/pages/StartTrip.jsx"
 export default function StartTrip() {
+  const navigate = useNavigate();
   //diff-add-start
   const app = useApplication();
-  const { tripId, navigateHome, navigateWithTripId } = useTripNavigation();
+  const location = useLocation();
+  const tripId = location.state?.tripId;
+  //diff-add-end
+  
+  // State management - existing formData state from lesson 2
+  const [formData, setFormData] = useState({
+    tripDate: "",
+    startWeather: "",
+    startTime: "",
+  });
+  
+  //diff-add-start
+  // Loading state for async data fetching
+  const [isLoading, setIsLoading] = useState(false);
   //diff-add-end
 ```
 
 **Explanation:**
 
+- **`useEffect`**: This is a React hook that allows us to perform side effects in our component. In this case, we're using it to load existing trip data if we're editing an existing trip. Read more about [useEffect](https://react.dev/reference/react/useEffect) in the React documentation.
 - **`useApplication()`**: This hook provides access to the RADFish application context, including all configured stores and collections
 - **`app`**: The application object that contains our "trip" store and its collections
-- **`useTripNavigation()`**: A custom hook that handles trip-specific navigation and provides:
-  - `tripId`: The current trip ID from the URL parameters
-  - `navigateHome`: Function to navigate back to the home page
-  - `navigateWithTripId`: Function to navigate to other pages while preserving trip context
+- **`useNavigate()`**: React Router hook for programmatic navigation between pages
+- **`useLocation()`**: React Router hook that provides access to the current location object
+- **`tripId`**: Extracted from the location state - this tells us if we're editing an existing trip or creating a new one
 
-### 1.3: Declare the trip store and form collection
+### 1.3: Load existing trip data
 
-To save data, we first need to access the appropriate RADFish store and collection within our `handleSubmit` function.
+If we're editing an existing trip, we need to load its data and populate the form. Let's add this functionality using a `useEffect` hook.
+
+Add this code after your state declarations:
 
 ```jsx title="src/pages/StartTrip.jsx"
-const handleSubmit = async (e) => {
-  e.preventDefault();
+// Load existing trip data if editing
+//diff-add-start
+useEffect(() => {
+  const loadExistingTrip = async () => {
+    //diff-add-end
+    // Only load if we have the app instance and a tripId
+    //diff-add-start
+    if (!app || !tripId) {
+      setIsLoading(false);
+      return;
+    }
 
+    setIsLoading(true);
     try {
+      //diff-add-end
+      // Direct access to RADFish stores and collections
       //diff-add-start
       const tripStore = app.stores["trip"];
       const Form = tripStore.getCollection("Form");
       //diff-add-end
 
-      console.log("Form Data:", {
-        tripDate: formData.tripDate,
-        startWeather: formData.startWeather,
-        startTime: formData.startTime,
-        status: "in-progress",
-        step: 2,
-      });
+      // Find trips matching this ID
+      //diff-add-start
+      const existingTrips = await Form.find({ id: tripId });
 
+      if (existingTrips.length > 0) {
+        const tripData = existingTrips[0];
+        //diff-add-end
+
+        // Format date for DatePicker compatibility (YYYY-MM-DD)
+        //diff-add-start
+        const formattedDate = tripData.tripDate ? 
+          new Date(tripData.tripDate).toISOString().split('T')[0] : "";
+
+        setFormData({
+          tripDate: formattedDate,
+          startWeather: tripData.startWeather || "",
+          startTime: tripData.startTime || "",
+        });
+      } else {
+        //diff-add-end
+        // If trip not found, treat as new trip
+        //diff-add-start
+        console.warn(`Trip with ID ${tripId} not found. Starting new trip form.`);
+        setFormData({ tripDate: "", startWeather: "", startTime: "" });
+      }
     } catch (error) {
-      console.error(
-        "Error saving trip data:",
-        error,
-        "Trip ID:",
-        tripId,
-      );
+      console.error("Error loading trip data:", error);
+    } finally {
+      // Ensure loading indicator is turned off
+      setIsLoading(false);
     }
-  }
- };
+  };
+
+  loadExistingTrip();
+}, [tripId, app]);
+//diff-add-end
 ```
 
-**Explanation:**
+**Understanding the Complete Data Loading Pattern:**
 
-- `app.stores["trip"]`: Accesses the RADFish data store named "trip", which we configured in section 1.1. Stores group related data collections.
-- `tripStore.getCollection("Form")`: Within the "trip" store, accesses the collection named "Form". Collections are analogous to tables in a relational database or collections in MongoDB; they hold the actual data records (in this case, our trip forms).
+- **Loading State Management**: We set `isLoading` to true when starting the async operation and ensure it's set to false in both success and error cases using the `finally` block. This prevents the UI from getting stuck in a loading state.
+- **Early Return Pattern**: If we don't have the required `app` or `tripId`, we return early after setting `isLoading` to false. This prevents unnecessary async operations.
+- **`app.stores["trip"]`**: Accesses the RADFish data store named "trip", which we configured in section 1.1. Stores group related data collections.
+- **`tripStore.getCollection("Form")`**: Within the "trip" store, accesses the collection named "Form". Collections are analogous to tables in a relational database or collections in MongoDB; they hold the actual data records (in this case, our trip forms).
+- **`Form.find({ id: tripId })`**: Queries the collection for records matching the provided criteria. This returns an array of matching trips. We use `find()` instead of `findById()` as it's the standard RADFish collection method.
+- **Date Formatting**: The DatePicker component expects dates in YYYY-MM-DD format. We use `toISOString().split('T')[0]` to convert the stored date into this format.
+- **Error Handling**: If no trip is found with the given ID, we reset the form to empty values and log a warning. This handles cases where users might have an invalid or outdated trip ID.
+
+### 1.4: Declare navigation functions
+
+To better organize our code, we'll declare our navigation functions here:
+
+```jsx title="src/pages/StartTrip.jsx"
+// Navigation functions
+// Already declared for you in lesson 2
+const navigateHome = () => {
+  navigate("/");
+};
+
+//diff-add-start
+const navigateWithTripId = (path, tripId) => {
+  navigate(path, { state: { tripId } });
+};
+//diff-add-end
+```
+
+These functions provide the same navigation capabilities we'll later see abstracted into custom hooks in lesson 4.
 
 ## Step 2: Saving Trip Data
 
@@ -158,20 +229,21 @@ In lesson 2, we used `console.log()` to test our form data collection. Now we'll
 const handleSubmit = async (e) => {
   e.preventDefault();
 
+  //diff-remove-start
+  console.log("Form Data:", {
+    tripDate: formData.tripDate,
+    startWeather: formData.startWeather,
+    startTime: formData.startTime,
+    status: "in-progress",
+    step: 2,
+  });
+   //diff-remove-end
+
+  //diff-add-start
   try {
     const tripStore = app.stores["trip"];
     const Form = tripStore.getCollection("Form");
 
-    //diff-remove-start
-    console.log("Form Data:", {
-      tripDate: formData.tripDate,
-      startWeather: formData.startWeather,
-      startTime: formData.startTime,
-      status: "in-progress",
-      step: 2,
-    });
-    //diff-remove-end
-    //diff-add-start
     const tripData = {
       tripDate: formData.tripDate,
       startWeather: formData.startWeather,
@@ -179,11 +251,13 @@ const handleSubmit = async (e) => {
       status: "in-progress",
       step: 2,
     };
-    //diff-add-end
+
   } catch (error) {
     console.error("Error saving trip data:", error, "Trip ID:", tripId);
   }
+  //diff-add-end
 };
+
 ```
 
 ### 2.2: Update existing trip or create new trip
@@ -236,7 +310,7 @@ const handleSubmit = async (e) => {
   - Call `Form.create()` with the new ID and our `tripData`
   - Store the new ID for navigation
 
-The `tripId` comes from the `useTripNavigation` hook, which manages trip routing and state. This `tripId` is used to check if a trip has already been created - if it exists, we're editing an existing trip; if not, we're creating a new one. For more details about this hook, visit the `/src/hooks/useTripNavigation.jsx` file.
+The `tripId` comes from React Router's location state, which is passed when navigating from other pages. This `tripId` is used to check if a trip has already been created - if it exists, we're editing an existing trip; if not, we're creating a new one. This approach gives us direct control over trip context and navigation.
 
 Click the "Next" button to test the form submission. You should see the data being saved in IndexedDB.
 
@@ -301,11 +375,22 @@ Then click the "Next" button to navigate to the Catch Log page.
 
 **Explanation:**
 
-- We use the `navigateWithTripId()` function from our custom `useTripNavigation` hook to go to the `/catch` route
-- This custom function internally uses React Router's `navigate` function but adds trip-specific logic
+- We use the `navigateWithTripId()` function we created in section 1.4 to go to the `/catch` route
+- This function uses React Router's `navigate` function with state to pass the trip context
 - We pass the `tripId` (either existing or newly created) as the second parameter
 - This ensures the Catch Log page receives the correct trip context and knows which trip it's associated with
 
 ## Conclusion
 
 You have now successfully implemented the submission logic for the first step of the trip form! The application saves the initial trip details to IndexedDB using RADFish, handling both new trip creation and updates. Upon successful submission, the user is automatically navigated to the next step, ready to log their catches.
+
+**What You've Learned:**
+
+- **Direct RADFish Access**: You've learned to work directly with RADFish stores and collections using `app.stores["trip"].getCollection("Form")`
+- **Manual Data Loading**: You implemented useEffect to load existing trip data with direct collection queries
+- **React Router State Management**: You used location state and navigate functions to handle trip context between pages
+- **CRUD Operations**: You created and updated trip records using RADFish's create() and update() methods
+
+**Looking Ahead:**
+
+In the next lesson, we'll build the **Catch Log** functionality where users can dynamically add, edit, and delete multiple fish catches. You'll learn how to manage dynamic form inputs - adding new catch records on the fly, displaying them in a list, and handling updates and deletions. We'll also introduce custom hooks to simplify some of the data management patterns you've learned here.

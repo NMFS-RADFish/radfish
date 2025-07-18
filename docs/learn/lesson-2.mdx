@@ -315,19 +315,16 @@ Locate the `handleSubmit` function. Replace the existing submission logic with t
 const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      //diff-add-start
-      console.log("Form Data:", {
-        tripDate: formData.tripDate,
-        startWeather: formData.startWeather,
-        startTime: formData.startTime,
-        status: "in-progress",
-        step: 2,
-      });
-      //diff-add-end
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    //diff-add-start
+    console.log("Form Data:", {
+      tripDate: formData.tripDate,
+      startWeather: formData.startWeather,
+      startTime: formData.startTime,
+      status: "in-progress",
+      step: 2,
+    });
+    //diff-add-end
+};
 ```
 
 **Explanation:**
