@@ -114,6 +114,7 @@ const handleSubmit = async () => {
   try {
     const tripStore = app.stores["trip"];
     const Form = tripStore.getCollection("Form");
+
     const finalStatus = isOffline ? "Not Submitted" : "submitted";
 
     await Form.update({
@@ -147,104 +148,219 @@ We need to modify this logic to actually submit to the server when online:
 
 ## Step 3: Implementing Server Submission
 
-### 3.1: Update the Submission Handler
+We'll break the server submission implementation into smaller, manageable steps to make it easier to follow along.
 
-Now let's modify the `handleSubmit` function to include both trip and catch data in the server submission. Note that the `catches` state variable is already available from Lesson 6, where we added it to store catch data for API submission:
+### 3.1: Add Basic Error Handling Structure
+
+First, let's replace the simple submission logic with a structure that handles offline and online cases separately. We'll add try/catch blocks for proper error handling:
 
 ```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=201
 const handleSubmit = async () => {
   if (!trip) return; // Guard clause if trip data isn't loaded
 
-  const tripStore = app.stores["trip"];
-  const Form = tripStore.getCollection("Form");
+  const tripStore = app.stores[STORE_NAMES.TRIP];
+  const Form = tripStore.getCollection(COLLECTION_NAMES.FORM);
 
-    //diff-remove-start
-    const finalStatus = isOffline ? "Not Submitted" : "submitted";
+  //diff-remove-start
+  const finalStatus = isOffline ? "Not Submitted" : "submitted";
 
-    await Form.update({
-      id: trip.id,
-      status: finalStatus,
-      step: 4,
-    });
+  await Form.update({
+    id: trip.id,
+    status: finalStatus,
+    step: 4,
+  });
 
-    navigate(isOffline ? "/offline-confirm" : "/online-confirm");
-    //diff-remove-end
-    //diff-add-start
+  navigate(isOffline ? "/offline-confirm" : "/online-confirm");
+  //diff-remove-end
+  //diff-add-start
   if (isOffline) {
     // Offline: Save status as "Not Submitted" locally
-    try {
-      await Form.update({
-        id: trip.id,
-        status: "Not Submitted",
-        step: 4, // Mark as completed step 4 (review)
-      });
-      navigate("/offline-confirm");
-    } catch (error) {
-      console.error("Error saving trip offline:", error);
-      setError("Failed to save trip for offline submission. Please try again.");
-    }
-
+    // We'll implement this in the next step
   } else {
     // Online: Attempt to submit to the backend
-    try {
-      // Prepare submission data with trip and associated catches
-      const submissionData = {
-        trip: trip,
-        catches: catches,
-      };
-
-      const response = await fetch("/api/trips", {
-        // Assuming '/api/trips' is your JSON server endpoint
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(submissionData),
-      });
-
-      if (!response.ok) {
-        const status = response.status;
-        const statusText = response.statusText
-          ? response.statusText.trim()
-          : "";
-        const errorDetail = statusText
-          ? `${status} ${statusText}`
-          : `${status} Server error occurred`;
-
-        console.error("Server submission failed:", errorDetail);
-        setError(`Server submission failed: ${errorDetail}`);
-        return;
-      }
-
-      // If server submission is successful, update local status to "submitted"
-      await Form.update({
-        id: trip.id,
-        status: "submitted",
-        step: 4,
-      });
-      navigate("/online-confirm");
-    } catch (error) {
-      // Catch network errors or other issues with the fetch call
-      console.error("Error submitting trip online:", error);
-      setError(
-        "Failed to submit trip. Check your internet connection or try saving offline.",
-      );
-    }
+    // We'll implement this in subsequent steps
   }
   //diff-add-end
 };
 ```
 
-**Understanding the Enhanced Logic:**
+**What We're Setting Up:**
 
-1. **Offline Path**: Simple local save with "Not Submitted" status
-2. **Online Path**:
+- **Branching Logic**: Clear separation between offline and online submission paths
+- **Foundation for Error Handling**: Structure ready for try/catch blocks
+- **Placeholder Comments**: Clear indicators of what we'll implement in each branch
+
+### 3.2: Implement Offline Submission
+
+Now let's implement the offline submission path with proper error handling:
+
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=208
+if (isOffline) {
+  //diff-remove-start
+  // Offline: Save status as "Not Submitted" locally
+  // We'll implement this in the next step
+  //diff-remove-end
+  //diff-add-start
+  // Offline: Save status as "Not Submitted" locally
+  try {
+    await Form.update({
+      id: trip.id,
+      status: "Not Submitted",
+      step: 4, // Mark as completed step 4 (review)
+    });
+    navigate("/offline-confirm");
+  } catch (error) {
+    console.error("Error saving trip offline:", error);
+    setError("Failed to save trip for offline submission. Please try again.");
+  }
+  //diff-add-end
+} else {
+  // Online: Attempt to submit to the backend
+  // We'll implement this in subsequent steps
+}
+```
+
+**Understanding Offline Submission:**
+
+1. **Status Setting**: Mark as "Not Submitted" to indicate it needs server submission later
+2. **Step Tracking**: Set step to 4 to mark the review process as complete
+3. **Error Handling**: Catch and display user-friendly error messages
+4. **Navigation**: Direct to offline confirmation page
+
+### 3.3: Prepare Server Submission Data
+
+Let's add the data preparation logic for server submission. The `catches` state variable is already available from Lesson 6:
+
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=219
+} else {
+  //diff-remove-start
+  // Online: Attempt to submit to the backend
+  // We'll implement this in subsequent steps
+  //diff-remove-end
+  //diff-add-start
+  // Online: Attempt to submit to the backend
+  try {
+    // Prepare submission data with trip and associated catches
+    const submissionData = {
+      trip: trip,
+      catches: catches,
+    };
+    
+    // Server request will be added in next step
+  } catch (error) {
+    // Error handling will be completed in next step
+    console.error("Error submitting trip online:", error);
+  }
+  //diff-add-end
+}
+```
+
+**Data Structure Overview:**
+
+The server receives a comprehensive JSON object containing:
+- **trip**: Complete trip details (dates, times, weather, status)
+- **catches**: Array of all associated catch records for the trip
+
+### 3.4: Implement Server Request
+
+Now let's add the actual server request using the fetch API:
+
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=224
+// Prepare submission data with trip and associated catches
+const submissionData = {
+  trip: trip,
+  catches: catches,
+};
+
+//diff-add-start
+const response = await fetch("/api/trips", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(submissionData),
+});
+
+if (!response.ok) {
+  const status = response.status;
+  const statusText = response.statusText
+    ? response.statusText.trim()
+    : "";
+  const errorDetail = statusText
+    ? `${status} ${statusText}`
+    : `${status} Server error occurred`;
+
+  console.error("Server submission failed:", errorDetail);
+  setError(`Server submission failed: ${errorDetail}`);
+  return;
+}
+//diff-add-end
+
+// Success handling will be added in next step
+```
+
+**Understanding the Server Request:**
+
+1. **Endpoint**: `/api/trips` (proxied to JSON server at port 3002)
+2. **Method**: POST to create a new trip record
+3. **Headers**: Content-Type specifies JSON data
+4. **Body**: Stringified submission data object
+5. **Error Handling**: Check response status and provide detailed error messages
+
+### 3.5: Handle Server Success
+
+Finally, let's implement the success path when server submission completes:
+
+```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=246
+if (!response.ok) {
+  const status = response.status;
+  const statusText = response.statusText
+    ? response.statusText.trim()
+    : "";
+  const errorDetail = statusText
+    ? `${status} ${statusText}`
+    : `${status} Server error occurred`;
+
+  console.error("Server submission failed:", errorDetail);
+  setError(`Server submission failed: ${errorDetail}`);
+  return;
+}
+
+//diff-add-start
+// If server submission is successful, update local status to "submitted"
+await Form.update({
+  id: trip.id,
+  status: "submitted",
+  step: 4,
+});
+navigate("/online-confirm");
+//diff-add-end
+} catch (error) {
+  //diff-remove-start
+  // Error handling will be completed in next step
+  console.error("Error submitting trip online:", error);
+  //diff-remove-end
+  //diff-add-start
+  // Catch network errors or other issues with the fetch call
+  console.error("Error submitting trip online:", error);
+  setError(
+    "Failed to submit trip. Check your internet connection or try saving offline.",
+  );
+  //diff-add-end
+}
+
+**Complete Implementation Summary:**
+
+Now that we've implemented all the steps, here's what our enhanced submission logic accomplishes:
+
+1. **Offline Path**: Simple local save with "Not Submitted" status and proper error handling
+2. **Online Path**: 
    - Prepare submission data combining trip details and associated catches
    - Submit complete data structure to server using fetch API
    - Handle detailed error responses with status codes and messages
    - If successful: Update local status to "submitted"
    - If server fails: Display error message to user
-3. **Error Handling**: Provides detailed feedback about server submission failures
+3. **Progressive Enhancement**: Each step builds upon the previous one, making it easier to debug and understand
 
 **Submission Data Structure:**
 The server receives a JSON object containing both trip information and all associated catches:
