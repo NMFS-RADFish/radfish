@@ -81,10 +81,18 @@ First, add these imports at the top of the `StartTrip.jsx` file:
 
 ```jsx title="src/pages/StartTrip.jsx"
 import "../index.css";
+//diff-remove-start
+import React, { useState } from "react";
+//diff-remove-end
 //diff-add-start
 import React, { useState, useEffect } from "react";
-import { useApplication } from "@nmfs-radfish/react-radfish";
+//diff-add-end
+//diff-remove-start
+import { useNavigate } from "react-router-dom";
+//diff-remove-end
+//diff-add-start
 import { useNavigate, useLocation } from "react-router-dom";
+import { useApplication } from "@nmfs-radfish/react-radfish";
 //diff-add-end
 ```
 
@@ -106,8 +114,8 @@ export default function StartTrip() {
     startTime: "",
   });
   
-  //diff-add-start
   // Loading state for async data fetching
+    //diff-add-start
   const [isLoading, setIsLoading] = useState(false);
   //diff-add-end
 ```

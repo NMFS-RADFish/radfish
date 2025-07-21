@@ -79,18 +79,18 @@ return (
   <>
     //diff-add-start
     <GridContainer className="padding-y-4 padding-x-2 text-center">
-    //diff-add-end
       <Grid row>
         <Grid col="fill">
+        //diff-add-end
           {/* All your main page content (headings, lists, etc.) goes here */}
           <h1 className="font-heading-xl text-center margin-0">Hi, Captain</h1>
           <h2 className="font-heading-lg text-center margin-top-4 margin-bottom-2">
             Recent Trips
           </h2>
           {/* Example: trips.map(...) or conditional messages */}
+          //diff-add-start
         </Grid>
       </Grid>
-    //diff-add-start
     </GridContainer>
     //diff-add-end
 
@@ -117,17 +117,13 @@ React Router provides the `useNavigate` hook for programmatic navigation. Let's 
 **1. Import Statement:**
 
 ```jsx title="src/pages/Home.jsx"
-//diff-add-start
 import { useNavigate } from "react-router-dom";
-//diff-add-end
 ```
 
 **2. Hook Initialization:**
 
 ```jsx title="src/pages/Home.jsx"
-//diff-add-start
 const navigate = useNavigate();
-//diff-add-end
 ```
 
 The `useNavigate` hook returns a function that we store in the `navigate` variable. This function allows us to programmatically change the current route (URL) in our application.

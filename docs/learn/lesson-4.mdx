@@ -127,13 +127,9 @@ import {
   ErrorMessage,
   Form,
   FormGroup,
-  Grid,
-  GridContainer,
   Icon,
   Label,
   Select,
-  StepIndicator,
-  StepIndicatorStep,
   TextInput,
   TimePicker,
 } from "@trussworks/react-uswds";
@@ -145,12 +141,14 @@ import {
   COLLECTION_NAMES,
 } from "../utils";
 import { useTripNavigation, useTripData, useCatchData } from "../hooks";
+import { Layout } from "../components/Layout";
 ```
 
 **Understanding the Provided Imports:**
 
 - **Utility Constants**: Predefined values for species options, time picker configuration, and store/collection names
 - **Custom Hooks**: `useCatchData` manages catch-specific operations, building on the patterns from lesson 3
+- **Layout Component**: Provides the grid structure and step indicator (passed `currentStep={2}` for the Catch Log page)
 
 :::info
 The complete UI structure is already provided in the file. You'll focus on implementing the core event handlers that make the form functional.
@@ -243,8 +241,8 @@ You'll implement 5 main event handlers:
 1. `handleInputChange` - For text and select inputs
 2. `handleTimeChange` - For the TimePicker component
 3. `resetForm` - To clear the form
-4. `handleSubmit` - For adding new catches
-5. `handleMainSubmit` - For proceeding to the next step
+4. `handleAddCatch` - For adding new catches
+5. `handleSubmit` - For proceeding to the next step
 
 The advanced handlers for editing recorded catches are already provided for you.
 :::
@@ -255,7 +253,7 @@ Before implementing the handlers, you need to understand that the form elements 
 
 ```jsx title="src/pages/CatchLog.jsx"
 // Current placeholder handlers that need to be replaced:
-<Form onSubmit={() => {}}>  {/* Replace with: onSubmit={handleSubmit} */}
+<Form onSubmit={() => {}}>  {/* Replace with: onSubmit={handleAddCatch} */}
   <Select onChange={() => {}}>  {/* Replace with: onChange={handleInputChange} */}
   <TextInput onChange={() => {}}>  {/* Replace with: onChange={handleInputChange} */}
   <TimePicker onChange={() => {}}>  {/* Replace with: onChange={handleTimeChange} */}
@@ -332,7 +330,7 @@ Now let's implement the submission handlers for both adding new catches and proc
  * @param {Event} e - Form submit event
  */
 //diff-add-start
-const handleSubmit = async (e) => {
+const handleAddCatch = async (e) => {
   e.preventDefault();
   try {
     const success = await addCatch(currentCatch);
@@ -356,7 +354,7 @@ const handleSubmit = async (e) => {
  * @param {Event} e - Form submit event
  */
 //diff-add-start
-const handleMainSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
   try {
     // Update trip step
@@ -375,8 +373,8 @@ const handleMainSubmit = async (e) => {
 
 **Key Implementation Details:**
 
-- **`handleSubmit`**: Uses the `addCatch` function from our custom hook, includes form reset logic
-- **`handleMainSubmit`**: Updates the trip step and navigates to the next page using `updateTrip` from `useTripData`
+- **`handleAddCatch`**: Uses the `addCatch` function from our custom hook, includes form reset logic
+- **`handleSubmit`**: Updates the trip step and navigates to the next page using `updateTrip` from `useTripData`
 - **Validation placeholders**: Comments show where validation will be added in lesson 5
 
 ### 3.4: Connecting Your Handlers
@@ -389,7 +387,7 @@ After implementing all 5 event handlers, you need to connect them to the form el
 <Form onSubmit={() => {}} large className="margin-top-3 width-full">
 //diff-remove-end
 //diff-add-start
-<Form onSubmit={handleSubmit} large className="margin-top-3 width-full">
+<Form onSubmit={handleAddCatch} large className="margin-top-3 width-full">
 //diff-add-end
 
 // Replace all input onChange handlers  
@@ -415,7 +413,7 @@ After implementing all 5 event handlers, you need to connect them to the form el
 <Button onClick={() => {}}>
 //diff-remove-end
 //diff-add-start
-<Button onClick={handleMainSubmit}>
+<Button onClick={handleSubmit}>
 //diff-add-end
 ```
 
@@ -433,34 +431,14 @@ Let's examine the complete form structure for adding new catches that's already 
 
 ```jsx title="src/pages/CatchLog.jsx"
   return (
-    <>
-      <GridContainer className="padding-y-4 padding-x-0 width-full maxw-mobile-lg">
-        <Grid row>
-          <Grid col="fill">
-            <div className="text-left">
-              {/* Step Indicator */}
-              <div className="margin-top-4 border-bottom border-base-light padding-bottom-2">
-                <StepIndicator
-                  headingLevel="h4"
-                  ofText="of"
-                  stepText="Step"
-                  className="usa-step-indicator margin-bottom-0"
-                  showLabels={false}
-                >
-                  <StepIndicatorStep label="Start Trip" status="complete" />
-                  <StepIndicatorStep label="Log Catch" status="current" />
-                  <StepIndicatorStep label="End Trip" />
-                  <StepIndicatorStep label="Review and Submit" />
-                </StepIndicator>
-              </div>
-
-              {/* New Catch Entry Form Section */}
-              <div className="width-full margin-y-0 margin-x-auto display-flex flex-column flex-align-start">
-                <Form
-                  onSubmit={handleSubmit}
-                  large
-                  className="margin-top-3 width-full"
-                >
+    <Layout currentStep={2}>
+      {/* New Catch Entry Form Section */}
+      <div className="width-full margin-y-0 margin-x-auto display-flex flex-column flex-align-start">
+        <Form
+          onSubmit={handleAddCatch}
+          large
+          className="margin-top-3 width-full"
+        >
                   {/* Species Dropdown */}
                   <FormGroup>
                     <Label htmlFor="species" requiredMarker>
@@ -484,7 +462,7 @@ Let's examine the complete form structure for adding new catches that's already 
 
 **Key Features of the Provided Form:**
 
-- **Step Indicator**: Shows current progress with "Log Catch" as current step
+- **Layout Component**: Wraps the form content and handles the grid/step indicator display
 - **Species Dropdown**: Uses `SPECIES_OPTIONS` constant for consistent data
 - **Form Structure**: Follows USWDS patterns established in previous lessons
 - **Error Integration**: Each field is prepared for validation feedback
@@ -583,7 +561,7 @@ The provided form includes measurement and timing fields with the following stru
 - **Coordinate Fields**: Optional latitude/longitude inputs for GPS data collection
 
 :::info About the Add Catch Button
-The form includes a full-width "Add Catch" button that triggers the `handleSubmit` function we implemented in Step 3. This creates new catch records and updates the UI immediately.
+The form includes a full-width "Add Catch" button that triggers the `handleAddCatch` function we implemented in Step 3. This creates new catch records and updates the UI immediately.
 :::
 
 ## Step 5: Understanding the Recorded Catches Display

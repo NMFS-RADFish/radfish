@@ -22,15 +22,23 @@ import {
   //diff-add-start
   FormGroup,
   //diff-add-end
-  Grid,
-  GridContainer,
   //diff-add-start
   Label,
   //diff-add-end
-  StepIndicator,
-  StepIndicatorStep,
 } from "@trussworks/react-uswds";
+import Layout from "../components/Layout";
 ```
+
+:::info Layout Component
+
+Notice that we're importing a `Layout` component. This is a custom component that handles the common page structure for all our trip logging pages. It provides:
+
+- **Grid Container**: Wraps content with consistent padding and responsive width
+- **Step Indicator**: Shows the user's progress through the 4-step trip logging process
+- **Consistent Structure**: Ensures all pages have the same layout without duplicating code
+
+Each page uses this component with a `currentStep` prop (e.g., `<Layout currentStep="Start Trip">`) to highlight the appropriate step in the indicator. This approach keeps our code DRY (Don't Repeat Yourself) and makes maintenance easier.
+:::
 
 **Understanding the USWDS Components:**
 
@@ -240,7 +248,7 @@ Add the following code below the `TimePicker` form group:
 The complete **Form** will look like this:
 
 ```jsx title="src/pages/StartTrip.jsx"
-<Form onSubmit={handleSubmit} large>
+<Form onSubmit={handleSubmit} large className="margin-top-3">
   <FormGroup>
     <Label
       htmlFor="tripDate"

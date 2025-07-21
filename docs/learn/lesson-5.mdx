@@ -48,14 +48,11 @@ import {
   DatePicker,
   Form,
   FormGroup,
-  Grid,
-  GridContainer,
   Label,
   Select,
-  StepIndicator,
-  StepIndicatorStep,
   TimePicker,
 } from "@trussworks/react-uswds";
+import { Layout } from "../components/Layout";
 //diff-add-start
 import { validateRequired, FIELD_NAMES } from "../utils";
 //diff-add-end
@@ -354,7 +351,7 @@ Now apply the same error state pattern to the Time and Weather fields:
 
 To display the actual error text to users, we need to import the `ErrorMessage` component from USWDS and add it to each form field.
 
-**First, add the ErrorMessage import to your existing import statement:**
+**First, add the ErrorMessage import to your existing USWDS import statement:**
 
 ```jsx title="src/pages/StartTrip.jsx"
 import {
@@ -365,12 +362,8 @@ import {
   //diff-add-end
   Form,
   FormGroup,
-  Grid,
-  GridContainer,
   Label,
   Select,
-  StepIndicator,
-  StepIndicatorStep,
   TimePicker,
 } from "@trussworks/react-uswds";
 ```
