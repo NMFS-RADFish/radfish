@@ -317,20 +317,21 @@ const getFooterProps = () => {
   const handleSubmit = async () => {
     if (!trip) return; // Guard clause if trip data isn't loaded
 
-    const tripStore = app.stores["trip"];
-    const Form = tripStore.getCollection("Form");
+    try {
+            //diff-add-start
+      const tripStore = app.stores["trip"];
+      const Form = tripStore.getCollection("Form");
 
-    //diff-add-start
-    const finalStatus = isOffline ? "Not Submitted" : "submitted";
+      const finalStatus = isOffline ? "Not Submitted" : "submitted";
 
-    await Form.update({
-      id: trip.id,
-      status: finalStatus,
-      step: 4,
-    });
+      await Form.update({
+        id: trip.id,
+        status: finalStatus,
+        step: 4,
+      });
 
-    navigate(isOffline ? "/offline-confirm" : "/online-confirm");
-    //diff-add-end
+      navigate(isOffline ? "/offline-confirm" : "/online-confirm");
+      //diff-add-end
 
   } catch (error) {
     console.error("Error submitting trip:", error);
