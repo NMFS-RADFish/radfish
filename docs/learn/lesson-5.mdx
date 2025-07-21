@@ -159,12 +159,16 @@ const handleSubmit = async (e) => {
   e.preventDefault();
   //diff-add-start
   setSubmitted(true); // Mark form as submitted to show errors
+  //diff-add-end
 
   // Validate all form fields
+  //diff-add-start
   const validationErrors = validateForm(formData);
   setErrors(validationErrors);
+  //diff-add-end
 
   // Only proceed if no validation errors
+  //diff-add-start
   if (Object.keys(validationErrors).length === 0) {
   //diff-add-end
     try {
@@ -552,9 +556,13 @@ import {
 
 ### 3.2: Implement Validation Functions
 
-Now we need to add two validation functions: one for the new catch form and one for recorded catches.
+Now we need to add two validation functions: one for the new catch form and one for recorded catches. We'll implement these separately to make them easier to understand.
 
-Add these functions inside your `CatchLog` component, after the state declarations:
+#### Add validateForm Function
+
+First, let's add the validation function for the new catch form. This function validates the current catch data before adding it to the list.
+
+Add this function inside your `CatchLog` component, after the state declarations:
 
 ```jsx title="src/pages/CatchLog.jsx"
 // --- Validation Functions ---
@@ -566,8 +574,10 @@ Add these functions inside your `CatchLog` component, after the state declaratio
 //diff-add-start
 const validateForm = () => {
   const newErrors = {};
-  
+//diff-add-end
+
   // Validate required fields
+  //diff-add-start
   const speciesError = validateRequired(currentCatch.species, FIELD_NAMES.SPECIES);
   if (speciesError) newErrors.species = speciesError;
   
@@ -579,8 +589,10 @@ const validateForm = () => {
   
   const timeError = validateRequired(currentCatch.time, FIELD_NAMES.TIME);
   if (timeError) newErrors.time = timeError;
-  
+  //diff-add-end
+
   // Validate ranges if value exists and required check passed
+  //diff-add-start
   if (!newErrors.weight && currentCatch.weight) {
     const { min, max } = VALIDATION_RANGES.WEIGHT;
     const rangeError = validateNumberRange(currentCatch.weight, min, max, FIELD_NAMES.WEIGHT, false);
@@ -592,8 +604,10 @@ const validateForm = () => {
     const rangeError = validateNumberRange(currentCatch.length, min, max, FIELD_NAMES.LENGTH, false);
     if (rangeError) newErrors.length = rangeError;
   }
-  
+  //diff-add-end
+
   // Validate coordinates if entered (optional fields)
+  //diff-add-start
   if (currentCatch.latitude) {
     const latitudeError = validateLatitude(currentCatch.latitude);
     if (latitudeError) newErrors.latitude = latitudeError;
@@ -607,7 +621,22 @@ const validateForm = () => {
   return newErrors;
 };
 //diff-add-end
+```
 
+**Understanding validateForm:**
+
+- **Required Field Validation**: Checks species, weight, length, and time are not empty
+- **Range Validation**: Validates weight (0-1000) and length (0-500) are within acceptable bounds
+- **Optional Coordinate Validation**: Only validates latitude/longitude if values are provided
+- **Error Object**: Returns an object with field names as keys and error messages as values
+
+#### Add validateRecordedCatches Function
+
+Next, let's add the validation function for recorded catches. This function validates all catches in the list before allowing navigation to the next step.
+
+Add this function right after the `validateForm` function:
+
+```jsx title="src/pages/CatchLog.jsx"
 /**
  * Validates all recorded catches
  * @returns {Object} Validation errors indexed by catch index
@@ -618,8 +647,10 @@ const validateRecordedCatches = () => {
   
   catches.forEach((catchItem, index) => {
     const catchErrors = {};
-    
+    //diff-add-end
+
     // Validate required fields for each recorded catch
+    //diff-add-start
     const speciesError = validateRequired(catchItem.species, FIELD_NAMES.SPECIES);
     if (speciesError) catchErrors.species = speciesError;
     
@@ -631,8 +662,10 @@ const validateRecordedCatches = () => {
     
     const timeError = validateRequired(catchItem.time, FIELD_NAMES.TIME);
     if (timeError) catchErrors.time = timeError;
-    
+    //diff-add-end
+
     // Validate ranges if value exists and required check passed
+    //diff-add-start
     if (!catchErrors.weight && catchItem.weight) {
       const { min, max } = VALIDATION_RANGES.WEIGHT;
       const rangeError = validateNumberRange(catchItem.weight, min, max, FIELD_NAMES.WEIGHT, false);
@@ -644,8 +677,10 @@ const validateRecordedCatches = () => {
       const rangeError = validateNumberRange(catchItem.length, min, max, FIELD_NAMES.LENGTH, false);
       if (rangeError) catchErrors.length = rangeError;
     }
-    
+    //diff-add-end
+
     // Validate coordinates if entered
+    //diff-add-start
     if (catchItem.latitude) {
       const latitudeError = validateLatitude(catchItem.latitude);
       if (latitudeError) catchErrors.latitude = latitudeError;
@@ -655,8 +690,10 @@ const validateRecordedCatches = () => {
       const longitudeError = validateLongitude(catchItem.longitude);
       if (longitudeError) catchErrors.longitude = longitudeError;
     }
-    
+    //diff-add-end
+
     // If there are errors for this catch, add them to the main error object
+    //diff-add-start
     if (Object.keys(catchErrors).length > 0) {
       allErrors[index] = catchErrors;
     }
@@ -666,6 +703,13 @@ const validateRecordedCatches = () => {
 };
 //diff-add-end
 ```
+
+**Understanding validateRecordedCatches:**
+
+- **Iterates Through All Catches**: Uses `forEach` to validate each recorded catch
+- **Same Validation Rules**: Applies identical validation logic as the new catch form
+- **Indexed Errors**: Returns errors indexed by catch position (e.g., `{ 0: { species: "Species is required" }, 2: { weight: "Weight must be between 0 and 1000" } }`)
+- **Sparse Object**: Only includes indices for catches with errors, making it easy to check if any errors exist
 
 ### 3.3: Add Recorded Catches Error State
 
@@ -705,13 +749,15 @@ Now we'll update the `handleAddCatch` function to use our validation logic. Loca
 ```jsx title="src/pages/CatchLog.jsx" showLineNumbers=131
 const handleAddCatch = async (e) => {
   e.preventDefault();
-  //diff-add-start
   
   // Validate form before adding catch
+    //diff-add-start
   const formErrors = validateForm();
   setErrors(formErrors);
-  
+  //diff-add-end
+
   // Only proceed if validation passes
+  //diff-add-start
   if (Object.keys(formErrors).length === 0) {
   //diff-add-end
     try {
@@ -742,14 +788,16 @@ Locate the `handleSubmit` function and add recorded catches validation:
 ```jsx title="src/pages/CatchLog.jsx" showLineNumbers=154
 const handleSubmit = async (e) => {
   e.preventDefault();
-  //diff-add-start
   
   // Validate all recorded catches before proceeding
+    //diff-add-start
   const recordedErrors = validateRecordedCatches();
   setRecordedCatchErrors(recordedErrors);
-  
+  //diff-add-end
+
   // Only proceed if no validation errors exist
-  if (Object.keys(recordedErrors).length === 0) {
+  //diff-add-start
+  if (Object.keys(recordedErrors).length === 0 {
   //diff-add-end
     try {
       // Update trip step

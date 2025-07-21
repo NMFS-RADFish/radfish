@@ -26,16 +26,20 @@ useEffect(() => {
     }
 
     try {
-      //diff-add-start
       // Access RADFish collections
+      //diff-add-start
       const tripStore = app.stores["trip"];
       const Form = tripStore.getCollection("Form");
       const Catch = tripStore.getCollection("Catch");
+      //diff-add-end
 
       // Fetch the trip details
+      //diff-add-start
       const trips = await Form.find({ id: tripId });
+      //diff-add-end
 
       // Handle trip not found
+      //diff-add-start
       if (trips.length === 0) {
         setError(`Trip with ID ${tripId} not found`);
         navigate("/"); // Redirect home if trip doesn't exist
@@ -44,13 +48,14 @@ useEffect(() => {
 
       const selectedTrip = trips[0];
       setTrip(selectedTrip); // Store fetched trip data in state
-
+      //diff-add-end
       // Fetch all catches associated with this trip
+      //diff-add-start
       const tripCatches = await Catch.find({ tripId: selectedTrip.id });
       //diff-add-end
 
-      //diff-add-start
       // Store catches for API submission
+      //diff-add-start
       setCatches(tripCatches);
       //diff-add-end
 
@@ -189,7 +194,9 @@ Now that we have imported the Table component, we can use it to display the aggr
     //diff-remove-end
     //diff-add-start
     <Table
+    //diff-add-end
       // Map aggregated data to the format expected by the Table component
+      //diff-add-start
       data={aggregatedCatches.map((item, index) => ({
         id: index, // Use index as ID for the table row
         species: item.species,
@@ -197,14 +204,18 @@ Now that we have imported the Table component, we can use it to display the aggr
         totalWeight: `${item.totalWeight} lbs`, // Add units
         avgLength: `${item.avgLength} in`, // Add units
       }))}
+      //diff-add-end
       // Define table columns: key corresponds to data keys, label is header text
+      //diff-add-start
       columns={[
         { key: "species", label: "Species", sortable: true },
         { key: "count", label: "Count", sortable: true },
         { key: "totalWeight", label: "Total Weight", sortable: true },
         { key: "avgLength", label: "Avg. Length", sortable: true },
       ]}
+      //diff-add-end
       // Enable striped rows for better readability
+      //diff-add-start
       striped
     />
 //diff-add-end
