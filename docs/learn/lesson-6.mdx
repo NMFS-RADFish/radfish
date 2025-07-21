@@ -319,7 +319,7 @@ const getFooterProps = () => {
 
     const tripStore = app.stores["trip"];
     const Form = tripStore.getCollection("Form");
-    
+
     //diff-add-start
     const finalStatus = isOffline ? "Not Submitted" : "submitted";
 
@@ -331,6 +331,12 @@ const getFooterProps = () => {
 
     navigate(isOffline ? "/offline-confirm" : "/online-confirm");
     //diff-add-end
+
+  } catch (error) {
+    console.error("Error submitting trip:", error);
+    setError("Failed to submit trip. Please try again.");
+  }
+};
 
   };
 ```
