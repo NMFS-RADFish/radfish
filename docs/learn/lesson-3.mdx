@@ -12,7 +12,7 @@ RADFish uses **schemas** to define the structure and validation rules for your d
 
 The Form schema for our trip application is defined in `src/index.jsx` within the RADFish Application configuration. **You'll need to add the fields for the start trip data (`tripDate`, `startTime`, `startWeather`) to the schema as shown in the highlighted lines below:**
 
-```jsx title="src/index.jsx" showLineNumbers=13
+```jsx title="src/index.jsx"
 stores: {
   trip: {
     connector: new IndexedDBConnector("learn-radfish"),

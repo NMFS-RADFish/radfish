@@ -74,7 +74,7 @@ http://localhost:3002/trips
 
 The React app can communicate with the JSON server through a proxy configuration in `vite.config.js`:
 
-```js title="vite.config.js" showLineNumbers=55
+```js title="vite.config.js"
 server: {
   open: true,
   port: 3000,
@@ -107,7 +107,7 @@ The Review page needs to detect whether the user is online or offline and handle
 
 Let's examine the current submission logic in the Review page:
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=201
+```jsx title="src/pages/ReviewSubmit.jsx"
 const handleSubmit = async () => {
   if (!trip) return;
 
@@ -154,7 +154,7 @@ We'll break the server submission implementation into smaller, manageable steps 
 
 First, let's replace the simple submission logic with a structure that handles offline and online cases separately. We'll add try/catch blocks for proper error handling:
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=201
+```jsx title="src/pages/ReviewSubmit.jsx"
 const handleSubmit = async () => {
   if (!trip) return; // Guard clause if trip data isn't loaded
 
@@ -194,7 +194,7 @@ const handleSubmit = async () => {
 
 Now let's implement the offline submission path with proper error handling:
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=208
+```jsx title="src/pages/ReviewSubmit.jsx"
 if (isOffline) {
   // Offline: Save status as "Not Submitted" locally
   //diff-add-start
@@ -227,7 +227,7 @@ if (isOffline) {
 
 Let's add the data preparation logic for server submission. The `catches` state variable is already available from Lesson 6:
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=219
+```jsx title="src/pages/ReviewSubmit.jsx"
 } else {
   // Online: Attempt to submit to the backend
     //diff-add-start
@@ -263,7 +263,7 @@ The server receives a comprehensive JSON object containing:
 
 Now let's add the actual server request using the fetch API:
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=224
+```jsx title="src/pages/ReviewSubmit.jsx"
 // Prepare submission data with trip and associated catches
 const submissionData = {
   trip: trip,
@@ -307,7 +307,7 @@ if (!response.ok) {
 
 Finally, let's implement the success path when server submission completes:
 
-````jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=246
+````jsx title="src/pages/ReviewSubmit.jsx" 
 if (!response.ok) {
   const status = response.status;
   const statusText = response.statusText
