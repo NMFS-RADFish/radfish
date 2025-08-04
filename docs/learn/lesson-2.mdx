@@ -48,7 +48,7 @@ These components work together to create accessible, well-structured forms that 
 
 **Add the `FormGroup`, `Label`, and `DatePicker` input within the `Form` component:**
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=272
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=287
 // diff-add-start
 <Form onSubmit={handleSubmit} large>
   <FormGroup>
@@ -65,7 +65,7 @@ These components work together to create accessible, well-structured forms that 
       name="tripDate"
       defaultValue={formData.tripDate}
       onChange={handleDateChange}
-      aria-describedby="tripDateHint"
+      aria-describedby="tripDate-hint"
       required
     />
     <span id="tripDateHint" className="usa-sr-only">
@@ -82,7 +82,7 @@ Let's look at two key aspects of how React manages state with this form:
 
 1. **Initial State with `defaultValue`**:
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=289
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=303
    defaultValue={formData.tripDate}
    ```
 
@@ -102,14 +102,14 @@ Let's look at two key aspects of how React manages state with this form:
 
 2. **Updating State with `onChange`**:
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=290
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=304
    onChange = { handleDateChange };
    ```
 
    - The `onChange` attribute is a required prop for controlled inputs. It is called whenever the input's value changes (on every keystroke or selection). Without this handler, React would revert the input to its original value after each change.
    - When a user selects a date, the `handleDateChange` function is called
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=149
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=162
    const handleDateChange = (value) => {
      setFormData((prevData) => ({ ...prevData, tripDate: value || "" }));
    };
@@ -148,7 +148,7 @@ import {
 
 Let's add the `TimePicker` input below the `DatePicker` form group:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=315
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=325
 // diff-add-start
 <FormGroup>
   <Label htmlFor="startTime" className="input-time-label" requiredMarker>
@@ -162,9 +162,9 @@ Let's add the `TimePicker` input below the `DatePicker` form group:
     minTime="00:00"
     maxTime="23:45"
     step={15}
-    aria-describedby="startTimeHint"
+    aria-describedby="start-time-hint"
   />
-  <span id="startTimeHint" className="usa-sr-only">
+  <span id="start-time-hint" className="usa-sr-only">
     Please enter or select the time you started fishing.
   </span>
 </FormGroup>
@@ -209,7 +209,7 @@ import {
 
 Add the following code below the `TimePicker` form group:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=352
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=362
 // diff-add-start
 <FormGroup>
   <Label htmlFor="startWeather" requiredMarker>
@@ -220,14 +220,14 @@ Add the following code below the `TimePicker` form group:
     name="startWeather"
     value={formData.startWeather}
     onChange={handleInputChange}
-    aria-describedby="startWeatherHint"
+    aria-describedby="start-weather-hint"
   >
     <option value="">-Select-</option>
     <option value="Sunny">Sunny</option>
     <option value="Cloudy">Cloudy</option>
     <option value="Rainy">Rainy</option>
   </Select>
-  <span id="startWeatherHint" className="usa-sr-only">
+  <span id="start-weather-hint" className="usa-sr-only">
     Please select the weather conditions at the start of your fishing trip.
   </span>
 </FormGroup>
@@ -240,7 +240,7 @@ Add the following code below the `TimePicker` form group:
 - `onChange={handleInputChange}` uses the standard input handler (already present) because the `Select` component behaves like a standard HTML select element in this regard.
 - We define the available weather options using standard HTML `<option>` tags within the `Select` component. The first option has an empty `value` to represent the default, unselected state.
 
-The complete **Form** will look like this:
+The complete **Form** will look like this: 
 
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=272
 // diff-add-start
@@ -259,10 +259,10 @@ The complete **Form** will look like this:
       name="tripDate"
       defaultValue={formData.tripDate}
       onChange={handleDateChange}
-      aria-describedby="tripDateHint"
+      aria-describedby="trip-date-hint"
       required
     />
-    <span id="tripDateHint" className="usa-sr-only">
+    <span id="trip-date-hint" className="usa-sr-only">
       Please enter or select the date of your fishing trip.
     </span>
   </FormGroup>
@@ -278,9 +278,9 @@ The complete **Form** will look like this:
       minTime="00:00"
       maxTime="23:45"
       step={15}
-      aria-describedby="startTimeHint"
+      aria-describedby="start-time-hint"
     />
-    <span id="startTimeHint" className="usa-sr-only">
+    <span id="start-time-hint" className="usa-sr-only">
       Please enter or select the time you started fishing.
     </span>
   </FormGroup>
@@ -293,18 +293,18 @@ The complete **Form** will look like this:
       name="startWeather"
       value={formData.startWeather}
       onChange={handleInputChange}
-      aria-describedby="startWeatherHint"
+      aria-describedby="start-weather-hint"
     >
       <option value="">-Select-</option>
       <option value="Sunny">Sunny</option>
       <option value="Cloudy">Cloudy</option>
       <option value="Rainy">Rainy</option>
     </Select>
-    <span id="startWeatherHint" className="usa-sr-only">
+    <span id="start-weather-hint" className="usa-sr-only">
       Please select the weather conditions at the start of your fishing trip.
     </span>
   </FormGroup>
-</Form>;
+</Form>
 // diff-add-end
 ```
 
@@ -316,7 +316,7 @@ Before we learn how to save data to storage in the next lesson, let's first see 
 
 Open `src/pages/StartTrip.jsx` and locate the `handleSubmit` function. Replace the existing submission logic with the following code that will log the form data to the console:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=191
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=214
 if (Object.keys(newErrors).length === 0) {
   //diff-add-start
   console.log("Form Data:", {
@@ -324,7 +324,7 @@ if (Object.keys(newErrors).length === 0) {
     startWeather: formData.startWeather,
     startTime: formData.startTime,
     status: "in-progress",
-    step: 2,
+    step: 2
   });
   //diff-add-end
 }
