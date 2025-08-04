@@ -41,29 +41,28 @@ The Start Trip form uses React state to store validation errors. When the form i
 
 Open `src/pages/StartTrip.jsx` and locate the `handleSubmit` function.
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=190
-const newErrors = validateForm();
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=178
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default browser form submission
-    setSubmitted(true); // Mark form as submitted to show errors
+    e.preventDefault();
 
-    //diff-add-start
     const newErrors = validateForm();
+    //diff-add-start
     setErrors(newErrors);
     //diff-add-end
+
+    if (Object.keys(newErrors).length === 0) {
 ```
 
 **Explanation:**
 
-- `validateForm()`: Calls the validation function that checks all form fields
+- `validateForm()`: Calls the validation function that checks all form fields. We will take a look at this function in the next step.
 - `setErrors(newErrors)`: Updates React state with the validation results
-- The form only proceeds if `Object.keys(newErrors).length === 0`
 
 ### 2.2: Required Field Validation Logic
 
 The Start Trip form validates three required fields using a standardized validation helper:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=166
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=152
 const validateRequired = (value, fieldName) => {
   if (!value || String(value).trim() === "") {
     return `${fieldName} is required`;
@@ -71,14 +70,13 @@ const validateRequired = (value, fieldName) => {
   return null;
 };
 
-// Validates all fields in the form
 const validateForm = () => {
   const newErrors = {};
 
   const dateError = validateRequired(formData.tripDate, FIELD_DATE);
   if (dateError) newErrors.tripDate = dateError;
 
-  const weatherError = validateRequired(formData.weather, FIELD_WEATHER);
+  const weatherError = validateRequired(formData.weather, FIELD_START_WEATHER);
   if (weatherError) newErrors.weather = weatherError;
 
   const timeError = validateRequired(formData.startTime, FIELD_START_TIME);
@@ -91,25 +89,25 @@ const validateForm = () => {
 **Understanding the Validation Pattern:**
 
 - **Helper Function**: `validateRequired()` provides reusable validation logic
-- **Field Constants**: `FIELD_DATE`, `FIELD_WEATHER`, etc. ensure consistent error messages
+- **Field Constants**: `FIELD_DATE`, `FIELD_START_WEATHER`, etc. ensure consistent error messages
 - **Error Object**: Returned object maps field names to error messages
 - **Null Returns**: Valid fields return `null` to indicate no errors
 
-### 2.3: Display Error Messages
+### 2.3: Apply Error States to Form Components
 
-The Start Trip form displays validation errors using USWDS `ErrorMessage` components. Each form field has an associated error display:
+The Start Trip form applies validation states to form components to provide visual feedback when errors occur:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=274
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=254
 //diff-remove-start
 <FormGroup>
 //diff-remove-end
 //diff-add-start
-<FormGroup error={submitted && errors.tripDate}>
+<FormGroup error={errors.tripDate}>
 //diff-add-end
   <Label
     htmlFor="tripDate"
     //diff-add-start
-    error={submitted && errors.tripDate}
+    error={errors.tripDate}
     //diff-add-end
     hint=" mm/dd/yyyy"
     requiredMarker
@@ -122,7 +120,7 @@ The Start Trip form displays validation errors using USWDS `ErrorMessage` compon
     defaultValue={formData.tripDate}
     onChange={handleDateChange}
     //diff-add-start
-    validationStatus={submitted && errors.tripDate ? "error" : undefined}
+    validationStatus={errors.tripDate ? "error" : undefined}
     //diff-add-end
     aria-describedby="trip-date-hint trip-date-error-message"
     required
@@ -130,28 +128,105 @@ The Start Trip form displays validation errors using USWDS `ErrorMessage` compon
   <span id="trip-date-hint" className="usa-sr-only">
     Please enter or select the date of your fishing trip.
   </span>
+</FormGroup>
+```
+
+**Understanding the Error State Pattern:**
+
+- **FormGroup Error State**: `error={errors.tripDate}` applies USWDS error styling to the entire form group
+- **Label Error Integration**: `error={errors.tripDate}` on the Label component provides visual error indication
+- **Input Validation Status**: `validationStatus={errors.tripDate ? "error" : undefined}` adds error styling to the DatePicker
+- **ARIA Accessibility**: `aria-describedby="trip-date-hint trip-date-error-message"` links the input to both hint text and error messages
+
+### 2.4: Import and Display Error Messages
+
+To display validation error messages, we need to import the `ErrorMessage` component from USWDS and add it to our form fields.
+
+**First, add the ErrorMessage import to your existing import statement:**
+
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=5
+import {
+  Button,
+  DatePicker,
   //diff-add-start
-  {submitted && errors.tripDate && (
-         <ErrorMessage id="trip-date-error-message" className="font-sans-2xs">
-      {errors.tripDate}
-    </ErrorMessage>
-  )}
+  ErrorMessage,
+  //diff-add-end
+  Form,
+  FormGroup,
+  Grid,
+  GridContainer,
+  Label,
+  Select,
+  StepIndicator,
+  StepIndicatorStep,
+  TimePicker,
+} from "@trussworks/react-uswds";
+```
+
+**Then, add the conditional ErrorMessage component to each form field:**
+
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=255
+<FormGroup error={errors.tripDate}>
+  <Label
+    htmlFor="tripDate"
+    error={errors.tripDate}
+    hint=" mm/dd/yyyy"
+    requiredMarker
+  >
+    Date
+  </Label>
+  <DatePicker
+    id="tripDate"
+    name="tripDate"
+    defaultValue={formData.tripDate}
+    onChange={handleDateChange}
+    validationStatus={errors.tripDate ? "error" : undefined}
+    aria-describedby="trip-date-hint trip-date-error-message"
+    required
+  />
+  <span id="trip-date-hint" className="usa-sr-only">
+    Please enter or select the date of your fishing trip.
+  </span>
+  //diff-add-start
+  <ErrorMessage id="trip-date-error-message" className="font-sans-2xs">
+    {errors.tripDate}
+  </ErrorMessage>
   //diff-add-end
 </FormGroup>
 ```
 
-**Understanding the Error Display Pattern:**
+**Understanding Error Message Implementation:**
 
-The diff shows the transformation from a basic form group to a fully validated one:
-
-- **FormGroup Error State**: `error={submitted && errors.tripDate}` applies USWDS error styling to the entire form group
-- **Label Error Integration**: `error={submitted && errors.tripDate}` on the Label component provides visual error indication
-- **Input Validation Status**: `validationStatus={submitted && errors.tripDate ? "error" : undefined}` adds error styling to the DatePicker
-- **ARIA Accessibility**: `aria-describedby="trip-date-hint trip-date-error-message"` links the input to both hint text and error messages
-- **Conditional Error Messages**: `{submitted && errors.tripDate && (...)}` only displays errors after form submission
-- **Consistent ID Naming**: `id="trip-date-error-message"` follows a consistent kebab-case pattern for error message identification
+- **Conditional Content**: `{errors.tripDate}` only displays error text after form submission attempts - the ErrorMessage component handles empty content gracefully
+- **Consistent ID Naming**: `id="trip-date-error-message"` follows kebab-case pattern for accessibility
+- **ARIA Integration**: The ID matches the `aria-describedby` attribute on the input field
+- **Styling**: `className="font-sans-2xs"` applies consistent USWDS error message styling
 
 This pattern ensures errors are visually prominent, accessible to screen readers, and only appear when users attempt to submit invalid data.
+
+### 2.5: Testing the Error Message Display
+
+To verify that your validation is working correctly, follow these steps to recreate the error shown in the screenshot above:
+
+1. **Navigate to the Start Trip page** (`/start`) in your application
+2. **Leave the Date field empty** - don't select or enter any date
+3. **Fill in the other required fields** (Time and Weather) with valid values
+4. **Click the "Next" button** to attempt form submission
+
+**Expected Results:**
+
+- ✅ The form should **not** navigate to the next page
+- ✅ The Date field should display a **red border** (error styling)
+- ✅ The error message **"Trip date is required"** should appear below the Date field in red text
+- ✅ The label should also display in **red** to indicate the error state
+
+![DatePicker with error message](./src/assets/lesson-5_step-2.4.png)
+
+**Additional Testing:**
+
+- Try submitting with **all fields empty** - you should see error messages for all three required fields
+- **Fill in the Date field** and submit again - the date error should disappear while other empty fields still show errors
+- **Fill all fields correctly** - all errors should clear and the form should proceed to the Catch Log page
 
 ## Step 3: Catch Log Form Validation
 
@@ -163,20 +238,20 @@ The "Add Catch" form validates species, weight, length, time, and optional coord
 
 Open `src/pages/CatchLog.jsx` and locate the `handleAddCatch` function. Observe how validation is implemented:
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=213
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=277
 const handleAddCatch = async (e) => {
   e.preventDefault();
-  setSubmitted(true);
 
+  //diff-remove-start
+  const formErrors = {};
+  //diff-remove-end
   //diff-add-start
   const formErrors = validateForm();
   setErrors(formErrors);
   //diff-add-end
 
-  // Proceed only if no errors and tripId exists
   if (Object.keys(formErrors).length === 0 && tripId) {
-    // Save catch and update UI
-  }
+    try {
 };
 ```
 
@@ -217,106 +292,78 @@ const validateLatitude = (value) => {
 - **Optional Field Handling**: Coordinates are validated only if values are provided
 - **Type Coercion**: Automatic conversion from string inputs to numbers
 
-### 3.2: Recorded Catches Validation
+### 3.2: Apply Error Display to Species Field
 
-Before navigating to the End Trip page, all catches in the "Recorded Catches" list must be validated:
+Now let's apply the validation display pattern you learned from the Start Trip form to the Species field in the Catch Log. The validation logic is already implemented, but we need to add the visual error states.
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=287
-const handleSubmit = async (e) => {
-  e.preventDefault();
+**Note:** The `ErrorMessage` component has already been imported for you, and all other form fields in this component already have error validation set up. We'll focus on just the Species field as an example.
+Locate the Species FormGroup and apply the same error display pattern from the Start Trip form:
 
+```jsx title="src/pages/CatchLog.jsx" showLineNumbers=461
+//diff-remove-start
+<FormGroup >
+//diff-remove-end
+//diff-add-start
+<FormGroup error={errors.species}>
+//diff-add-end
+  <Label
+    htmlFor="species"
+    //diff-add-start
+    error={errors.species}
+    //diff-add-end
+    requiredMarker
+  >
+    Species
+  </Label>
+  <Select
+    id="species"
+    name="species"
+    value={currentCatch.species}
+    onChange={handleInputChange}
+    //diff-add-start
+    validationStatus={errors.species ? "error" : undefined}
+    aria-describedby="species-error-message"
+    //diff-add-end
+  >
+    <option value="">-Select-</option>
+    {SPECIES_OPTIONS.map((species) => (
+      <option key={species} value={species}>
+        {species}
+      </option>
+    ))}
+  </Select>
   //diff-add-start
-  const recordedErrors = validateRecordedCatches();
-  setRecordedCatchErrors(recordedErrors);
+  <ErrorMessage id="species-error-message" className="font-sans-2xs">
+    {errors.species}
+  </ErrorMessage>
   //diff-add-end
-
-  // Only proceed if there are no errors in the recorded catches list
-  if (Object.keys(recordedErrors).length === 0) {
-    // Navigate to EndTrip page
-    navigate(`/end`, { state: { tripId: tripId } });
-  }
-};
+</FormGroup>
 ```
 
-**Multi-Record Validation:**
+### 3.3: Testing Complete Form Validation
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=202
-const validateRecordedCatches = () => {
-  const allErrors = {};
-  catches.forEach((catchItem, index) => {
-    const catchErrors = {};
-    // Validate each catch using the same rules as new catches
-    catchErrors.species = validateRequired(catchItem.species, FIELD_SPECIES);
-    catchErrors.weight = validateRequired(catchItem.weight, FIELD_WEIGHT);
-    // ... additional validations
+When you submit the form with invalid data, you should see multiple validation errors:
 
-    // Only store errors if they exist
-    const filteredCatchErrors = Object.entries(catchErrors).reduce(
-      (acc, [key, value]) => {
-        if (value) acc[key] = value;
-        return acc;
-      },
-      {},
-    );
+- **Species is required** - When dropdown is left at "-Select-"
+- **Weight must be greater than 0** - When weight is set to 0
+- **Length must be > 0 and ≤ 500** - When length exceeds 500 inches
+- **Catch time is required** - When no time is selected
+- **Latitude must be between -90 and 90** - When latitude is invalid (like 900)
+- **Longitude must be between -180 and 180** - When longitude is invalid (like -200)
 
-    if (Object.keys(filteredCatchErrors).length > 0) {
-      allErrors[index] = filteredCatchErrors;
-    }
-  });
-  return allErrors;
-};
-```
+All fields show red borders, red labels, and specific error messages below each input.
 
-### 3.3: Error Display for Recorded Catches
+![Catch Log errors](./src/assets/lesson-5_step-3.2.png)
 
-The recorded catches list displays errors with index-specific identifiers:
+### 3.4: Recorded Catches Validation
 
-```jsx title="src/pages/CatchLog.jsx" showLineNumbers=562
-catches.map((catchItem, index) => {
-  const catchErrors = recordedCatchErrors[index] || {};
+The recorded catches list also has validation set up the same way as the new catch form. When you click "Next" to proceed to the End Trip page, all catches in the "Recorded Catches" list are validated using the same rules and error display patterns you've learned.
 
-  return (
-    <div key={catchItem.id || index}>
-      //diff-remove-start
-      <FormGroup>
-      //diff-remove-end
-      //diff-add-start
-      <FormGroup error={!!catchErrors.species}>
-      //diff-add-end
-        <Label
-          htmlFor={`recorded-species-${index}`}
-          //diff-add-start
-          error={!!catchErrors.species}
-          //diff-add-end
-        >
-          Species
-          <span className="text-secondary-vivid margin-left-05">*</span>
-        </Label>
-        <Select
-          id={`recorded-species-${index}`}
-          //diff-add-start
-          validationStatus={catchErrors.species ? "error" : undefined}
-          aria-describedby={`species-hint recorded-species-${index}-error-message`}
-          //diff-add-end
-          // ... other props
-        >
-          {/* options */}
-        </Select>
-        <span id="species-hint" className="usa-sr-only">
-          Please select the species of the catch.
-        </span>
-        //diff-add-start
-        {catchErrors.species && (
-          <ErrorMessage id={`recorded-species-${index}-error-message`}>
-            {catchErrors.species}
-          </ErrorMessage>
-        )}
-        //diff-add-end
-      </FormGroup>
-    </div>
-  );
-})
-```
+This validation is already implemented for you - it prevents navigation to the next step if any recorded catches have invalid data.
+
+### 3.5: Error Display for Recorded Catches
+
+The recorded catches list uses the same error display pattern, but with unique IDs for each catch item (like `recorded-species-0`, `recorded-species-1`, etc.). This is already implemented for you throughout the recorded catches section.
 
 ## Step 4: Apply Validation to End Trip (Practice Exercise)
 
@@ -340,6 +387,7 @@ Since this is a multi-step form, you need to handle the fact that `endTime` and 
 **The Problem:** If you make these fields `required: true` in the model, the StartTrip form will fail validation when trying to create the initial trip record because these fields don't exist yet.
 
 **The Solutions:**
+
 1. **Option 1**: Make the fields optional in the model (`required: false`)
 2. **Option 2**: Set them to empty strings when creating the initial trip
 
@@ -347,12 +395,12 @@ Since this is a multi-step form, you need to handle the fact that `endTime` and 
 
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=224
 // Look for the Form.create call around line 241 and update it to:
-await Form.create({ 
-  id: newTripId, 
-  ...tripData, 
+await Form.create({
+  id: newTripId,
+  ...tripData,
   //diff-add-start
-  endTime: "", 
-  endWeather: "" 
+  endTime: "",
+  endWeather: "",
   //diff-add-end
 });
 ```
@@ -413,21 +461,24 @@ Finally, add the validation patterns you learned from the previous forms.
 **For validation functions:**
 
 :::info Hint
+
 - Copy the validateRequired helper from `src/pages/StartTrip.jsx`
 - Add validateForm function that checks both endTime and endWeather
 - Use the same field constants pattern (FIELD_END_TIME, FIELD_END_WEATHER)
-:::
+  :::
 
 **For setting validation errors:**
 
 :::info Hint
+
 - Use the same pattern as Start Trip
 - const newErrors = validateForm();
-:::
+  :::
 
 **For displaying error messages:**
 
 :::info Hint
+
 - Follow the same pattern as previous forms
 - Remember to:
   - Add error prop to FormGroup
@@ -435,7 +486,7 @@ Finally, add the validation patterns you learned from the previous forms.
   - Add validationStatus to the input component
   - Add conditional ErrorMessage component
   - Use proper aria-describedby for accessibility
-:::
+    :::
 
 ## Step 5: Testing Complete Validation Flow
 

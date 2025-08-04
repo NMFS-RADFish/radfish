@@ -18,9 +18,8 @@ import {
   //diff-add-start
   DatePicker,
   //diff-add-end
-  ErrorMessage,
-  //diff-add-start
   Form,
+  //diff-add-start
   FormGroup,
   //diff-add-end
   Grid,
@@ -48,9 +47,9 @@ These components work together to create accessible, well-structured forms that 
 
 **Add the `FormGroup`, `Label`, and `DatePicker` input within the `Form` component:**
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=287
-// diff-add-start
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=217
 <Form onSubmit={handleSubmit} large>
+  // diff-add-start
   <FormGroup>
     <Label
       htmlFor="tripDate"
@@ -65,15 +64,15 @@ These components work together to create accessible, well-structured forms that 
       name="tripDate"
       defaultValue={formData.tripDate}
       onChange={handleDateChange}
-      aria-describedby="tripDate-hint"
+      aria-describedby="trip-date-hint"
       required
     />
-    <span id="tripDateHint" className="usa-sr-only">
+    <span id="trip-date-hint" className="usa-sr-only">
       Please enter or select the date of your fishing trip.
     </span>
   </FormGroup>
+  // diff-add-end
 </Form>
-// diff-add-end
 ```
 
 #### React State Management Explanation
@@ -82,13 +81,13 @@ Let's look at two key aspects of how React manages state with this form:
 
 1. **Initial State with `defaultValue`**:
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=303
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=239
    defaultValue={formData.tripDate}
    ```
 
    - The component initializes form data using React's useState hook:
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=72
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=56
    const [formData, setFormData] = useState({
      tripDate: "",
      startWeather: "",
@@ -102,14 +101,14 @@ Let's look at two key aspects of how React manages state with this form:
 
 2. **Updating State with `onChange`**:
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=304
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=240
    onChange = { handleDateChange };
    ```
 
    - The `onChange` attribute is a required prop for controlled inputs. It is called whenever the input's value changes (on every keystroke or selection). Without this handler, React would revert the input to its original value after each change.
    - When a user selects a date, the `handleDateChange` function is called
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=162
+   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=132
    const handleDateChange = (value) => {
      setFormData((prevData) => ({ ...prevData, tripDate: value || "" }));
    };
@@ -124,13 +123,12 @@ Next, we'll add an input for the trip's start time using the `TimePicker` compon
 
 ### 2.1: Import the TimePicker Component
 
-Open `src/pages/StartTrip.jsx` and update the import statement from `@trussworks/react-uswds` to include `TimePicker`. Your existing import will be modified as follows:
+Update the import statement from `@trussworks/react-uswds` to include `TimePicker`. Your existing import will be modified as follows:
 
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=5
 import {
   Button,
   DatePicker,
-  ErrorMessage,
   Form,
   FormGroup,
   Grid,
@@ -148,7 +146,7 @@ import {
 
 Let's add the `TimePicker` input below the `DatePicker` form group:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=325
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=249
 // diff-add-start
 <FormGroup>
   <Label htmlFor="startTime" className="input-time-label" requiredMarker>
@@ -184,14 +182,12 @@ Finally, we need a dropdown menu for the user to select the weather conditions a
 
 ### 3.1: Import the Select Component
 
-Open `src/pages/StartTrip.jsx` and update the import statement from `@trussworks/react-uswds` to include `Select`. Your existing import will be modified as follows:
+Update the import statement from `@trussworks/react-uswds` to include `Select`. Your existing import will be modified as follows:
 
 ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=5
 import {
   Button,
   DatePicker,
-  TimePicker,
-  ErrorMessage,
   Form,
   FormGroup,
   Grid,
@@ -202,6 +198,7 @@ import {
   //diff-add-end
   StepIndicator,
   StepIndicatorStep,
+  TimePicker,
 } from "@trussworks/react-uswds";
 ```
 
@@ -209,7 +206,7 @@ import {
 
 Add the following code below the `TimePicker` form group:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=362
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=272
 // diff-add-start
 <FormGroup>
   <Label htmlFor="startWeather" requiredMarker>
@@ -240,9 +237,9 @@ Add the following code below the `TimePicker` form group:
 - `onChange={handleInputChange}` uses the standard input handler (already present) because the `Select` component behaves like a standard HTML select element in this regard.
 - We define the available weather options using standard HTML `<option>` tags within the `Select` component. The first option has an empty `value` to represent the default, unselected state.
 
-The complete **Form** will look like this: 
+The complete **Form** will look like this:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=272
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=228
 // diff-add-start
 <Form onSubmit={handleSubmit} large>
   <FormGroup>
@@ -314,17 +311,18 @@ Before we learn how to save data to storage in the next lesson, let's first see 
 
 ### 4.1: Update the form submission handler
 
-Open `src/pages/StartTrip.jsx` and locate the `handleSubmit` function. Replace the existing submission logic with the following code that will log the form data to the console:
+Locate the `handleSubmit` function. Replace the existing submission logic with the following code that will log the form data to the console:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=214
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=183
 if (Object.keys(newErrors).length === 0) {
+  let navigateToId = currentTripId;
   //diff-add-start
   console.log("Form Data:", {
     tripDate: formData.tripDate,
     startWeather: formData.startWeather,
     startTime: formData.startTime,
     status: "in-progress",
-    step: 2
+    step: 2,
   });
   //diff-add-end
 }
