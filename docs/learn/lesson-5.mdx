@@ -334,6 +334,32 @@ Your task is to add the `endTime` and `endWeather` fields to the trip model.
 Models are defined in `src/index.jsx`.
 :::
 
+:::warning Multi-Step Form Consideration
+Since this is a multi-step form, you need to handle the fact that `endTime` and `endWeather` won't be available when the trip is first created in the StartTrip form.
+
+**The Problem:** If you make these fields `required: true` in the model, the StartTrip form will fail validation when trying to create the initial trip record because these fields don't exist yet.
+
+**The Solutions:**
+1. **Option 1**: Make the fields optional in the model (`required: false`)
+2. **Option 2**: Set them to empty strings when creating the initial trip
+
+**Recommended Approach:** Use Option 2 and update the `Form.create()`:
+
+```jsx title="src/pages/StartTrip.jsx" showLineNumbers=224
+// Look for the Form.create call around line 241 and update it to:
+await Form.create({ 
+  id: newTripId, 
+  ...tripData, 
+  //diff-add-start
+  endTime: "", 
+  endWeather: "" 
+  //diff-add-end
+});
+```
+
+This allows the trip to be created successfully at the start, and these fields will be populated later in the EndTrip form.
+:::
+
 ### 4.2: Import Required Components
 
 Open `src/pages/EndTrip.jsx` and add the missing component imports.
