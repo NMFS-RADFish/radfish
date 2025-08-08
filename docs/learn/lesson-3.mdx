@@ -99,7 +99,7 @@ import { useApplication } from "@nmfs-radfish/react-radfish";
 Then, inside the `StartTrip` component, add the hooks and state:
 
 ```jsx title="src/pages/StartTrip.jsx"
-export default function StartTrip() {
+function StartTrip() {
   const navigate = useNavigate();
   //diff-add-start
   const app = useApplication();
@@ -312,7 +312,7 @@ const handleSubmit = async (e) => {
 
 **Explanation:**
 
-- **Update Path**: If `tripId` exists (from the `useTripNavigation` hook), we call `Form.update()` with the existing ID and our `tripData`. RADFish finds the record in IndexedDB and updates it with the new values.
+- **Update Path**: If `tripId` exists, we call `Form.update()` with the existing ID and our `tripData`. RADFish finds the record in IndexedDB and updates it with the new values.
 - **Create Path**: If no `tripId`, it's a new trip:
   - Generate a unique ID using `crypto.randomUUID()`
   - Call `Form.create()` with the new ID and our `tripData`
