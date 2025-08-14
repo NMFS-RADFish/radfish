@@ -17,7 +17,7 @@ stores: {
   trip: {
     connector: new IndexedDBConnector("learn-radfish"),
     collections: {
-      Form: {
+      TripForm: {
         schema: {
           fields: {
             id: {
@@ -61,7 +61,7 @@ stores: {
 - **`stores`**: The top-level container that holds all your application's data stores
 - **`trip`**: Our specific store name - you can have multiple stores for different domains (e.g., "users", "settings", "inventory")
 - **`connector: new IndexedDBConnector("learn-radfish")`**: Specifies that this store uses IndexedDB as the storage backend, with "learn-radfish" as the database name
-- **`collections`**: Contains all the different types of data within this store (we'll add a "Catch" collection later for fish catch records)
+- **`collections`**: Contains all the different types of data within this store (we'll add a `CatchForm` collection later for fish catch records). The `TripForm` collection is used to store the trip form data.
 
 **Key Schema Concepts:**
 

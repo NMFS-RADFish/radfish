@@ -47,7 +47,7 @@ Open `src/index.jsx` and locate the `collections` section within the trip store.
       },
     },
     //diff-add-start
-    Catch: {
+    CatchForm: {
       schema: {
         fields: {
           id: {
@@ -682,7 +682,7 @@ Let's examine the provided `updateCatch` function that handles updating individu
     
     try {
       const tripStore = app.stores[STORE_NAMES.TRIP];
-      const Catch = tripStore.getCollection(COLLECTION_NAMES.CATCH);
+      const Catch = tripStore.getCollection(COLLECTION_NAMES.CATCHFORM);
 
       // Prepare data for update (ensure correct types)
       const updateData = { [field]: value };
@@ -710,7 +710,7 @@ Let's examine the provided `updateCatch` function that handles updating individu
 **Key Implementation Details:**
 
 - **Parameter Validation**: Checks for valid app, index bounds, and catch existence
-- **Direct Collection Access**: Uses `getCollection(COLLECTION_NAMES.CATCH)` for immediate database operations
+- **Direct Collection Access**: Uses `getCollection(COLLECTION_NAMES.CATCHFORM)` for immediate database operations
 - **Type Conversion**: Converts numeric fields appropriately, handling empty strings as `undefined`
 - **Optimistic Updates**: Updates the UI immediately while the database operation completes
 
@@ -778,7 +778,7 @@ The delete functionality is also provided with proper separation of concerns, in
     
     try {
       const tripStore = app.stores[STORE_NAMES.TRIP];
-      const Catch = tripStore.getCollection(COLLECTION_NAMES.CATCH);
+      const Catch = tripStore.getCollection(COLLECTION_NAMES.CATCHFORM);
 
       // Remove from RADFish/IndexedDB
       await Catch.delete({id: catchToDelete.id});

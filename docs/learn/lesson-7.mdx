@@ -159,7 +159,7 @@ const handleSubmit = async () => {
   if (!trip) return; // Guard clause if trip data isn't loaded
 
   const tripStore = app.stores[STORE_NAMES.TRIP];
-  const Form = tripStore.getCollection(COLLECTION_NAMES.FORM);
+  const Form = tripStore.getCollection(COLLECTION_NAMES.TRIPFORM);
 
   //diff-remove-start
   const finalStatus = isOffline ? "Not Submitted" : "submitted";
