@@ -139,11 +139,7 @@ import {
   DatePicker,
   Form,
   FormGroup,
-  Grid,
-  GridContainer,
   Label,
-  StepIndicator,
-  StepIndicatorStep,
   //diff-add-start
   TimePicker,
   //diff-add-end
@@ -199,14 +195,10 @@ import {
   DatePicker,
   Form,
   FormGroup,
-  Grid,
-  GridContainer,
   Label,
   //diff-add-start
   Select,
   //diff-add-end
-  StepIndicator,
-  StepIndicatorStep,
   TimePicker,
 } from "@trussworks/react-uswds";
 ```
@@ -263,7 +255,7 @@ The complete **Form** will look like this:
     <DatePicker
       id="tripDate"
       name="tripDate"
-      defaultValue={trip?.tripDate}
+      defaultValue={tripData.tripDate}
       onChange={handleDateChange}
       aria-describedby="trip-date-hint"
       required
@@ -279,7 +271,7 @@ The complete **Form** will look like this:
     <TimePicker
       id="startTime"
       name="startTime"
-      defaultValue={trip?.startTime}
+      defaultValue={tripData.startTime}
       onChange={handleTimeChange}
       minTime="00:00"
       maxTime="23:45"
@@ -298,7 +290,7 @@ The complete **Form** will look like this:
     <Select
       id="startWeather"
       name="startWeather"
-      value={trip?.startWeather}
+      value={tripData.startWeather}
       onChange={handleInputChange}
       aria-describedby="start-weather-hint"
       required
