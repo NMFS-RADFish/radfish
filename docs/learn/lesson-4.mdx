@@ -87,7 +87,7 @@ Open `src/index.jsx` and locate the `collections` section within the trip store.
   },
 ```
 
-**Understanding the Catch Schema:**
+**Understanding the Catch Collection Schema:**
 
 - **`species`**: String field for the type of fish caught (required)
 - **`weight`** and **`length`**: Number fields for physical measurements (required)
@@ -232,7 +232,152 @@ const [errors, setErrors] = useState({}); // Validation errors for new catch for
 Notice how we separate concerns: the `useCatchData` hook manages the persistent catch data, while local state handles temporary UI concerns like form inputs and error display.
 :::
 
-## Step 3: Implementing Form Event Handlers
+## Step 3: Understanding Custom Hooks
+
+Before implementing the form handlers, let's understand what custom hooks are and how the `useCatchData` hook works under the hood.
+
+### 3.1: What Are Custom Hooks?
+
+Custom hooks are JavaScript functions that:
+- Start with the word "use" (like `useState`, `useEffect`, `useCatchData`)
+- Allow you to extract and reuse stateful logic between components
+- Can call other hooks (both built-in and custom)
+- Return values that components can use
+
+**Why Create Custom Hooks?**
+
+1. **Code Reuse**: Share logic between multiple components without duplicating code
+2. **Separation of Concerns**: Keep components focused on UI while hooks handle business logic
+3. **Cleaner Components**: Move complex state management out of components
+4. **Testability**: Test business logic independently from UI components
+
+### 3.2: Anatomy of the useCatchData Hook
+
+Let's examine what happens inside the `useCatchData` hook when you call it:
+
+```javascript
+const { catches, isLoading, addCatch, setCatches } = useCatchData(tripId, onError);
+```
+
+**Inside the Hook:**
+
+1. **State Management**
+   ```javascript
+   const [catches, setCatches] = useState([]);      // Array of catch records
+   const [isLoading, setIsLoading] = useState(true); // Loading indicator
+   ```
+
+2. **Data Loading Function - Using RADFish APIs**
+   
+   The `loadCatches` function demonstrates key RADFish features:
+   
+   ```javascript
+   // RADFish provides the app instance via useApplication hook
+   const app = useApplication();
+   
+   // Access your configured store by name
+   const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
+   
+   // Get specific collections within the store
+   const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
+   const catchCollection = tripStore.getCollection(COLLECTION_NAMES.CATCH_COLLECTION);
+   
+   // Query data using collection methods
+   const existingTrips = await tripCollection.find({ id: tripId });
+   const existingCatchesData = await catchCollection.find({ tripId: tripId });
+   ```
+   
+   **What RADFish Provides:**
+   - **Stores**: Named containers for your data (like databases)
+   - **Collections**: Tables within stores that hold specific types of records
+   - **Query Methods**: `find()` to search records by criteria
+   - **Error Handling**: Graceful handling when collections don't exist yet
+
+3. **The addCatch Function - Saving Data with RADFish**
+   
+   ```javascript
+   const addCatch = async (catchData) => {
+     // Get the catch collection from RADFish
+     const catchCollection = app.stores[STORE_NAMES.TRIP_STORE]
+       .getCollection(COLLECTION_NAMES.CATCH_COLLECTION);
+     
+     // Format data with proper types and metadata
+     const newCatchData = {
+       ...catchData,
+       id: crypto.randomUUID(),
+       tripId: tripId,
+       weight: Number(catchData.weight),
+       length: Number(catchData.length),
+       createdAt: new Date().toISOString(),
+     };
+     
+     // Save to IndexedDB using RADFish's create method
+     await catchCollection.create(newCatchData);
+     
+     // Update local state for instant UI feedback
+     setCatches(prev => [newCatchData, ...prev]);
+   };
+   ```
+   
+   **RADFish Features Used:**
+   - **`create()`**: Saves new records with automatic schema validation
+   - **Type Conversion**: Ensures data matches schema field types
+   - **Async Operations**: All database operations return promises
+
+4. **Automatic Loading with useEffect**
+   ```javascript
+   useEffect(() => {
+     if (tripId) {
+       loadCatches();
+     }
+   }, [app, tripId]);
+   ```
+   This ensures catches are loaded whenever the component mounts or the `tripId` changes.
+
+### 3.3: Understanding the Hook's Return Values
+
+The `useCatchData` hook returns an object with four properties:
+
+```javascript
+return {
+  catches,      // State value: Array of catch records
+  isLoading,    // State value: Boolean loading indicator
+  addCatch,     // Function: Adds a new catch to the database
+  setCatches,   // Function: Direct state setter for optimistic updates
+};
+```
+
+**How Components Use These Values:**
+
+- **`catches`**: Iterate over this array to display the list of recorded catches
+- **`isLoading`**: Show loading indicators or disable buttons while data loads
+- **`addCatch`**: Call this when the user submits the "Add Catch" form
+- **`setCatches`**: Use for immediate UI updates (like reordering or editing)
+
+### 3.4: Benefits of This Custom Hook Pattern
+
+1. **Encapsulation**: All RADFish/IndexedDB operations are hidden inside the hook
+2. **Clean API**: Components get a simple interface without worrying about implementation
+3. **Error Handling**: Centralized error management with the `onError` callback
+4. **Performance**: Automatic loading and state management optimizations
+
+:::info Hook vs Direct Implementation
+Compare the clean hook usage:
+```javascript
+const { catches, addCatch } = useCatchData(tripId);
+```
+
+To what you'd need without it:
+- Manual state management
+- Direct RADFish store access
+- Error handling in every component
+- Loading state tracking
+- Data formatting logic
+
+The custom hook abstracts all this complexity!
+:::
+
+## Step 4: Implementing Form Event Handlers
 
 Now we'll implement the event handlers for managing form inputs and submissions. This involves two steps: implementing the handlers and connecting them to the form elements.
 
@@ -247,7 +392,7 @@ You'll implement 5 main event handlers:
 The advanced handlers for editing recorded catches are already provided for you.
 :::
 
-### 3.1: Connecting Handlers to Form Elements
+### 4.1: Connecting Handlers to Form Elements
 
 Before implementing the handlers, you need to understand that the form elements currently use placeholder handlers. After implementing your event handlers, you'll need to replace these placeholders:
 
@@ -260,7 +405,7 @@ Before implementing the handlers, you need to understand that the form elements 
 </Form>
 ```
 
-### 3.2: Input Change Handlers
+### 4.2: Input Change Handlers
 
 Now let's implement the handlers for managing form input changes. Replace the TODO comments with the actual implementations:
 
@@ -319,7 +464,7 @@ const resetForm = () => {
 - **`handleTimeChange`**: Specific handler for the TimePicker component
 - **`resetForm`**: Utility function to clear the form after successful submission
 
-### 3.3: Form Submission Handlers
+### 4.3: Form Submission Handlers
 
 Now let's implement the submission handlers for both adding new catches and proceeding to the next step:
 
@@ -377,7 +522,7 @@ const handleSubmit = async (e) => {
 - **`handleSubmit`**: Updates the trip step and navigates to the next page using `updateTrip` from `useTripData`
 - **Validation placeholders**: Comments show where validation will be added in lesson 5
 
-### 3.4: Connecting Your Handlers
+### 4.4: Connecting Your Handlers
 
 After implementing all 5 event handlers, you need to connect them to the form elements. Replace the placeholder handlers throughout the form:
 
@@ -421,11 +566,11 @@ After implementing all 5 event handlers, you need to connect them to the form el
 Don't forget this step! Your event handlers won't work until you connect them to the form elements by replacing all the `onChange={() => {}}` placeholders.
 :::
 
-## Step 4: Understanding the Form Structure and UI Components
+## Step 5: Understanding the Form Structure and UI Components
 
 In this step, we'll explore the form structures that are already provided in the initial code. Since you've already learned how to build forms in lessons 2, we're providing the complete form structure so you can focus on understanding how the components work together for catch logging.
 
-### 4.1: New Catch Entry Form Structure
+### 5.1: New Catch Entry Form Structure
 
 Let's examine the complete form structure for adding new catches that's already provided:
 
@@ -468,7 +613,7 @@ Let's examine the complete form structure for adding new catches that's already 
 - **Error Integration**: Each field is prepared for validation feedback
 - **Accessibility**: Proper labels, hints, and ARIA attributes throughout
 
-### 4.2: Weight, Length, and Time Input Structure
+### 5.2: Weight, Length, and Time Input Structure
 
 The provided form includes measurement and timing fields with the following structure:
 
@@ -561,14 +706,14 @@ The provided form includes measurement and timing fields with the following stru
 - **Coordinate Fields**: Optional latitude/longitude inputs for GPS data collection
 
 :::info About the Add Catch Button
-The form includes a full-width "Add Catch" button that triggers the `handleAddCatch` function we implemented in Step 3. This creates new catch records and updates the UI immediately.
+The form includes a full-width "Add Catch" button that triggers the `handleAddCatch` function we implemented in Step 4. This creates new catch records and updates the UI immediately.
 :::
 
-## Step 5: Understanding the Recorded Catches Display
+## Step 6: Understanding the Recorded Catches Display
 
 The initial code also provides a comprehensive section for displaying and managing recorded catches. Let's examine how this works and the features it provides.
 
-### 5.1: Recorded Catches List Architecture
+### 6.1: Recorded Catches List Architecture
 
 The recorded catches section uses the following structure:
 
@@ -655,11 +800,11 @@ The recorded catches section uses the following structure:
 - **Error Integration**: Same error pattern as new catch form, but uses `recordedCatchErrors[index]`
 - **Inline Editing**: Users can modify catches directly in the list without separate edit modes
 
-### 5.2: Understanding the Provided Event Handlers for Recorded Catches
+### 6.2: Understanding the Provided Event Handlers for Recorded Catches
 
 The event handlers for managing recorded catches are already provided in your file. These advanced functions demonstrate RADFish patterns including direct database access and optimistic UI updates.
 
-#### 5.2.1: The Update Catch Function
+#### 6.2.1: The Update Catch Function
 
 Let's examine the provided `updateCatch` function that handles updating individual catch records:
 
@@ -714,7 +859,7 @@ Let's examine the provided `updateCatch` function that handles updating individu
 - **Type Conversion**: Converts numeric fields appropriately, handling empty strings as `undefined`
 - **Optimistic Updates**: Updates the UI immediately while the database operation completes
 
-#### 5.2.2: The Change Handlers
+#### 6.2.2: The Change Handlers
 
 The wrapper functions that connect form inputs to the update function are also provided:
 
@@ -753,7 +898,7 @@ The wrapper functions that connect form inputs to the update function are also p
 - **Error Handling**: Logs failures but doesn't interrupt the user experience
 - **Specific Time Handler**: TimePicker components need a dedicated handler due to their different event signature
 
-#### 5.2.3: The Delete Functionality
+#### 6.2.3: The Delete Functionality
 
 The delete functionality is also provided with proper separation of concerns, including both a utility function and a wrapper handler:
 
@@ -828,11 +973,11 @@ The recorded catch handlers involve advanced patterns like direct database acces
 - **Confirmation Dialogs**: Delete operations include user confirmation for safety
 - **Index-Based Operations**: Uses array indices to track which catch is being modified
 
-## Step 6: Testing the Complete Implementation
+## Step 7: Testing the Complete Implementation
 
 After implementing the 5 event handlers (handleInputChange, handleTimeChange, resetForm, handleSubmit, and handleMainSubmit), let's test both adding new catches and managing recorded catches.
 
-### 6.1: Test Adding New Catches
+### 7.1: Test Adding New Catches
 
 1. Navigate to the Catch Log page (you should be there after completing lesson 3)
 2. Fill out all required fields in the "Add Catch" form:
@@ -846,7 +991,7 @@ After implementing the 5 event handlers (handleInputChange, handleTimeChange, re
    - New catch appears in "Recorded Catches" section
    - TimePicker properly resets due to key strategy
 
-### 6.2: Test Editing and Deleting Catches
+### 7.2: Test Editing and Deleting Catches
 
 1. **Edit a catch**: Change values in any recorded catch field and observe immediate updates
 2. **Delete a catch**: Click the delete button and confirm the deletion
