@@ -61,7 +61,7 @@ stores: {
 - **`stores`**: The top-level container that holds all your application's data stores
 - **`trip`**: Our specific store name - you can have multiple stores for different domains (e.g., "users", "settings", "inventory")
 - **`connector: new IndexedDBConnector("learn-radfish")`**: Specifies that this store uses IndexedDB as the storage backend, with "learn-radfish" as the database name
-- **`collections`**: Contains all the different types of data within this store. The `TripCollection` collection is used to store the trip form data.
+- **`collections`**: Contains all the different types of data within this store. The "TripCollection" collection is used to store the trip form data.
 
 **Key Schema Concepts:**
 
@@ -96,20 +96,6 @@ import { useApplication } from "@nmfs-radfish/react-radfish";
 import { STORE_NAMES, COLLECTION_NAMES } from "../utils/constants";
 //diff-add-end
 ```
-:::info
-**Understanding Constants for Store and Collection Names:**
-
-The `../utils/constants` file provides centralized constants for store and collection names throughout the application:
-
-- **`STORE_NAMES.TRIP_STORE`**: References the main data store name ("tripStore")
-- **`COLLECTION_NAMES.TRIP_COLLECTION`**: References the trip data collection name ("TripCollection")
-- **`COLLECTION_NAMES.CATCH_COLLECTION`**: References the catch data collection name ("CatchCollection"). We'll add this collection later in lesson 4.
-
-Using constants instead of hardcoded strings provides several benefits:
-- **Maintainability**: Changes to store/collection names only need to be updated in one place
-- **Type Safety**: Reduces typos and runtime errors from mistyped strings
-- **Consistency**: Ensures all components use the same naming conventions
-:::
 
 Then, inside the `StartTrip` component, add the hooks and state:
 
@@ -143,6 +129,11 @@ function StartTrip() {
 - **`useNavigate()`**: React Router hook for programmatic navigation between pages
 - **`useLocation()`**: React Router hook that provides access to the current location object
 - **`tripId`**: Extracted from the location state - this tells us if we're editing an existing trip or creating a new one
+:::info
+**Constants for Store and Collection Names:**
+
+The `../utils/constants` file centralizes store and collection names (like `STORE_NAMES.TRIP_STORE` and `COLLECTION_NAMES.TRIP_COLLECTION`) to prevent typos and make future changes easier. We'll use `COLLECTION_NAMES.CATCH_COLLECTION` in lesson 4.
+:::
 
 ### 1.3: Load existing trip data
 
