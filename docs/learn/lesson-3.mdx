@@ -14,7 +14,7 @@ The `TripCollection` schema for our trip application is defined in `src/index.js
 
 ```jsx title="src/index.jsx"
 stores: {
-  tripStore: {
+  TripStore: {
     connector: new IndexedDBConnector("learn-radfish"),
     collections: {
       TripCollection: {
@@ -59,7 +59,7 @@ stores: {
 **Understanding the Structure:**
 
 - **`stores`**: The top-level container that holds all your application's data stores
-- **`trip`**: Our specific store name - you can have multiple stores for different domains (e.g., "users", "settings", "inventory")
+- **`tripStore`**: Our specific store name - you can have multiple stores for different domains (e.g., "users", "settings", "inventory")
 - **`connector: new IndexedDBConnector("learn-radfish")`**: Specifies that this store uses IndexedDB as the storage backend, with "learn-radfish" as the database name
 - **`collections`**: Contains all the different types of data within this store. The "TripCollection" collection is used to store the trip form data.
 
@@ -129,11 +129,6 @@ function StartTrip() {
 - **`useNavigate()`**: React Router hook for programmatic navigation between pages
 - **`useLocation()`**: React Router hook that provides access to the current location object
 - **`tripId`**: Extracted from the location state - this tells us if we're editing an existing trip or creating a new one
-:::info
-**Constants for Store and Collection Names:**
-
-The `../utils/constants` file centralizes store and collection names (like `STORE_NAMES.TRIP_STORE` and `COLLECTION_NAMES.TRIP_COLLECTION`) to prevent typos and make future changes easier. We'll use `COLLECTION_NAMES.CATCH_COLLECTION` in lesson 4.
-:::
 
 ### 1.3: Load existing trip data
 
@@ -206,10 +201,15 @@ useEffect(() => {
 - **Loading State Management**: We set `isLoading` to true when starting the async operation and ensure it's set to false in both success and error cases using the `finally` block. This prevents the UI from getting stuck in a loading state.
 - **Early Return Pattern**: If we don't have the required `app` or `tripId`, we return early after setting `isLoading` to false. This prevents unnecessary async operations.
 - **`app.stores[STORE_NAMES.TRIP_STORE]`**: Accesses the RADFish data store named "trip", which we configured in section 1.1. Stores group related data collections.
-- **`tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION)`**: Within the `tripStore` store, accesses the collection named "TripCollection". Collections are analogous to tables in a relational database or collections in MongoDB; they hold the actual data records (in this case, our trip forms).
+- **`tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION)`**: Within the `tripStore` store, accesses the collection named "TripCollection". Collections are analogous to tables in a relational database or collections in MongoDB; they hold the actual data records (in this case, our "TripCollection" data).
 - **`tripCollection.find({ id: tripId })`**: Queries the collection for records matching the provided criteria. This returns an array of matching trips. We use `find()` instead of `findById()` as it's the standard RADFish collection method.
 - **Date Formatting**: The DatePicker component expects dates in YYYY-MM-DD format. We use `toISOString().split('T')[0]` to convert the stored date into this format.
 - **Error Handling**: If no trip is found with the given ID, we reset the form to empty values and log a warning. This handles cases where users might have an invalid or outdated trip ID.
+:::info
+**Constants for Store and Collection Names:**
+
+The `../utils/constants` file centralizes store and collection names (like `STORE_NAMES.TRIP_STORE` and `COLLECTION_NAMES.TRIP_COLLECTION`) to prevent typos and make future changes easier. We'll use `COLLECTION_NAMES.CATCH_COLLECTION` in lesson 4.
+:::
 
 ### 1.4: Declare navigation functions
 
@@ -217,19 +217,19 @@ To better organize our code, we'll declare our navigation functions here:
 
 ```jsx title="src/pages/StartTrip.jsx"
 // Navigation functions
-// Already declared for you in lesson 2
 const navigateHome = () => {
   navigate("/");
 };
 
 //diff-add-start
+// Helper to pass tripId between pages in our multi-step form
 const navigateWithTripId = (path, tripId) => {
   navigate(path, { state: { tripId } });
 };
 //diff-add-end
 ```
 
-These functions provide the same navigation capabilities we'll later see abstracted into custom hooks in lesson 4.
+The `navigateWithTripId` helper ensures each page in our workflow knows which trip it's working with by passing the `tripId` through React Router's state.
 
 ## Step 2: Saving Trip Data
 
@@ -318,10 +318,10 @@ const handleSubmit = async (e) => {
 
 **Explanation:**
 
-- **Update Path**: If `tripId` exists, we call `tripCollection.update()` with the existing ID and our `tripData`. RADFish finds the record in IndexedDB and updates it with the new values.
+- **Update Path**: If `tripId` exists, we call `tripCollection.update()` with the existing ID and our `tripDataToSave`. RADFish finds the record in IndexedDB and updates it with the new values.
 - **Create Path**: If no `tripId`, it's a new trip:
   - Generate a unique ID using `crypto.randomUUID()`
-  - Call `tripCollection.create()` with the new ID and our `tripData`
+  - Call `tripCollection.create()` with the new ID and our `tripDataToSave`
   - Store the new ID for navigation
 
 The `tripId` comes from React Router's location state, which is passed when navigating from other pages. This `tripId` is used to check if a trip has already been created - if it exists, we're editing an existing trip; if not, we're creating a new one. This approach gives us direct control over trip context and navigation.
@@ -336,7 +336,6 @@ You can see the data being saved directly in your browser's developer tools:
 2. Go to the "Application" tab (Chrome/Edge) or "Storage" tab (Firefox).
 3. In the left-hand panel, find "IndexedDB".
 4. Expand the database `learn-radfish`.
-5. Expand the "trip" object store.
 6. Click on the "tripCollection" collection/index. You should see the trip data you just submitted.
 
 ![IndexedDB Inspection](./src/assets/lesson-3_step-2.2.png)
@@ -345,6 +344,26 @@ You can see the data being saved directly in your browser's developer tools:
 ### 2.3: Navigate to the next step
 
 After successfully saving the data, we navigate the user to the Catch Log page.
+
+Since we already have a test record in IndexedDB, we'll need to delete it to start fresh.
+
+:::tip Dev Tip: Managing Test Data in IndexedDB
+
+To delete a single record:
+
+1. Open your browser's developer tools (F12 or right-click → Inspect).
+2. Go to the "Application" tab (Chrome/Edge) or "Storage" tab (Firefox)
+3. Navigate to IndexedDB → `learn-radfish` → `TripCollection`
+4. Right-click on any test record you want to remove
+5. Select "Delete" (Chrome/Edge) or click the delete button (Firefox)
+
+To delete all records:
+
+1. Navigate to IndexedDB → `learn-radfish`
+2. Click on the "Delete database" button(chrome) or "Clear all data" button (firefox)
+
+This helps keep your IndexedDB clean while testing and prevents confusion from multiple test records.
+:::
 
 Add the following navigation code after the create/update logic:
 
