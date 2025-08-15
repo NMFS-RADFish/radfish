@@ -232,9 +232,9 @@ const [errors, setErrors] = useState({}); // Validation errors for new catch for
 Notice how we separate concerns: the `useCatchData` hook manages the persistent catch data, while local state handles temporary UI concerns like form inputs and error display.
 :::
 
-## Step 3: Understanding Custom Hooks
+## Step 3: Understanding the Custom Hooks
 
-Before implementing the form handlers, let's understand what custom hooks are and how the `useCatchData` hook works under the hood.
+Before implementing the form handlers, let's understand what custom hooks are and how the navigation and data management hooks work.
 
 ### 3.1: What Are Custom Hooks?
 
@@ -251,7 +251,67 @@ Custom hooks are JavaScript functions that:
 3. **Cleaner Components**: Move complex state management out of components
 4. **Testability**: Test business logic independently from UI components
 
-### 3.2: Anatomy of the useCatchData Hook
+### 3.2: The useTripNavigation Hook - Simplifying Navigation
+
+Let's start with the simpler `useTripNavigation` hook. In lesson 3, you manually created navigation functions like this:
+
+```javascript
+const navigateWithTripId = (path, tripId) => {
+  navigate(path, { state: { tripId } });
+};
+```
+
+The `useTripNavigation` hook extracts this pattern into a reusable hook:
+
+```javascript
+const { tripId, navigateHome, navigateWithTripId } = useTripNavigation();
+```
+
+**Inside the Hook:**
+
+```javascript
+export const useTripNavigation = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Extract tripId from location state if it exists
+  const tripId = location.state?.tripId;
+  
+  // Navigate to a route with tripId in state
+  const navigateWithTripId = (path, tripId, additionalState = {}) => {
+    navigate(path, { 
+      state: { 
+        tripId, 
+        ...additionalState 
+      } 
+    });
+  };
+  
+  // Navigate to home page
+  const navigateHome = () => {
+    navigate("/");
+  };
+  
+  return {
+    navigate,        // Raw navigate function if needed
+    location,        // Current location object
+    tripId,          // Extracted trip ID from state
+    navigateWithTripId,  // Helper for trip-aware navigation
+    navigateHome,    // Quick home navigation
+    navigateBack     // Navigate back with tripId preserved
+  };
+};
+```
+
+**Benefits of This Pattern:**
+- **No Repeated Code**: Every component gets the same navigation logic
+- **Automatic tripId Extraction**: No need to manually check `location.state?.tripId` in each component
+- **Consistent Navigation**: All trip-related navigation follows the same pattern
+- **Type Safety**: In TypeScript, you'd get proper typing for all navigation functions
+
+This hook demonstrates how even simple repeated patterns benefit from extraction into custom hooks.
+
+### 3.3: The useCatchData Hook - Managing Complex State
 
 Let's examine what happens inside the `useCatchData` hook when you call it:
 
@@ -334,9 +394,9 @@ const { catches, isLoading, addCatch, setCatches } = useCatchData(tripId, onErro
    ```
    This ensures catches are loaded whenever the component mounts or the `tripId` changes.
 
-### 3.3: Understanding the Hook's Return Values
+### 3.4: Understanding the Return Values
 
-The `useCatchData` hook returns an object with four properties:
+Both hooks follow a similar pattern of returning useful values. The `useCatchData` hook returns an object with four properties:
 
 ```javascript
 return {
@@ -354,7 +414,7 @@ return {
 - **`addCatch`**: Call this when the user submits the "Add Catch" form
 - **`setCatches`**: Use for immediate UI updates (like reordering or editing)
 
-### 3.4: Benefits of This Custom Hook Pattern
+### 3.5: Benefits of Custom Hook Patterns
 
 1. **Encapsulation**: All RADFish/IndexedDB operations are hidden inside the hook
 2. **Clean API**: Components get a simple interface without worrying about implementation
