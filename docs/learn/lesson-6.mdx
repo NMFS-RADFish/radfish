@@ -28,30 +28,30 @@ useEffect(() => {
     try {
       // Access RADFish collections
       //diff-add-start
-      const tripStore = app.stores["trip"];
-      const Form = tripStore.getCollection("Form");
-      const Catch = tripStore.getCollection("Catch");
+      const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
+      const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
+      const catchCollection = tripStore.getCollection(COLLECTION_NAMES.CATCH_COLLECTION);
       //diff-add-end
 
       // Fetch the trip details
       //diff-add-start
-      const trips = await Form.find({ id: tripId });
+      const tripsDataFromCollection = await tripCollection.find({ id: tripId });
       //diff-add-end
 
       // Handle trip not found
       //diff-add-start
-      if (trips.length === 0) {
+      if (tripsDataFromCollection.length === 0) {
         setError(`Trip with ID ${tripId} not found`);
         navigate("/"); // Redirect home if trip doesn't exist
         return;
       }
 
-      const selectedTrip = trips[0];
+      const selectedTrip = tripsDataFromCollection[0];
       setTrip(selectedTrip); // Store fetched trip data in state
       //diff-add-end
       // Fetch all catches associated with this trip
       //diff-add-start
-      const tripCatches = await Catch.find({ tripId: selectedTrip.id });
+      const tripCatches = await catchCollection.find({ tripId: selectedTrip.id });
       //diff-add-end
 
       // Store catches for API submission
@@ -98,8 +98,8 @@ useEffect(() => {
 
 The highlighted code demonstrates the core data access pattern in RADFish applications:
 
-1. **Store Access**: `app.stores["trip"]` gets the RADFish store that contains our trip and catch data
-2. **Collection References**: We obtain references to both the `Form` (trip data) and `Catch` (individual catch records) collections
+1. **Store Access**: `app.stores[STORE_NAMES.TRIP_STORE]` gets the RADFish store using constants for better maintainability
+2. **Collection References**: We obtain references to both the trip data and catch collections using `COLLECTION_NAMES` constants
 3. **Trip Lookup**: `Form.find({ id: tripId })` searches for the specific trip using the ID passed from the previous page
 4. **Error Handling**: If no trip is found, we set an error message and redirect to prevent displaying invalid data
 5. **Data Storage**: The found trip is stored in React state (`setTrip`) for use throughout the component
@@ -327,12 +327,12 @@ const getFooterProps = () => {
 
     try {
             //diff-add-start
-      const tripStore = app.stores["trip"];
-      const Form = tripStore.getCollection("Form");
+      const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
+      const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
 
       const finalStatus = isOffline ? "Not Submitted" : "submitted";
 
-      await Form.update({
+      await tripCollection.update({
         id: trip.id,
         status: finalStatus,
         step: 4,

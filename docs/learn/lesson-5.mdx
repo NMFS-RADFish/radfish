@@ -54,7 +54,7 @@ import {
 } from "@trussworks/react-uswds";
 import { Layout } from "../components/Layout";
 //diff-add-start
-import { validateRequired, FIELD_NAMES } from "../utils";
+import { validateRequired, FIELD_NAMES, STORE_NAMES, COLLECTION_NAMES } from "../utils/constants";
 //diff-add-end
 ```
 
@@ -66,11 +66,11 @@ import { validateRequired, FIELD_NAMES } from "../utils";
 
 ### 2.2: Add Error State Management
 
-Before we can implement validation, we need to add state to track validation errors and form submission status. Add these states after your existing `formData` state:
+Before we can implement validation, we need to add state to track validation errors and form submission status. Add these states after your existing `tripData` state:
 
 ```jsx title="src/pages/StartTrip.jsx"
 // --- State Management ---
-const [formData, setFormData] = useState({
+const [tripData, setTripData] = useState({
   tripDate: "",
   startWeather: "",
   startTime: "",
@@ -160,7 +160,7 @@ const handleSubmit = async (e) => {
 
   // Validate all form fields
   //diff-add-start
-  const validationErrors = validateForm(formData);
+  const validationErrors = validateForm(tripData);
   setErrors(validationErrors);
   //diff-add-end
 
@@ -169,13 +169,13 @@ const handleSubmit = async (e) => {
   if (Object.keys(validationErrors).length === 0) {
   //diff-add-end
     try {
-      const tripStore = app.stores["trip"];
-      const Form = tripStore.getCollection("Form");
+      const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
+      const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
 
-      const tripData = {
-        tripDate: formData.tripDate,
-        startWeather: formData.startWeather,
-        startTime: formData.startTime,
+      const tripDataToSave = {
+        tripDate: tripData.tripDate,
+        startWeather: tripData.startWeather,
+        startTime: tripData.startTime,
         status: "in-progress",
         step: 2,
       };
@@ -183,12 +183,12 @@ const handleSubmit = async (e) => {
       let navigateToId = tripId;
 
       if (tripId) {
-        await Form.update({ id: tripId, ...tripData });
+        await tripCollection.update({ id: tripId, ...tripDataToSave });
       } else {
         const newTripId = crypto.randomUUID();
-        await Form.create({
+        await tripCollection.create({
           id: newTripId,
-          ...tripData,
+          ...tripDataToSave,
         });
         navigateToId = newTripId;
       }
@@ -204,7 +204,7 @@ const handleSubmit = async (e) => {
 
 **Understanding the Validation Flow:**
 
-- **Validation First**: `validateForm(formData)` runs before any database operations
+- **Validation First**: `validateForm(tripData)` runs before any database operations
 - **Error State Update**: `setErrors(validationErrors)` updates the component state with any validation errors
 - **Conditional Submission**: Only proceeds with save/navigation if `Object.keys(validationErrors).length === 0`
 - **User Feedback**: Invalid forms show errors without attempting to save data
@@ -975,7 +975,7 @@ You'll need to add state management for the form data and handle changes.
 :::info Hint
 You'll need to add the following:
 
-- formData state for storing field values
+- tripData state for storing field values
 - handleTimeChange function for time picker
 - handleSelectChange function for dropdowns
 - Form initialization from database/localStorage

@@ -10,14 +10,14 @@ Before we save data, let's understand how RADFish organizes and structures data 
 
 RADFish uses **schemas** to define the structure and validation rules for your data. Think of a schema as a blueprint that tells RADFish what fields your data should have, their types, and any constraints.
 
-The Form schema for our trip application is defined in `src/index.jsx` within the RADFish Application configuration. **You'll need to add the fields for the start trip data (`tripDate`, `startTime`, `startWeather`) to the schema as shown in the highlighted lines below:**
+The `TripCollection` schema for our trip application is defined in `src/index.jsx` within the RADFish Application configuration. **You'll need to add the fields for the start trip data (`tripDate`, `startTime`, `startWeather`) to the schema as shown in the highlighted lines below:**
 
 ```jsx title="src/index.jsx"
 stores: {
-  trip: {
+  tripStore: {
     connector: new IndexedDBConnector("learn-radfish"),
     collections: {
-      TripForm: {
+      TripCollection: {
         schema: {
           fields: {
             id: {
@@ -61,7 +61,7 @@ stores: {
 - **`stores`**: The top-level container that holds all your application's data stores
 - **`trip`**: Our specific store name - you can have multiple stores for different domains (e.g., "users", "settings", "inventory")
 - **`connector: new IndexedDBConnector("learn-radfish")`**: Specifies that this store uses IndexedDB as the storage backend, with "learn-radfish" as the database name
-- **`collections`**: Contains all the different types of data within this store (we'll add a `CatchForm` collection later for fish catch records). The `TripForm` collection is used to store the trip form data.
+- **`collections`**: Contains all the different types of data within this store. The `TripCollection` collection is used to store the trip form data.
 
 **Key Schema Concepts:**
 
@@ -93,8 +93,23 @@ import { useNavigate } from "react-router-dom";
 //diff-add-start
 import { useNavigate, useLocation } from "react-router-dom";
 import { useApplication } from "@nmfs-radfish/react-radfish";
+import { STORE_NAMES, COLLECTION_NAMES } from "../utils/constants";
 //diff-add-end
 ```
+:::info
+**Understanding Constants for Store and Collection Names:**
+
+The `../utils/constants` file provides centralized constants for store and collection names throughout the application:
+
+- **`STORE_NAMES.TRIP_STORE`**: References the main data store name ("tripStore")
+- **`COLLECTION_NAMES.TRIP_COLLECTION`**: References the trip data collection name ("TripCollection")
+- **`COLLECTION_NAMES.CATCH_COLLECTION`**: References the catch data collection name ("CatchCollection"). We'll add this collection later in lesson 4.
+
+Using constants instead of hardcoded strings provides several benefits:
+- **Maintainability**: Changes to store/collection names only need to be updated in one place
+- **Type Safety**: Reduces typos and runtime errors from mistyped strings
+- **Consistency**: Ensures all components use the same naming conventions
+:::
 
 Then, inside the `StartTrip` component, add the hooks and state:
 
@@ -107,8 +122,8 @@ function StartTrip() {
   const tripId = location.state?.tripId;
   //diff-add-end
   
-  // State management - existing formData state from lesson 2
-  const [formData, setFormData] = useState({
+  // State management - existing tripData state from lesson 2
+  const [tripData, setTripData] = useState({
     tripDate: "",
     startWeather: "",
     startTime: "",
@@ -153,16 +168,16 @@ useEffect(() => {
       //diff-add-end
       // Direct access to RADFish stores and collections
       //diff-add-start
-      const tripStore = app.stores["trip"];
-      const Form = tripStore.getCollection("Form");
+      const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
+      const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
       //diff-add-end
 
       // Find trips matching this ID
       //diff-add-start
-      const existingTrips = await Form.find({ id: tripId });
+      const existingTripsData = await tripCollection.find({ id: tripId });
 
-      if (existingTrips.length > 0) {
-        const tripData = existingTrips[0];
+      if (existingTripsData.length > 0) {
+        const tripData = existingTripsData[0];
         //diff-add-end
 
         // Format date for DatePicker compatibility (YYYY-MM-DD)
@@ -170,7 +185,7 @@ useEffect(() => {
         const formattedDate = tripData.tripDate ? 
           new Date(tripData.tripDate).toISOString().split('T')[0] : "";
 
-        setFormData({
+        setTripData({
           tripDate: formattedDate,
           startWeather: tripData.startWeather || "",
           startTime: tripData.startTime || "",
@@ -180,7 +195,7 @@ useEffect(() => {
         // If trip not found, treat as new trip
         //diff-add-start
         console.warn(`Trip with ID ${tripId} not found. Starting new trip form.`);
-        setFormData({ tripDate: "", startWeather: "", startTime: "" });
+        setTripData({ tripDate: "", startWeather: "", startTime: "" });
       }
     } catch (error) {
       console.error("Error loading trip data:", error);
@@ -199,9 +214,9 @@ useEffect(() => {
 
 - **Loading State Management**: We set `isLoading` to true when starting the async operation and ensure it's set to false in both success and error cases using the `finally` block. This prevents the UI from getting stuck in a loading state.
 - **Early Return Pattern**: If we don't have the required `app` or `tripId`, we return early after setting `isLoading` to false. This prevents unnecessary async operations.
-- **`app.stores["trip"]`**: Accesses the RADFish data store named "trip", which we configured in section 1.1. Stores group related data collections.
-- **`tripStore.getCollection("Form")`**: Within the "trip" store, accesses the collection named "Form". Collections are analogous to tables in a relational database or collections in MongoDB; they hold the actual data records (in this case, our trip forms).
-- **`Form.find({ id: tripId })`**: Queries the collection for records matching the provided criteria. This returns an array of matching trips. We use `find()` instead of `findById()` as it's the standard RADFish collection method.
+- **`app.stores[STORE_NAMES.TRIP_STORE]`**: Accesses the RADFish data store named "trip", which we configured in section 1.1. Stores group related data collections.
+- **`tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION)`**: Within the `tripStore` store, accesses the collection named "TripCollection". Collections are analogous to tables in a relational database or collections in MongoDB; they hold the actual data records (in this case, our trip forms).
+- **`tripCollection.find({ id: tripId })`**: Queries the collection for records matching the provided criteria. This returns an array of matching trips. We use `find()` instead of `findById()` as it's the standard RADFish collection method.
 - **Date Formatting**: The DatePicker component expects dates in YYYY-MM-DD format. We use `toISOString().split('T')[0]` to convert the stored date into this format.
 - **Error Handling**: If no trip is found with the given ID, we reset the form to empty values and log a warning. This handles cases where users might have an invalid or outdated trip ID.
 
@@ -238,10 +253,10 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   //diff-remove-start
-  console.log("Form Data:", {
-    tripDate: formData.tripDate,
-    startWeather: formData.startWeather,
-    startTime: formData.startTime,
+  console.log("Trip Data:", {
+    tripDate: tripData.tripDate,
+    startWeather: tripData.startWeather,
+    startTime: tripData.startTime,
     status: "in-progress",
     step: 2,
   });
@@ -249,13 +264,13 @@ const handleSubmit = async (e) => {
 
   //diff-add-start
   try {
-    const tripStore = app.stores["trip"];
-    const Form = tripStore.getCollection("Form");
+    const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
+    const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
 
-    const tripData = {
-      tripDate: formData.tripDate,
-      startWeather: formData.startWeather,
-      startTime: formData.startTime,
+    const tripDataToSave = {
+      tripDate: tripData.tripDate,
+      startWeather: tripData.startWeather,
+      startTime: tripData.startTime,
       status: "in-progress",
       step: 2,
     };
@@ -277,13 +292,13 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    const tripStore = app.stores["trip"];
-    const Form = tripStore.getCollection("Form");
+    const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
+    const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
 
-    const tripData = {
-      tripDate: formData.tripDate,
-      startWeather: formData.startWeather,
-      startTime: formData.startTime,
+    const tripDataToSave = {
+      tripDate: tripData.tripDate,
+      startWeather: tripData.startWeather,
+      startTime: tripData.startTime,
       status: "in-progress",
       step: 2,
     };
@@ -294,12 +309,12 @@ const handleSubmit = async (e) => {
 
     //diff-add-start
     if (tripId) {
-      await Form.update({ id: tripId, ...tripData });
+      await tripCollection.update({ id: tripId, ...tripDataToSave });
     } else {
       const newTripId = crypto.randomUUID();
-      await Form.create({
+      await tripCollection.create({
         id: newTripId,
-        ...tripData,
+        ...tripDataToSave,
       });
       navigateToId = newTripId;
     }
@@ -312,10 +327,10 @@ const handleSubmit = async (e) => {
 
 **Explanation:**
 
-- **Update Path**: If `tripId` exists, we call `Form.update()` with the existing ID and our `tripData`. RADFish finds the record in IndexedDB and updates it with the new values.
+- **Update Path**: If `tripId` exists, we call `tripCollection.update()` with the existing ID and our `tripData`. RADFish finds the record in IndexedDB and updates it with the new values.
 - **Create Path**: If no `tripId`, it's a new trip:
   - Generate a unique ID using `crypto.randomUUID()`
-  - Call `Form.create()` with the new ID and our `tripData`
+  - Call `tripCollection.create()` with the new ID and our `tripData`
   - Store the new ID for navigation
 
 The `tripId` comes from React Router's location state, which is passed when navigating from other pages. This `tripId` is used to check if a trip has already been created - if it exists, we're editing an existing trip; if not, we're creating a new one. This approach gives us direct control over trip context and navigation.
@@ -331,7 +346,7 @@ You can see the data being saved directly in your browser's developer tools:
 3. In the left-hand panel, find "IndexedDB".
 4. Expand the database `learn-radfish`.
 5. Expand the "trip" object store.
-6. Click on the "Form" collection/index. You should see the trip data you just submitted.
+6. Click on the "tripCollection" collection/index. You should see the trip data you just submitted.
 
 ![IndexedDB Inspection](./src/assets/lesson-3_step-2.2.png)
 :::
@@ -347,13 +362,13 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    const tripStore = app.stores["trip"];
-    const Form = tripStore.getCollection("Form");
+    const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
+    const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
 
     const tripData = {
-      tripDate: formData.tripDate,
-      startWeather: formData.startWeather,
-      startTime: formData.startTime,
+      tripDate: tripData.tripDate,
+      startWeather: tripData.startWeather,
+      startTime: tripData.startTime,
       status: "in-progress",
       step: 2,
     };
@@ -361,10 +376,10 @@ const handleSubmit = async (e) => {
     let navigateToId = tripId;
 
     if (tripId) {
-      await Form.update({ id: tripId, ...tripData });
+      await tripCollection.update({ id: tripId, ...tripData });
     } else {
       const newTripId = crypto.randomUUID();
-      await Form.create({
+      await tripCollection.create({
         id: newTripId,
         ...tripData,
       });
@@ -394,7 +409,7 @@ You have now successfully implemented the submission logic for the first step of
 
 **What You've Learned:**
 
-- **Direct RADFish Access**: You've learned to work directly with RADFish stores and collections using `app.stores["trip"].getCollection("Form")`
+- **Direct RADFish Access**: You've learned to work directly with RADFish stores and collections using constants for better maintainability
 - **Manual Data Loading**: You implemented useEffect to load existing trip data with direct collection queries
 - **React Router State Management**: You used location state and navigate functions to handle trip context between pages
 - **CRUD Operations**: You created and updated trip records using RADFish's create() and update() methods

@@ -70,7 +70,7 @@ These components work together to create accessible, well-structured forms that 
     <DatePicker
       id="tripDate"
       name="tripDate"
-      defaultValue={formData.tripDate}
+      defaultValue={tripData.tripDate}
       onChange={handleDateChange}
       aria-describedby="trip-date-hint"
       required
@@ -90,13 +90,13 @@ Let's look at two key aspects of how React manages state with this form:
 1. **Initial State with `defaultValue`**:
 
    ```jsx title="src/pages/StartTrip.jsx"
-   defaultValue={formData.tripDate}
+   defaultValue={tripData.tripDate}
    ```
 
    - The component initializes form data using React's useState hook:
 
    ```jsx title="src/pages/StartTrip.jsx"
-   const [formData, setFormData] = useState({
+   const [tripData, setTripData] = useState({
      tripDate: "",
      startWeather: "",
      startTime: "",
@@ -118,7 +118,7 @@ Let's look at two key aspects of how React manages state with this form:
 
    ```jsx title="src/pages/StartTrip.jsx"
    const handleDateChange = (date) => {
-     setFormData((prevData) => ({ ...prevData, tripDate: date || "" }));
+     setTripData((prevData) => ({ ...prevData, tripDate: date || "" }));
    };
    ```
 
@@ -163,7 +163,7 @@ Let's add the `TimePicker` input below the `DatePicker` form group:
   <TimePicker
     id="startTime"
     name="startTime"
-    defaultValue={formData.startTime}
+    defaultValue={tripData.startTime}
     onChange={handleTimeChange}
     minTime="00:00"
     maxTime="23:45"
@@ -181,7 +181,7 @@ Let's add the `TimePicker` input below the `DatePicker` form group:
 **Explanation:**
 
 - Similar to the `DatePicker`, we use `FormGroup` and `Label` for structure and accessibility
-- `defaultValue={formData.startTime}` binds the input to the `startTime` field in our state
+- `defaultValue={tripData.startTime}` binds the input to the `startTime` field in our state
 - `onChange={handleTimeChange}` calls our specific handler function to update the state
 - `minTime`, `maxTime`, and `step={15}` configure the available time options (from 00:00 to 23:45 in 15-minute increments)
 
@@ -224,7 +224,7 @@ Add the following code below the `TimePicker` form group:
   <Select
     id="startWeather"
     name="startWeather"
-    value={formData.startWeather}
+    value={tripData.startWeather}
     onChange={handleInputChange}
     aria-describedby="start-weather-hint"
     required
@@ -243,7 +243,7 @@ Add the following code below the `TimePicker` form group:
 
 **Explanation:**
 
-- `value={formData.startWeather}` binds the selected option to the `startWeather` field in the state.
+- `value={tripData.startWeather}` binds the selected option to the `startWeather` field in the state.
 - `onChange={handleInputChange}` uses the standard input handler (already present) because the `Select` component behaves like a standard HTML select element in this regard.
 - We define the available weather options using standard HTML `<option>` tags within the `Select` component. The first option has an empty `value` to represent the default, unselected state.
 
@@ -328,10 +328,10 @@ const handleSubmit = async (e) => {
     e.preventDefault();
 
     //diff-add-start
-    console.log("Form Data:", {
-      tripDate: formData.tripDate,
-      startWeather: formData.startWeather,
-      startTime: formData.startTime,
+    console.log("Trip Data:", {
+      tripDate: tripData.tripDate,
+      startWeather: tripData.startWeather,
+      startTime: tripData.startTime,
       status: "in-progress",
       step: 2,
     });
