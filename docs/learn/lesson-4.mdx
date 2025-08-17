@@ -193,9 +193,9 @@ function CatchLog() {
 
 **Understanding the Hook Setup:**
 
-- **`useTripNavigation()`**: Provides `tripId` and navigation functions (familiar from lesson 3)
+- **`useTripNavigation()`**: Provides `tripId` and navigation functions.
 - **`useTripData()`**: Used here only for updating trip step, not loading data (`loadOnMount: false`)
-- **`useCatchData()`**: New hook that manages all catch-related operations including:
+- **`useCatchData()`**: Manages all catch-related operations:
   - `catches`: Array of catch records for this trip
   - `isLoading`: Loading state for async operations
   - `addCatch`: Function to add new catches
@@ -437,6 +437,15 @@ To what you'd need without it:
 The custom hook abstracts all this complexity!
 :::
 
+### 3.6: Summary - The Power of Custom Hooks
+
+In this section, you've learned about two custom hooks that demonstrate different levels of complexity:
+
+1. **`useTripNavigation`**: A simple hook that extracts navigation patterns, showing how even basic repeated code benefits from hooks
+2. **`useCatchData`**: A complex hook that manages data loading, state, and database operations, demonstrating the full power of custom hooks
+
+Together, these hooks allow the CatchLog component to focus purely on UI concerns while all the business logic is cleanly encapsulated. This pattern scales well as your application grows. Y you can create hooks for authentication, data synchronization, form validation, and any other cross-cutting concerns.
+
 ## Step 4: Implementing Form Event Handlers
 
 Now we'll implement the event handlers for managing form inputs and submissions. This involves two steps: implementing the handlers and connecting them to the form elements.
@@ -467,7 +476,7 @@ Before implementing the handlers, you need to understand that the form elements 
 
 ### 4.2: Input Change Handlers
 
-Now let's implement the handlers for managing form input changes. Replace the TODO comments with the actual implementations:
+Now let's implement the handlers for managing form input changes. Uncomment the placeholder handlers and add the following code:
 
 ```jsx title="src/pages/CatchLog.jsx"
 // --- Event Handlers for New Catch Form ---
