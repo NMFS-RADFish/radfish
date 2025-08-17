@@ -45,7 +45,7 @@ Each page uses this component with a `currentStep` prop (e.g., `<Layout currentS
 Before we start building the form, let's understand what each of these imported components does:
 
 - **`Form`**: Main container for form elements with submission handling and styling
-- **`FormGroup`**: Wrapper that groups form elements for proper spacing and accessibility. Each is used per input component group.
+- **`FormGroup`**: Wrapper that groups related form elements (label, input, hints, errors) for proper spacing and accessibility. Each input field needs its own FormGroup wrapper.
 - **`Label`**: Creates accessible form labels with support for required indicators
 - **`DatePicker`**: Calendar interface for date selection with formatting and validation
 
@@ -306,6 +306,10 @@ The complete **Form** will look like this:
   </FormGroup>
 </Form>
 ```
+
+:::info FormGroup Pattern
+Notice how each input field gets its own `FormGroup` wrapper. This is the standard USWDS pattern that ensures proper spacing between fields and groups all related elements (label, input, and hints) together.
+:::
 
 ## Step 4: Testing Form Data Collection
 
