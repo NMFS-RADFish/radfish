@@ -53,8 +53,11 @@ import {
   TimePicker,
 } from "@trussworks/react-uswds";
 import { Layout } from "../components/Layout";
+//diff-remove-start
+import { STORE_NAMES, COLLECTION_NAMES } from "../utils";
+//diff-remove-end
 //diff-add-start
-import { validateRequired, FIELD_NAMES, STORE_NAMES, COLLECTION_NAMES } from "../utils/constants";
+import { validateRequired, FIELD_NAMES, STORE_NAMES, COLLECTION_NAMES } from "../utils";
 //diff-add-end
 ```
 
@@ -86,7 +89,7 @@ const [errors, setErrors] = useState({});
 const [submitted, setSubmitted] = useState(false);
 //diff-add-end
 
-const [isLoading, setIsLoading] = useState(!!tripId);
+const [isLoading, setIsLoading] = useState(false);
 ```
 
 **Understanding the Error State:**
@@ -284,7 +287,7 @@ Now apply the same error state pattern to the Time and Weather fields:
     maxTime="23:45"
     step={15}
     //diff-add-start
-    validationStatus={submitted && errors.startTime ? "error" : undefined}
+    className={submitted && errors.startTime ? "usa-input--error" : undefined}
     //diff-add-end
     //diff-remove-start
     aria-describedby="start-time-hint"
@@ -346,6 +349,10 @@ Now apply the same error state pattern to the Time and Weather fields:
 - **Input Validation Status**: `validationStatus={submitted && errors.tripDate ? "error" : undefined}` adds error styling to the input
 - **Submitted Check**: The `submitted &&` pattern ensures errors only display after the user attempts to submit, not while initially typing
 - **ARIA Accessibility**: `aria-describedby` links the input to both hint text and error messages for screen readers
+
+:::note TimePicker Validation
+Unlike DatePicker and Select, the TimePicker component doesn't support the `validationStatus` prop. Instead, use the `className` prop with the USWDS error class: `className={submitted && errors.startTime ? "usa-input--error" : undefined}`.
+:::
 
 ### 2.6: Import and Add Error Messages
 
