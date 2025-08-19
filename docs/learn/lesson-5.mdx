@@ -725,7 +725,7 @@ const handleSubmit = async (e) => {
 
   // Only proceed if no validation errors exist
   //diff-add-start
-  if (Object.keys(recordedErrors).length === 0 {
+  if (Object.keys(recordedErrors).length === 0) {
   //diff-add-end
     try {
       // Update trip step
@@ -817,15 +817,66 @@ All fields show red borders, red labels, and specific error messages below each 
 
 ![Catch Log errors](./src/assets/lesson-5_step-3.2.png)
 
-### 3.8: Recorded Catches Validation
+### 3.8: Recorded Catches Validation and Error Display
 
-The recorded catches list also has validation set up the same way as the new catch form. When you click "Next" to proceed to the End Trip page, all catches in the "Recorded Catches" list are validated using the same rules and error display patterns you've learned.
+When you click "Next" to proceed to the End Trip page, all catches in the "Recorded Catches" list are validated using the same rules as the new catch form. The validation logic (which you implemented in section 3.5) prevents navigation if any recorded catches have invalid data.
 
-This validation is already implemented for you - it prevents navigation to the next step if any recorded catches have invalid data.
+To display validation errors for recorded catches, you need to map through the catches and extract errors for each individual catch. Here's how to implement the error display:
 
-### 3.9: Error Display for Recorded Catches
+```jsx title="src/pages/CatchLog.jsx"
+<div className="display-flex flex-column width-full">
+  {catches.map((catchItem, index) => {
+    // Get validation errors for this specific catch
+    //diff-add-start
+    const catchErrors = recordedCatchErrors[index] || {};
+    //diff-add-end
+    
+    return (
+      <div key={catchItem.id} className="grid-row margin-bottom-2">
+        {/* Species field with error display */}
+        <FormGroup error={catchErrors.species}>
+          <Label 
+            htmlFor={`recorded-species-${index}`}
+            error={catchErrors.species}
+            requiredMarker
+          >
+            Species
+          </Label>
+          <Select
+            id={`recorded-species-${index}`}
+            name="species"
+            value={catchItem.species}
+            onChange={(e) => handleRecordedInputChange(index, e)}
+            validationStatus={catchErrors.species ? "error" : undefined}
+            aria-describedby={`recorded-species-error-${index}`}
+          >
+            <option value="">-Select-</option>
+            {SPECIES_OPTIONS.map((species) => (
+              <option key={species} value={species}>
+                {species}
+              </option>
+            ))}
+          </Select>
+          {catchErrors.species && (
+            <ErrorMessage id={`recorded-species-error-${index}`} className="font-sans-2xs">
+              {catchErrors.species}
+            </ErrorMessage>
+          )}
+        </FormGroup>
+        
+        {/* Other fields follow the same pattern... */}
+      </div>
+    );
+  })}
+</div>
+```
 
-The recorded catches list uses the same error display pattern, but with unique IDs for each catch item (like `recorded-species-0`, `recorded-species-1`, etc.). This is already implemented for you throughout the recorded catches section.
+**Key Implementation Details:**
+
+- **`const catchErrors = recordedCatchErrors[index] || {};`**: Extracts validation errors for this specific catch, defaulting to empty object if no errors
+- **Unique IDs**: Each field uses index-based IDs like `recorded-species-${index}` for accessibility
+- **Error State**: Uses `catchErrors.species` instead of `errors.species` for the specific catch
+- **Same Pattern**: Applies the same FormGroup error, Label error, input validationStatus, and ErrorMessage pattern from other forms
 
 ## Step 4: Apply Validation to End Trip (Practice Exercise)
 
