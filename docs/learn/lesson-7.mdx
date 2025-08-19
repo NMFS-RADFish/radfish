@@ -162,15 +162,20 @@ const handleSubmit = async () => {
   const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
 
   //diff-remove-start
-  const finalStatus = isOffline ? "Not Submitted" : "submitted";
+   try {
+    const finalStatus = isOffline ? "Not Submitted" : "submitted";
 
-  await tripCollection.update({
-    id: trip.id,
-    status: finalStatus,
-    step: 4,
-  });
+    await tripCollection.update({
+      id: trip.id,
+      status: finalStatus,
+      step: 4,
+    });
 
-  navigate(isOffline ? "/offline-confirm" : "/online-confirm");
+    navigate(isOffline ? "/offline-confirm" : "/online-confirm");
+  } catch (error) {
+    console.error("Error submitting trip:", error);
+    setError("Failed to submit trip. Please try again.");
+  }
   //diff-remove-end
   //diff-add-start
   if (isOffline) {
@@ -266,32 +271,42 @@ The server receives a comprehensive JSON object containing:
 Now let's add the actual server request using the fetch API:
 
 ```jsx title="src/pages/ReviewSubmit.jsx"
-// Prepare submission data with trip and associated catches
-const submissionData = {
-  trip: trip,
-  catches: catches,
+  } else {
+    // Online: Attempt to submit to the backend
+    try {
+      // Prepare submission data with trip and associated catches
+      const submissionData = {
+        trip: trip,
+        catches: catches,
+      };
+
+      //diff-add-start
+      const response = await fetch("/api/trips", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(submissionData),
+      });
+
+      if (!response.ok) {
+        const status = response.status;
+        const statusText = response.statusText ? response.statusText.trim() : "";
+        const errorDetail = statusText
+          ? `${status} ${statusText}`
+          : `${status} Server error occurred`;
+
+        console.error("Server submission failed:", errorDetail);
+        setError(`Server submission failed: ${errorDetail}`);
+        return;
+      }
+      //diff-add-end
+    } catch (error) {
+      // Error handling will be completed in next step
+      console.error("Error submitting trip online:", error);
+    }
+  }
 };
-
-//diff-add-start
-const response = await fetch("/api/trips", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(submissionData),
-});
-
-if (!response.ok) {
-  const status = response.status;
-  const statusText = response.statusText ? response.statusText.trim() : "";
-  const errorDetail = statusText
-    ? `${status} ${statusText}`
-    : `${status} Server error occurred`;
-
-  console.error("Server submission failed:", errorDetail);
-  setError(`Server submission failed: ${errorDetail}`);
-  return;
-}
 //diff-add-end
 
 // Success handling will be added in next step
@@ -309,45 +324,61 @@ if (!response.ok) {
 
 Finally, let's implement the success path when server submission completes:
 
-````jsx title="src/pages/ReviewSubmit.jsx" 
-if (!response.ok) {
-  const status = response.status;
-  const statusText = response.statusText
-    ? response.statusText.trim()
-    : "";
-  const errorDetail = statusText
-    ? `${status} ${statusText}`
-    : `${status} Server error occurred`;
+```jsx title="src/pages/ReviewSubmit.jsx" 
+    } else {
+      try {
+        const submissionData = {
+          trip: trip,
+          catches: catches,
+        };
+   
+        const response = await fetch("/api/trips", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(submissionData),
+        });
 
-  console.error("Server submission failed:", errorDetail);
-  setError(`Server submission failed: ${errorDetail}`);
-  return;
-}
+        if (!response.ok) {
+          const status = response.status;
+          const statusText = response.statusText
+            ? response.statusText.trim()
+            : "";
+          const errorDetail = statusText
+            ? `${status} ${statusText}`
+            : `${status} Server error occurred`;
 
-// If server submission is successful, update local status to "submitted"
-//diff-add-start
-const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
-const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
-await tripCollection.update({
-  id: trip.id,
-  status: "submitted",
-  step: 4,
-});
-navigate("/online-confirm");
-//diff-add-end
-} catch (error) {
-  //diff-remove-start
-  // Error handling will be completed in next step
-  console.error("Error submitting trip online:", error);
-  //diff-remove-end
-  // Catch network errors or other issues with the fetch call
-    //diff-add-start
-  console.error("Error submitting trip online:", error);
-  setError(
-    "Failed to submit trip. Check your internet connection or try saving offline.",
-  );
-  //diff-add-end
-}
+          console.error("Server submission failed:", errorDetail);
+          setError(`Server submission failed: ${errorDetail}`);
+          return;
+        }
+
+        // If server submission is successful, update local status to "submitted"
+        //diff-add-start
+        const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
+        const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
+        await tripCollection.update({
+          id: trip.id,
+          status: "submitted",
+          step: 4,
+        });
+        navigate("/online-confirm");
+        //diff-add-end
+      } catch (error) {
+        //diff-remove-start
+        // Error handling will be completed in next step
+        console.error("Error submitting trip online:", error);
+        //diff-remove-end
+        // Catch network errors or other issues with the fetch call
+          //diff-add-start
+        console.error("Error submitting trip online:", error);
+        setError(
+          "Failed to submit trip. Check your internet connection or try saving offline.",
+        );
+        //diff-add-end
+      }
+```
 
 **Complete Implementation Summary:**
 
