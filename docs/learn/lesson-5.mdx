@@ -959,13 +959,22 @@ You'll need:
 You'll need to add state management for the form data and handle changes.
 
 :::info Hint
-You'll need to add the following:
+You'll need to add the following states:
 
-- tripData state for storing field values
-- handleTimeChange function for time picker
-- handleSelectChange function for dropdowns
-- Form initialization from database/localStorage
-  :::
+- `tripData` state for storing field values
+- `errors` state for storing validation errors  
+- `submitted` state to track if form has been submitted (needed to show errors only after submission)
+- `handleTimeChange` function for time picker
+- `handleSelectChange` function for dropdowns
+- Form initialization from database
+
+Example:
+```jsx
+const [errors, setErrors] = useState({});
+// Track if form has been submitted to show errors
+const [submitted, setSubmitted] = useState(false);
+```
+:::
 
 ### 4.5: Implement Validation Logic
 
@@ -980,24 +989,43 @@ Finally, add the validation patterns you learned from the previous forms.
 - Use the same field constants pattern (FIELD_END_TIME, FIELD_END_WEATHER)
   :::
 
-**For setting validation errors:**
+**For setting validation errors in handleSubmit:**
 
 :::info Hint
 
 - Use the same pattern as Start Trip
-- const newErrors = validateForm();
-  :::
+- Set `setSubmitted(true)` at the beginning of handleSubmit
+- Call `const newErrors = validateForm()`
+- Set the errors with `setErrors(newErrors)`
+- Only proceed if no errors: `if (Object.keys(newErrors).length === 0)`
+
+Example:
+```jsx
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setSubmitted(true); // Mark form as submitted to show errors
+  
+  const validationErrors = validateForm();
+  setErrors(validationErrors);
+  
+  if (Object.keys(validationErrors).length === 0) {
+    // Proceed with form submission
+  }
+};
+```
+:::
 
 **For displaying error messages:**
 
 :::info Hint
 
 - Follow the same pattern as previous forms
-- Remember to:
-  - Add error prop to FormGroup
-  - Add error prop to Label
-  - Add validationStatus to the input component
-  - Add conditional ErrorMessage component
+- Remember to use `submitted && errors.fieldName` for error display
+- Key components to update:
+  - Add `error={submitted && errors.endTime}` to FormGroup
+  - Add `error={submitted && errors.endTime}` to Label
+  - Add `validationStatus={submitted && errors.endTime ? "error" : undefined}` to input
+  - Add conditional ErrorMessage: `{submitted && errors.endTime && (<ErrorMessage>...)}`
   - Use proper aria-describedby for accessibility
     :::
 
