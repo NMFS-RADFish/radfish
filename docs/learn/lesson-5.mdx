@@ -213,11 +213,28 @@ const handleSubmit = async (e) => {
 - **User Feedback**: Invalid forms show errors without attempting to save data
 - **Smooth UX**: Valid forms proceed normally to the next step
 
-### 2.5: Add Error States to Form Components
+### 2.5: Add Error States and Messages to Date Field
 
-Now we need to update the form fields to display validation errors. We'll add error states to the FormGroup, Label, and input components so they visually indicate when validation fails.
+Now we'll implement complete validation display for the Date field. This includes adding error states to the FormGroup, Label, and input components, plus the ErrorMessage component to display the actual error text.
 
-Let's start by updating the Date field to include error states:
+First, add the ErrorMessage import to your existing USWDS imports:
+
+```jsx title="src/pages/StartTrip.jsx"
+import {
+  Button,
+  DatePicker,
+  //diff-add-start
+  ErrorMessage,
+  //diff-add-end
+  Form,
+  FormGroup,
+  Label,
+  Select,
+  TimePicker,
+} from "@trussworks/react-uswds";
+```
+
+Now update the Date field to include complete error handling:
 
 ```jsx title="src/pages/StartTrip.jsx"
 //diff-remove-start
@@ -256,10 +273,49 @@ Let's start by updating the Date field to include error states:
   <span id="trip-date-hint" className="usa-sr-only">
     Please enter or select the date of your fishing trip.
   </span>
+  //diff-add-start
+  {submitted && errors.tripDate && (
+    <ErrorMessage id="trip-date-error-message" className="font-sans-2xs">
+      {errors.tripDate}
+    </ErrorMessage>
+  )}
+  //diff-add-end
 </FormGroup>
 ```
 
-Now apply the same error state pattern to the Time and Weather fields:
+**Understanding the Complete Validation Pattern:**
+
+- **FormGroup Error State**: `error={submitted && errors.tripDate}` applies USWDS error styling to the entire field group
+- **Label Error State**: `error={submitted && errors.tripDate}` makes the label text red when there's an error
+- **Input Validation Status**: `validationStatus={submitted && errors.tripDate ? "error" : undefined}` adds a red border to the input
+- **ARIA Accessibility**: `aria-describedby` now includes both the hint and error message IDs for screen readers
+- **Conditional Error Message**: The ErrorMessage only renders when form is submitted AND an error exists
+- **Consistent Styling**: `className="font-sans-2xs"` applies USWDS typography for error messages
+
+### 2.6: Test Date Field Validation
+
+Let's test that the Date field validation is working correctly before implementing the other fields:
+
+1. **Navigate to the Start Trip page** (`/start`)
+2. **Leave the Date field empty**
+3. **Click the "Next" button**
+
+**Expected Results:**
+- The form should **not** navigate away
+- The Date field should show a **red border**
+- The Date field container should have a left **red border**
+- The error message **"Trip date is required"** should appear below the field
+
+![DatePicker with error message](./src/assets/lesson-5_step-2.4.png)
+
+**Test the Fix:**
+- Now select a date in the Date field
+- The error styling and message should disappear immediately
+- The form will still not submit because other fields are empty (which is expected)
+
+### 2.7: Apply Validation to Remaining Fields
+
+Now that you understand the complete validation pattern, apply the same approach to the Time and Weather fields:
 
 ```jsx title="src/pages/StartTrip.jsx"
 //diff-remove-start
@@ -299,6 +355,13 @@ Now apply the same error state pattern to the Time and Weather fields:
   <span id="start-time-hint" className="usa-sr-only">
     Please enter or select the time you started fishing.
   </span>
+  //diff-add-start
+  {submitted && errors.startTime && (
+    <ErrorMessage id="start-time-error-message" className="font-sans-2xs">
+      {errors.startTime}
+    </ErrorMessage>
+  )}
+  //diff-add-end
 </FormGroup>
 
 //diff-remove-start
@@ -339,132 +402,6 @@ Now apply the same error state pattern to the Time and Weather fields:
   <span id="start-weather-hint" className="usa-sr-only">
     Please select the weather conditions at the start of your fishing trip.
   </span>
-</FormGroup>
-```
-
-**Understanding the Error State Pattern:**
-
-- **FormGroup Error State**: `error={submitted && errors.tripDate}` applies USWDS error styling only after submission attempt
-- **Label Error Integration**: `error={submitted && errors.tripDate}` on the Label component provides visual error indication
-- **Input Validation Status**: `validationStatus={submitted && errors.tripDate ? "error" : undefined}` adds error styling to the input
-- **Submitted Check**: The `submitted &&` pattern ensures errors only display after the user attempts to submit, not while initially typing
-- **ARIA Accessibility**: `aria-describedby` links the input to both hint text and error messages for screen readers
-
-:::note TimePicker Validation
-Unlike DatePicker and Select, the TimePicker component doesn't support the `validationStatus` prop. Instead, use the `className` prop with the USWDS error class: `className={submitted && errors.startTime ? "usa-input--error" : undefined}`.
-:::
-
-### 2.6: Import and Add Error Messages
-
-To display the actual error text to users, we need to import the `ErrorMessage` component from USWDS and add it to each form field.
-
-**First, add the ErrorMessage import to your existing USWDS import statement:**
-
-```jsx title="src/pages/StartTrip.jsx"
-import {
-  Button,
-  DatePicker,
-  //diff-add-start
-  ErrorMessage,
-  //diff-add-end
-  Form,
-  FormGroup,
-  Label,
-  Select,
-  TimePicker,
-} from "@trussworks/react-uswds";
-```
-
-**Then, add the ErrorMessage component to each form field:**
-
-```jsx title="src/pages/StartTrip.jsx"
-<FormGroup error={errors.tripDate}>
-  <Label
-    htmlFor="tripDate"
-    error={errors.tripDate}
-    hint=" mm/dd/yyyy"
-    className="input-date-label"
-    requiredMarker
-  >
-    Date
-  </Label>
-  <DatePicker
-    id="tripDate"
-    name="tripDate"
-    defaultValue={trip?.tripDate}
-    onChange={handleDateChange}
-    validationStatus={errors.tripDate ? "error" : undefined}
-    aria-describedby="trip-date-hint trip-date-error-message"
-    required
-  />
-  <span id="trip-date-hint" className="usa-sr-only">
-    Please enter or select the date of your fishing trip.
-  </span>
-  //diff-add-start
-  {submitted && errors.tripDate && (
-    <ErrorMessage id="trip-date-error-message" className="font-sans-2xs">
-      {errors.tripDate}
-    </ErrorMessage>
-  )}
-  //diff-add-end
-</FormGroup>
-
-<FormGroup error={submitted && errors.startTime}>
-  <Label
-    htmlFor="startTime"
-    error={submitted && errors.startTime}
-    className="input-time-label"
-    requiredMarker
-  >
-    Time
-  </Label>
-  <TimePicker
-    id="startTime"
-    name="startTime"
-    defaultValue={trip?.startTime}
-    onChange={handleTimeChange}
-    minTime="00:00"
-    maxTime="23:45"
-    step={15}
-    validationStatus={submitted && errors.startTime ? "error" : undefined}
-    aria-describedby="start-time-hint start-time-error-message"
-  />
-  <span id="start-time-hint" className="usa-sr-only">
-    Please enter or select the time you started fishing.
-  </span>
-  //diff-add-start
-  {submitted && errors.startTime && (
-    <ErrorMessage id="start-time-error-message" className="font-sans-2xs">
-      {errors.startTime}
-    </ErrorMessage>
-  )}
-  //diff-add-end
-</FormGroup>
-
-<FormGroup error={submitted && errors.startWeather}>
-  <Label
-    htmlFor="startWeather"
-    error={submitted && errors.startWeather}
-    requiredMarker
-  >
-    Weather
-  </Label>
-  <Select
-    id="startWeather"
-    name="startWeather"
-    value={trip?.startWeather}
-    onChange={handleInputChange}
-    validationStatus={submitted && errors.startWeather ? "error" : undefined}
-    aria-describedby="start-weather-hint start-weather-error-message"
-  >
-    <option value="">-Select-</option>
-    <option value="Sunny">Sunny</option>
-    <option value="Cloudy">Cloudy</option>
-    <option value="Rainy">Rainy</option>
-  </Select>
-  <span id="start-weather-hint" className="usa-sr-only">
-    Please select the weather conditions at the start of your fishing trip.
-  </span>
   //diff-add-start
   {submitted && errors.startWeather && (
     <ErrorMessage id="start-weather-error-message" className="font-sans-2xs">
@@ -475,17 +412,11 @@ import {
 </FormGroup>
 ```
 
-**Understanding Error Message Implementation:**
+:::note TimePicker Validation
+Unlike DatePicker and Select, the TimePicker component doesn't support the `validationStatus` prop. Instead, use the `className` prop with the USWDS error class: `className={submitted && errors.startTime ? "usa-input--error" : undefined}`.
+:::
 
-- **Conditional Rendering**: `{submitted && errors.tripDate && (...)}` ensures error messages only appear after submission attempt
-- **Double Check**: Both `submitted` and the existence of an error must be true to display the message
-- **Consistent ID Naming**: `id="trip-date-error-message"` follows kebab-case pattern for accessibility
-- **ARIA Integration**: The ID matches the `aria-describedby` attribute on the input field
-- **Styling**: `className="font-sans-2xs"` applies consistent USWDS error message styling
-
-This pattern ensures errors are visually prominent, accessible to screen readers, and only appear when users attempt to submit invalid data.
-
-### 2.7: Testing the Complete Validation Implementation
+### 2.8: Testing Complete Form Validation
 
 To verify that your validation is working correctly, follow these steps to test the complete validation flow:
 
@@ -501,11 +432,8 @@ To verify that your validation is working correctly, follow these steps to test 
 - ✅ The error message **"Trip date is required"** should appear below the Date field in red text
 - ✅ The label should also display in **red** to indicate the error state
 
-![DatePicker with error message](./src/assets/lesson-5_step-2.4.png)
-
 **Additional Testing:**
 
-- Try submitting with **all fields empty** - you should see error messages for all three required fields
 - **Fill in the Date field** and submit again - the date error should disappear while other empty fields still show errors
 - **Fill all fields correctly** - all errors should clear and the form should proceed to the Catch Log page
 - **Test field clearing** - When you start typing in an invalid field, its error should clear immediately
