@@ -6,7 +6,28 @@ In this lesson, we will build a review page that fetches trip and catch data fro
 
 We need to fetch the trip and catch data from their respective RADFish stores to display on the review page. This data loading happens inside a `useEffect` hook, which is React's way of performing side effects like data fetching when a component mounts or when certain values change.
 
-### 1.1: Understanding useEffect for Data Loading
+### 1.1: Import Required Utilities and Constants
+
+Before we can access RADFish collections and format our data, we need to import the necessary utilities and constants.
+
+Open `src/pages/ReviewSubmit.jsx` and add these imports to your existing import statements:
+
+```jsx title="src/pages/ReviewSubmit.jsx"
+import { useApplication } from "@nmfs-radfish/react-radfish";
+import { Button } from "@trussworks/react-uswds";
+import Layout from "../components/Layout";
+import {
+  formatDate,
+  format24HourTo12Hour,
+  aggregateCatchesBySpecies,
+  //diff-add-start
+  STORE_NAMES,
+  COLLECTION_NAMES,
+  //diff-add-end
+} from "../utils";
+```
+
+### 1.2: Understanding useEffect for Data Loading
 
 The data fetching code is wrapped inside a `useEffect` hook that runs when the component first loads:
 
@@ -94,7 +115,7 @@ useEffect(() => {
     - [React useEffect Documentation](https://react.dev/reference/react/useEffect) - Comprehensive guide to using useEffect for side effects
     - [Synchronizing with Effects](https://react.dev/learn/synchronizing-with-effects) - Learn when and how to use Effects in React
 
-### 1.2: RADFish Data Access Pattern
+### 1.3: RADFish Data Access Pattern
 
 The highlighted code demonstrates the core data access pattern in RADFish applications:
 
@@ -110,7 +131,7 @@ The highlighted code demonstrates the core data access pattern in RADFish applic
 After fetching the raw catch data, we need to process it to calculate summary statistics for display. This involves grouping catches by species and calculating totals and averages.
 
 ```jsx title="src/pages/ReviewSubmit.jsx"
-        const selectedTrip = trips[0];
+        const selectedTrip = tripsDataFromCollection[0];
         setTrip(selectedTrip); // Store fetched trip data in state
 
         // Fetch all catches associated with this trip
@@ -387,6 +408,13 @@ const getFooterProps = () => {
    - Toggle offline/online in dev tools
    - Reload the page while offline - it should still work
    - Submit a trip while offline - it saves locally as "Not Submitted"
+
+:::tip Clear Site Data for Testing
+If you encounter unexpected behavior during offline testing, consider clearing your browser's site data. To delete all records:
+
+1. Navigate to IndexedDB → `learn-radfish`
+2. Click on the "Delete database" button (Chrome) or "Clear all data" button (Firefox)
+:::
 
 ## Conclusion
 
