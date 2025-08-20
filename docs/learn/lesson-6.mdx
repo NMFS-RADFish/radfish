@@ -404,10 +404,19 @@ const getFooterProps = () => {
    ```
 
 3. **Test offline functionality**:
-   - Complete a trip and navigate to Review page
-   - Toggle offline/online in dev tools
-   - Reload the page while offline - it should still work
-   - Submit a trip while offline - it saves locally as "Not Submitted"
+   1. Complete a trip and navigate to Review page
+   2. Toggle offline/online in dev tools
+   3. Reload the page while offline - it should still work
+   4. Submit a trip while offline - it saves locally as "Not Submitted"
+   5. Click the **Save** button to submit the trip while offline
+   6. You should see the offline confirmation page:
+   
+   ![Offline Confirmation](./src/assets/lesson-6_step-4.3-offline-confirm.png)
+   
+   7. Click the **Home** button to return to the homepage
+   8. You should now see your trip with status "READY TO SUBMIT":
+   
+   ![Ready to Submit Status](./src/assets/lesson-6_step-4.3-ready-to-submit.png)
 
 :::tip Clear Site Data for Testing
 If you encounter unexpected behavior during offline testing, consider clearing your browser's site data. To delete all records:
