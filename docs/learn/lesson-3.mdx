@@ -355,7 +355,7 @@ You can see the data being saved directly in your browser's developer tools:
 
 ### 2.3: Navigate to the next step
 
-After successfully saving the data, we navigate the user to the Catch Log page.
+After successfully saving the data, we'll demonstrate how the trip is now saved and accessible from the Home page.
 
 Since we already have a test record in IndexedDB, we'll need to delete it to start fresh.
 
@@ -416,12 +416,20 @@ const handleSubmit = async (e) => {
 };
 ```
 
-Then click the "Next" button to navigate to the Catch Log page.
+After implementing the navigation code, test the workflow:
 
-**Explanation:**
+1. **Click the "Next" button** - This saves your trip data to RADFish stores
+2. **Navigate to the Home page** - Click the "Home" button in the navigation menu
+3. **View your saved trip** - You should now see your trip listed on the homepage
+4. **Resume your trip** - Clicking on the saved trip will take you back to where you left off in the form
 
-- We use the `navigateWithTripId()` function we created in section 1.4 to go to the `/catch` route
+![Saved Trip on Homepage](./src/assets/lesson-3_step-2.3.png)
+
+**Understanding the Navigation Flow:**
+
+- The `navigateWithTripId()` function we created in section 1.4 is used to continue to the `/catch` route when resuming a trip
 - This function uses React Router's `navigate` function with state to pass the trip context
+- The trip is now persistent in RADFish stores, allowing users to continue their work from the Home page at any time
 - We pass the `tripId` (either existing or newly created) as the second parameter
 - This ensures the Catch Log page receives the correct trip context and knows which trip it's associated with
 
