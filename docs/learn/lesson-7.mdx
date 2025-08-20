@@ -392,59 +392,52 @@ Now that we've implemented all the steps, here's what our enhanced submission lo
    - If successful: Update local status to "submitted"
    - If server fails: Display error message to user
 3. **Progressive Enhancement**: Each step builds upon the previous one, making it easier to debug and understand
-
-**Submission Data Structure:**
-The server receives a JSON object containing both trip information and all associated catches:
-
-```json
-{
-  "trip": {
-    "id": "6e121657-17f6-49cf-a4de-7d6dbe6fadcb",
-    "tripDate": "06/12/2025",
-    "startWeather": "Cloudy",
-    "startTime": "00:15",
-    "status": "in-progress",
-    "step": 4,
-    "endTime": "00:15",
-    "endWeather": "Rainy"
-  },
-  "catches": [
-    {
-      "species": "Salmon",
-      "weight": 123,
-      "length": 123,
-      "time": "00:30",
-      "id": "1a2d8465-7f6e-4270-af5d-5116e6403ffc",
-      "tripId": "6e121657-17f6-49cf-a4de-7d6dbe6fadcb",
-      "createdAt": "2025-06-13T22:34:35.609Z"
-    }
-    // ... other catches
-  ]
-}
-````
-
 ## Step 4: Testing Server Submission
 
 ### 4.1: Test Online Submission
 
-1. **Ensure JSON server is running**: Check that `npm run server` is still active
-2. **Complete a trip**: Navigate through all steps and reach the Review page
-3. **Verify online status**: Ensure you see the green "Submit" button
-4. **Submit the trip**: Click the submit button
-5. **Check the server**: Visit `http://localhost:3002/trips` in your browser to see the submitted data
+Continuing from lesson 6 where we saved a trip offline, let's now test submitting it online:
+
+1. **Ensure JSON server is running**: Check that `npm run server` is still active in your terminal
+2. **Navigate to the Home page**: You should see one trip with status "READY TO SUBMIT" (from lesson 6)
+3. **Change network settings**: In browser dev tools (F12), go to Network tab and change from "Offline" to "No throttling"
+4. **Click on the saved trip**: This will take you back to the Review and Submit page
+5. **Verify online status**: You should now see the green "Submit" button instead of the blue "Save" button
+6. **Click the Submit button**: Submit the trip to the server
+7. **View success page**: You should see the success confirmation:
+
+   ![Success Page](./src/assets/lesson-7_step-4.1-success.png)
+
+8. **Check server data**: Open a new browser tab and navigate to `http://localhost:3002/trips`
+   - You should see your submitted trip data in JSON format
+   - See [Step 5: Viewing Submitted Data](#step-5-viewing-submitted-data) for the complete data structure
+9. **Return to the app**: Go back to your app tab and click the **Home** button
+10. **Verify submitted status**: Your trip should now show with "SUBMITTED" status:
+
+    ![Submitted Status](./src/assets/lesson-7_step-4.1-submitted-status.png)
 
 **Expected Results:**
 
 - Trip data appears in the JSON server at `http://localhost:3002/trips`
-- User is navigated to `/online-confirm`
+- User is navigated to `/online-confirm` success page
 - Local storage shows status as "submitted"
+- Trip card on homepage displays green "SUBMITTED" status
 
 ### 4.2: Test Offline Mode
 
+Let's test creating a new trip entirely offline:
+
 1. **Go offline**: Use browser dev tools (F12 → Network → Offline)
-2. **Submit a trip**: Notice the blue "Save" button appears
-3. **Click save**: Trip should save locally as "Not Submitted"
-4. **Check server**: No new data should appear at `http://localhost:3002/trips`
+2. **Start from Home**: Navigate to the Home page and click "Start New Trip"
+3. **Complete the trip workflow**: 
+   - Fill out the Start Trip form
+   - Add catches in the Catch Log
+   - Complete the End Trip form
+   - Navigate to the Review page
+4. **Verify offline status**: Notice the blue "Save" button appears instead of green "Submit"
+5. **Click save**: Trip should save locally as "Not Submitted"
+6. **Return to Home**: Click the Home button to see your trip with "READY TO SUBMIT" status
+7. **Check server**: Open a new tab to `http://localhost:3002/trips` - no new data should appear
 
 ### 4.3: Test Server Failure Gracefully
 
