@@ -904,18 +904,25 @@ Since this is a multi-step form, you need to handle the fact that `endTime` and 
 1. **Option 1**: Make the fields optional in the model (`required: false`)
 2. **Option 2**: Set them to empty strings when creating the initial trip
 
-**Recommended Approach:** Use Option 2 and update the `Form.create()`:
+**Recommended Approach:** Use Option 2 and update the `tripCollection.create()`:
 
 ```jsx title="src/pages/StartTrip.jsx"
-// Look for the Form.create call around line 241 and update it to:
-await Form.create({
-  id: newTripId,
-  ...tripData,
-  //diff-add-start
-  endTime: "",
-  endWeather: "",
-  //diff-add-end
-});
+// Look for the tripCollection.create call in the handleSubmit function:
+  if (tripId) {
+    await tripCollection.update({ id: tripId, ...tripDataToSave });
+  } else {
+    const newTripId = crypto.randomUUID();
+    await tripCollection.create({
+      id: newTripId,
+      ...tripDataToSave,
+      //diff-add-start
+      endTime: "",
+      endWeather: "",
+      //diff-add-end
+    });
+
+    navigateToId = newTripId;
+  }
 ```
 
 This allows the trip to be created successfully at the start, and these fields will be populated later in the EndTrip form.
@@ -1057,6 +1064,127 @@ Test the validation system with both invalid and valid data to ensure it works c
 - ✅ Invalid data blocks navigation between steps
 - ✅ Error styling applied consistently across all forms
 - ✅ Valid data clears errors and allows progression
+
+## Step 5: Advanced - RADFish Schema Validation (Optional)
+
+In addition to the custom validation we've implemented, RADFish provides built-in schema validation at the data layer. This ensures data integrity before it's stored in collections. Let's explore how to leverage this powerful feature.
+
+### 5.1: Understanding Schema Validation
+
+RADFish schema validation automatically validates data against the schema defined in your `index.jsx` configuration. It checks:
+
+- Data types (string, number, boolean, etc.)
+- Required fields
+- Field constraints (min/max values, patterns, etc.)
+- Primary key uniqueness
+
+### 5.2: Implementing Schema Validation
+
+Here's how to add schema validation to complement your custom validation. Add this to your EndTrip component:
+
+```jsx title="src/pages/EndTrip.jsx"
+// Add state for schema validation errors
+const [schemaValidationErrors, setSchemaValidationErrors] = useState([]);
+
+// In your handleSubmit function, after custom validation passes:
+try {
+  // RADFish Schema Validation: Comprehensive validation before proceeding
+  const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
+  const tripCollection = tripStore.getCollection(
+    COLLECTION_NAMES.TRIP_COLLECTION,
+  );
+  const catchCollection = tripStore.getCollection(
+    COLLECTION_NAMES.CATCH_COLLECTION,
+  );
+
+  // Get the updated trip data for validation
+  const updatedTrips = await tripCollection.find({ id: tripId });
+  if (updatedTrips.length === 0) {
+    throw new Error("Trip not found for validation");
+  }
+  const updatedTrip = updatedTrips[0];
+
+  // Get all catches for this trip
+  const tripCatches = await catchCollection.find({ tripId: tripId });
+
+  const allValidationErrors = [];
+
+  // Validate trip data against RADFish schema
+  const tripValidation = tripCollection.schema.validate(updatedTrip);
+  if (!tripValidation.isValid) {
+    allValidationErrors.push(
+      ...tripValidation.errors.map(
+        (err) => `Trip ${err.field}: ${err.error}`,
+      ),
+    );
+  }
+
+  // Validate each catch against RADFish schema
+  for (let i = 0; i < tripCatches.length; i++) {
+    const catchValidation = catchCollection.schema.validate(
+      tripCatches[i],
+    );
+    if (!catchValidation.isValid) {
+      catchValidation.errors.forEach((err) => {
+        allValidationErrors.push(
+          `Catch ${i + 1} ${err.field}: ${err.error}`,
+        );
+      });
+    }
+  }
+
+  // If schema validation fails, display errors
+  if (allValidationErrors.length > 0) {
+    setSchemaValidationErrors(allValidationErrors);
+    return;
+  }
+
+  // Clear any previous schema errors and proceed
+  setSchemaValidationErrors([]);
+  navigate("/review", { state: { tripId } });
+  
+} catch (error) {
+  console.error("Schema validation error:", error);
+}
+```
+
+### 5.3: Displaying Schema Validation Errors
+
+Add this component to display schema validation errors alongside your custom validation:
+
+```jsx title="src/pages/EndTrip.jsx"
+{schemaValidationErrors.length > 0 && (
+  <Alert type="error" heading="Data Validation Errors">
+    <ul className="margin-top-1">
+      {schemaValidationErrors.map((error, index) => (
+        <li key={index}>{error}</li>
+      ))}
+    </ul>
+  </Alert>
+)}
+```
+
+### 5.4: When to Use Each Validation Type
+
+**Custom Validation (What we built):**
+- UI/UX specific rules (e.g., "End time must be after start time")
+- Business logic validation
+- User-friendly error messages
+- Immediate feedback while typing
+
+**Schema Validation (RADFish built-in):**
+- Data type enforcement
+- Required field checking
+- Database integrity
+- Prevents invalid data from being stored
+
+**Best Practice:** Use both! Custom validation provides immediate user feedback, while schema validation ensures data integrity at the storage layer.
+
+### 5.5: Learn More
+
+To explore RADFish schema validation in depth, including advanced configuration options and constraints, see the [RADFish Storage Documentation](https://nmfs-radfish.github.io/radfish/design-system/storage#schema).
+
+The schema configuration for this application is defined in `index.jsx` (see reference files), where you specify field types, requirements, and constraints.
 
 ## Conclusion
 
