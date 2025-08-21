@@ -69,7 +69,7 @@ import { validateRequired, FIELD_NAMES, STORE_NAMES, COLLECTION_NAMES } from "..
 
 ### 2.2: Add Error State Management
 
-Before we can implement validation, we need to add state to track validation errors and form submission status. Add these states after your existing `tripData` state:
+Before we can implement validation, lets look at state that tracks validation errors and form submission status. Find these states after your existing `tripData` state:
 
 ```jsx title="src/pages/StartTrip.jsx"
 // --- State Management ---
@@ -80,14 +80,10 @@ const [tripData, setTripData] = useState({
 });
 
 // Validation errors state - stores field-specific error messages
-//diff-add-start
 const [errors, setErrors] = useState({});
-//diff-add-end
 
 // Track if form has been submitted to show errors
-//diff-add-start
 const [submitted, setSubmitted] = useState(false);
-//diff-add-end
 
 const [isLoading, setIsLoading] = useState(false);
 ```
@@ -329,6 +325,7 @@ Now that you understand the complete validation pattern, apply the same approach
     //diff-add-start
     error={submitted && errors.startTime}
     //diff-add-end
+    hint=" mm/dd/yyyy"
     className="input-time-label"
     requiredMarker
   >

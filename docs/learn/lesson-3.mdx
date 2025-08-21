@@ -105,7 +105,7 @@ import {
 } from "@trussworks/react-uswds";
 import Layout from "../components/Layout";
 //diff-add-start
-import { STORE_NAMES, COLLECTION_NAMES } from "../utils/constants";
+import { STORE_NAMES, COLLECTION_NAMES } from "../utils";
 //diff-add-end
 ```
 
@@ -117,8 +117,8 @@ function StartTrip() {
   //diff-add-start
   const app = useApplication();
   const location = useLocation();
-  const tripId = location.state?.tripId;
   //diff-add-end
+  const tripId = location.state?.tripId;
   
   // State management - existing tripData state from lesson 2
   const [tripData, setTripData] = useState({
@@ -126,11 +126,6 @@ function StartTrip() {
     startWeather: "",
     startTime: "",
   });
-  
-  // Loading state for async data fetching
-    //diff-add-start
-  const [isLoading, setIsLoading] = useState(false);
-  //diff-add-end
 ```
 
 **Explanation:**
@@ -220,7 +215,7 @@ useEffect(() => {
 :::info
 **Constants for Store and Collection Names:**
 
-The `../utils/constants` file centralizes store and collection names (like `STORE_NAMES.TRIP_STORE` and `COLLECTION_NAMES.TRIP_COLLECTION`) to prevent typos and make future changes easier. We'll use `COLLECTION_NAMES.CATCH_COLLECTION` in lesson 4.
+The `../utils` file centralizes store and collection names (like `STORE_NAMES.TRIP_STORE` and `COLLECTION_NAMES.TRIP_COLLECTION`) to prevent typos and make future changes easier. We'll use `COLLECTION_NAMES.CATCH_COLLECTION` in lesson 4.
 :::
 
 ### 1.4: Declare navigation functions
