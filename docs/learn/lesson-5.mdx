@@ -1,5 +1,15 @@
 # Lesson 5: Form Validation
 
+<details>
+  <summary>🏳️ Haven't completed the previous lesson?</summary>
+
+  No worries! You can pickup from here:
+
+  ```bash
+  git checkout tags/lesson-5
+  ```
+</details>
+
 In this lesson, we will implement comprehensive form validation across all three steps of the trip logging process (Start Trip, Catch Log, and End Trip). This ensures users provide accurate, complete information before proceeding to each subsequent step. We'll add validation logic using React state management and display user-friendly error messages using USWDS `ErrorMessage` components.
 
 ## Step 1: Understanding Form Validation in RADFish Applications
@@ -255,13 +265,11 @@ Now update the Date field to include complete error handling:
     name="tripDate"
     defaultValue={trip?.tripDate}
     onChange={handleDateChange}
-    //diff-add-start
-    validationStatus={submitted && errors.tripDate ? "error" : undefined}
-    //diff-add-end
     //diff-remove-start
     aria-describedby="trip-date-hint"
     //diff-remove-end
     //diff-add-start
+    validationStatus={submitted && errors.tripDate ? "error" : undefined}
     aria-describedby="trip-date-hint trip-date-error-message"
     //diff-add-end
     required
@@ -339,13 +347,11 @@ Now that you understand the complete validation pattern, apply the same approach
     minTime="00:00"
     maxTime="23:45"
     step={15}
-    //diff-add-start
-    className={submitted && errors.startTime ? "usa-input--error" : undefined}
-    //diff-add-end
     //diff-remove-start
     aria-describedby="start-time-hint"
     //diff-remove-end
     //diff-add-start
+    className={submitted && errors.startTime ? "usa-input--error" : undefined}
     aria-describedby="start-time-hint start-time-error-message"
     //diff-add-end
   />
@@ -381,13 +387,11 @@ Now that you understand the complete validation pattern, apply the same approach
     name="startWeather"
     value={trip?.startWeather}
     onChange={handleInputChange}
-    //diff-add-start
-    validationStatus={submitted && errors.startWeather ? "error" : undefined}
-    //diff-add-end
     //diff-remove-start
     aria-describedby="start-weather-hint"
     //diff-remove-end
     //diff-add-start
+    validationStatus={submitted && errors.startWeather ? "error" : undefined}
     aria-describedby="start-weather-hint start-weather-error-message"
     //diff-add-end
   >
@@ -459,16 +463,14 @@ import {
   TIME_PICKER_CONFIG,
   STORE_NAMES,
   COLLECTION_NAMES,
-} from "../utils";
 //diff-add-start
-import {
   validateRequired,
   validateNumberRange,
   validateLatitude,
   validateLongitude,
   VALIDATION_RANGES,
-} from "../utils";
 //diff-add-end
+} from "../utils";
 ```
 
 **Understanding the Validation Imports:**

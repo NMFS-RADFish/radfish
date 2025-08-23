@@ -1,5 +1,15 @@
 # Lesson 4: Dynamic Inputs
 
+<details>
+  <summary>🏳️ Haven't completed the previous lesson?</summary>
+
+  No worries! You can pickup from here:
+
+  ```bash
+  git checkout tags/lesson-4
+  ```
+</details>
+
 In this lesson, we will implement the functionality to add new catches to our trip log. When the user fills out the "Add Catch" form and clicks the button, we need to save this data to the offline database (IndexedDB) using RADFish and then update the user interface to display the newly added catch in the "Recorded Catches" list.
 
 ## Step 1: Setting Up the Catch Collection
@@ -595,20 +605,29 @@ After implementing all 5 event handlers, you need to connect them to the form el
 
 ```jsx title="src/pages/CatchLog.jsx"
 // Replace Form onSubmit
+<Form 
 //diff-remove-start
-<Form onSubmit={() => {}} large className="margin-top-3 width-full">
+  onSubmit={() => {}}
 //diff-remove-end
 //diff-add-start
-<Form onSubmit={handleAddCatch} large className="margin-top-3 width-full">
+  onSubmit={handleAddCatch}
 //diff-add-end
+  large 
+  className="margin-top-3 width-full"
+>
 
 // Replace all input onChange handlers  
 //diff-remove-start
 <Select onChange={() => {}}>
-<TextInput onChange={() => {}}>
 //diff-remove-end
 //diff-add-start
 <Select onChange={handleInputChange}>
+//diff-add-end
+
+//diff-remove-start
+<TextInput onChange={() => {}}>
+//diff-remove-end
+//diff-add-start
 <TextInput onChange={handleInputChange}>
 //diff-add-end
 
@@ -651,25 +670,25 @@ Let's examine the complete form structure for adding new catches that's already 
           large
           className="margin-top-3 width-full"
         >
-                  {/* Species Dropdown */}
-                  <FormGroup>
-                    <Label htmlFor="species" requiredMarker>
-                      Species
-                    </Label>
-                    <Select
-                      id="species"
-                      name="species"
-                      value={currentCatch.species}
-                      onChange={() => {}}
-                    >
-                      <option value="">-Select-</option>
-                      {SPECIES_OPTIONS.map((species) => (
-                        <option key={species} value={species}>
-                          {species}
-                        </option>
-                      ))}
-                    </Select>
-                  </FormGroup>
+          {/* Species Dropdown */}
+          <FormGroup>
+            <Label htmlFor="species" requiredMarker>
+              Species
+            </Label>
+            <Select
+              id="species"
+              name="species"
+              value={currentCatch.species}
+              onChange={handleInputChange}
+            >
+              <option value="">-Select-</option>
+              {SPECIES_OPTIONS.map((species) => (
+                <option key={species} value={species}>
+                  {species}
+                </option>
+              ))}
+            </Select>
+          </FormGroup>
 ```
 
 **Key Features of the Provided Form:**
@@ -701,7 +720,7 @@ The provided form includes measurement and timing fields with the following stru
         name="weight"
         type="number"
         value={currentCatch.weight}
-        onChange={() => {}}
+        onChange={handleInputChange}
         validationStatus={errors.weight ? "error" : undefined}
         aria-describedby="weight-error-message"
       />
@@ -722,7 +741,7 @@ The provided form includes measurement and timing fields with the following stru
         name="length"
         type="number"
         value={currentCatch.length}
-        onChange={() => {}}
+        onChange={handleInputChange}
         validationStatus={errors.length ? "error" : undefined}
         aria-describedby="length-error-message"
       />
@@ -750,7 +769,7 @@ The provided form includes measurement and timing fields with the following stru
     id="catchTime"
     name="time"
     defaultValue={currentCatch.time}
-    onChange={() => {}} 
+    onChange={handleTimeChange} 
     minTime={TIME_PICKER_CONFIG.MIN_TIME}
     maxTime="23:30"
     step={TIME_PICKER_CONFIG.STEP}

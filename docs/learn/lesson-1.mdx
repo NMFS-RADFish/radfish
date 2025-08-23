@@ -33,7 +33,7 @@ Now let's build the application and serve it locally to see its current state.
 
 1. **Install Dependencies:** Open your terminal in the project root directory and run:
    ```bash
-   npm install --force # Force flag will be removed in the final tutorial
+   npm install
    ```
 
 2. **Start the Development Server:** Run the following command to start the application:
@@ -77,6 +77,9 @@ Next, modify the `return` statement of your `HomePage` component to incorporate 
 ```jsx title="src/pages/Home.jsx"
 return (
   <>
+    //diff-remove-start
+    <div className="padding-y-4 padding-x-2 text-center">
+    //diff-remove-end
     //diff-add-start
     <GridContainer className="padding-y-4 padding-x-2 text-center">
       <Grid row>
@@ -88,7 +91,10 @@ return (
             Recent Trips
           </h2>
           {/* Example: trips.map(...) or conditional messages */}
-          //diff-add-start
+    //diff-remove-start
+    </div>
+    //diff-remove-end
+    //diff-add-start
         </Grid>
       </Grid>
     </GridContainer>

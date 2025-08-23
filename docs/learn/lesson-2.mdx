@@ -1,5 +1,15 @@
 import CodeBlock from "@theme/CodeBlock";
 
+<details>
+  <summary>🏳️ Haven't completed the previous lesson?</summary>
+
+  No worries! You can pickup from here:
+
+  ```bash
+  git checkout tags/lesson-2
+  ```
+</details>
+
 # Lesson 2: Start Trip Form Inputs
 
 This lesson focuses on building the first step of the trip logging form, the "Start Trip" page. We'll use components from the U.S. Web Design System (USWDS) library (`@trussworks/react-uswds`) to add inputs for the trip date, start time, and start weather.
@@ -97,9 +107,9 @@ Let's look at two key aspects of how React manages state with this form:
 
    ```jsx title="src/pages/StartTrip.jsx"
    const [tripData, setTripData] = useState({
-     tripDate: "",
-     startWeather: "",
-     startTime: "",
+    tripDate: undefined,
+    startWeather: undefined,
+    startTime: undefined,
    });
    ```
 

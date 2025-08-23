@@ -1,5 +1,15 @@
 # Lesson 7: Server Submission
 
+<details>
+  <summary>🏳️ Haven't completed the previous lesson?</summary>
+
+  No worries! You can pickup from here:
+
+  ```bash
+  git checkout tags/lesson-7
+  ```
+</details>
+
 In this lesson, we'll enhance the submission process to handle both offline storage and online server submission. We'll set up a JSON server to simulate a backend API and modify our Review page to automatically submit data to the server when online, while gracefully falling back to local storage when offline.
 
 ## Getting Started
@@ -110,11 +120,11 @@ Let's examine the current submission logic in the Review page:
 ```jsx title="src/pages/ReviewSubmit.jsx"
 const handleSubmit = async () => {
   if (!trip) return;
+  
+  const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
+  const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
 
   try {
-    const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
-    const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
-
     const finalStatus = isOffline ? "Not Submitted" : "submitted";
 
     await tripCollection.update({
@@ -204,8 +214,6 @@ if (isOffline) {
   // Offline: Save status as "Not Submitted" locally
   //diff-add-start
   try {
-    const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
-    const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
     await tripCollection.update({
       id: trip.id,
       status: "Not Submitted",
@@ -355,8 +363,6 @@ Finally, let's implement the success path when server submission completes:
 
         // If server submission is successful, update local status to "submitted"
         //diff-add-start
-        const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
-        const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
         await tripCollection.update({
           id: trip.id,
           status: "submitted",
