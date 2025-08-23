@@ -1,4 +1,4 @@
-import CodeBlock from "@theme/CodeBlock";
+# Lesson 2: Start Trip Form Inputs
 
 <details>
   <summary>🏳️ Haven't completed the previous lesson?</summary>
@@ -9,8 +9,6 @@ import CodeBlock from "@theme/CodeBlock";
   git checkout tags/lesson-2
   ```
 </details>
-
-# Lesson 2: Start Trip Form Inputs
 
 This lesson focuses on building the first step of the trip logging form, the "Start Trip" page. We'll use components from the U.S. Web Design System (USWDS) library (`@trussworks/react-uswds`) to add inputs for the trip date, start time, and start weather.
 
@@ -161,27 +159,37 @@ import {
 Let's add the `TimePicker` input below the `DatePicker` form group:
 
 ```jsx title="src/pages/StartTrip.jsx"
-// diff-add-start
-<FormGroup>
-  <Label htmlFor="startTime" className="input-time-label" requiredMarker>
-    Time
-  </Label>
-  <TimePicker
-    id="startTime"
-    name="startTime"
-    defaultValue={tripData.startTime}
-    onChange={handleTimeChange}
-    minTime="00:00"
-    maxTime="23:45"
-    step={15}
-    aria-describedby="start-time-hint"
-    required
-  />
-  <span id="start-time-hint" className="usa-sr-only">
-    Please enter or select the time you started fishing.
-  </span>
-</FormGroup>
-// diff-add-end
+      <span id="trip-date-hint" className="usa-sr-only">
+        Please enter or select the date of your fishing trip.
+      </span>
+    </FormGroup>
+    // diff-add-start
+    <FormGroup>
+      <Label
+        htmlFor="startTime"
+        className="input-time-label"
+        requiredMarker
+      >
+        Time
+      </Label>
+      <TimePicker
+        id="startTime"
+        name="startTime"
+        defaultValue={tripData.startTime}
+        onChange={handleTimeChange}
+        minTime="00:00"
+        maxTime="23:45"
+        step={15}
+        aria-describedby="start-time-hint"
+        required
+      />
+      <span id="start-time-hint" className="usa-sr-only">
+        Please enter or select the time you started fishing.
+      </span>
+    </FormGroup>
+    // diff-add-end
+  </Form>
+</Layout>
 ```
 
 **Explanation:**
@@ -218,29 +226,38 @@ import {
 Add the following code below the `TimePicker` form group:
 
 ```jsx title="src/pages/StartTrip.jsx"
-// diff-add-start
-<FormGroup>
-  <Label htmlFor="startWeather" requiredMarker>
-    Weather
-  </Label>
-  <Select
-    id="startWeather"
-    name="startWeather"
-    value={tripData.startWeather}
-    onChange={handleInputChange}
-    aria-describedby="start-weather-hint"
-    required
-  >
-    <option value="">-Select-</option>
-    <option value="Sunny">Sunny</option>
-    <option value="Cloudy">Cloudy</option>
-    <option value="Rainy">Rainy</option>
-  </Select>
-  <span id="start-weather-hint" className="usa-sr-only">
-    Please select the weather conditions at the start of your fishing trip.
-  </span>
-</FormGroup>
-// diff-add-end
+      <span id="start-time-hint" className="usa-sr-only">
+        Please enter or select the time you started fishing.
+      </span>
+    </FormGroup>
+    // diff-add-start
+    <FormGroup>
+      <Label
+        htmlFor="startWeather"
+        requiredMarker
+      >
+        Weather
+      </Label>
+      <Select
+        id="startWeather"
+        name="startWeather"
+        value={tripData.startWeather}
+        onChange={handleInputChange}
+        aria-describedby="start-weather-hint"
+        required
+      >
+        <option value="">-Select-</option>
+        <option value="Sunny">Sunny</option>
+        <option value="Cloudy">Cloudy</option>
+        <option value="Rainy">Rainy</option>
+      </Select>
+      <span id="start-weather-hint" className="usa-sr-only">
+        Please select the weather conditions at the start of your fishing trip.
+      </span>
+    </FormGroup>
+    // diff-add-end
+  </Form>
+</Layout>
 ```
 
 **Explanation:**
@@ -275,7 +292,11 @@ The complete **Form** will look like this:
     </span>
   </FormGroup>
   <FormGroup>
-    <Label htmlFor="startTime" className="input-time-label" requiredMarker>
+    <Label
+      htmlFor="startTime"
+      className="input-time-label"
+      requiredMarker
+    >
       Time
     </Label>
     <TimePicker
@@ -294,7 +315,10 @@ The complete **Form** will look like this:
     </span>
   </FormGroup>
   <FormGroup>
-    <Label htmlFor="startWeather" requiredMarker>
+    <Label
+      htmlFor="startWeather"
+      requiredMarker
+    >
       Weather
     </Label>
     <Select

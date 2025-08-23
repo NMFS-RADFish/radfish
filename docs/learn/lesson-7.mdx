@@ -166,7 +166,7 @@ First, let's replace the simple submission logic with a structure that handles o
 
 ```jsx title="src/pages/ReviewSubmit.jsx"
 const handleSubmit = async () => {
-  if (!trip) return; // Guard clause if trip data isn't loaded
+  if (!trip) return;
 
   const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
   const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);

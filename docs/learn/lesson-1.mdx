@@ -55,7 +55,7 @@ For more detailed information on the grid components we are using, see these res
 
 In `src/pages/Home.jsx`, update your import statement from `@trussworks/react-uswds` to also include `GridContainer`. Your existing import for `Button` and `Grid` will be modified as follows:
 
-```jsx title="src/pages/Home.jsx"
+```jsx title="src/pages/Home.jsx" showLineNumbers=5
 import "../index.css";
 import React, { useState, useEffect } from "react";
 import { useApplication, useOfflineStatus } from "@nmfs-radfish/react-radfish";
@@ -77,6 +77,7 @@ Next, modify the `return` statement of your `HomePage` component to incorporate 
 ```jsx title="src/pages/Home.jsx"
 return (
   <>
+    {/* Main Content - Basic structure without USWDS grid components */}
     //diff-remove-start
     <div className="padding-y-4 padding-x-2 text-center">
     //diff-remove-end
