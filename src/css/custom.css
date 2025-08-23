@@ -108,14 +108,23 @@
 
 .code-block-diff-add-line::before {
   content: '+';
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .code-block-diff-remove-line {
   background-color: var(--radfish-code-block-diff-remove-background);
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .code-block-diff-remove-line::before {
   content: '-';
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 pre code:has(.code-block-diff-add-line, .code-block-diff-remove-line) {
