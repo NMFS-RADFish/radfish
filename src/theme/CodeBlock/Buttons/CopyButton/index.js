@@ -31,13 +31,6 @@ function useCopyButton() {
   const ctx = useCodeBlockContext();
   const code = filterMagicCommentLines(ctx.metadata.codeInput);
 
-  console.log(`
- ---
- ${ctx.metadata.codeInput}
- ->
- ${code}
-`)
-
   const [isCopied, setIsCopied] = useState(false);
   const copyTimeout = useRef(undefined);
   const copyCode = useCallback(() => {
