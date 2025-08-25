@@ -33,7 +33,7 @@ Now let's build the application and serve it locally to see its current state.
 
 1. **Install Dependencies:** Open your terminal in the project root directory and run:
    ```bash
-   npm install --force # Force flag will be removed in the final tutorial
+   npm install
    ```
 
 2. **Start the Development Server:** Run the following command to start the application:
@@ -55,11 +55,14 @@ For more detailed information on the grid components we are using, see these res
 
 In `src/pages/Home.jsx`, update your import statement from `@trussworks/react-uswds` to also include `GridContainer`. Your existing import for `Button` and `Grid` will be modified as follows:
 
-```jsx title="src/pages/Home.jsx" showLineNumbers=1
+```jsx title="src/pages/Home.jsx" showLineNumbers=5
 import "../index.css";
 import React, { useState, useEffect } from "react";
 import { useApplication, useOfflineStatus } from "@nmfs-radfish/react-radfish";
 import { useNavigate } from "react-router-dom";
+//diff-remove-start
+import { Button, Grid } from "@trussworks/react-uswds";
+//diff-remove-end
 //diff-add-start
 import { Button, GridContainer, Grid } from "@trussworks/react-uswds";
 //diff-add-end
@@ -71,23 +74,30 @@ Next, modify the `return` statement of your `HomePage` component to incorporate 
 
 **Add the `GridContainer` structure around your main page content:**
 
-```jsx title="src/pages/Home.jsx" showLineNumbers=212
+```jsx title="src/pages/Home.jsx"
 return (
   <>
+    {/* Main Content - Basic structure without USWDS grid components */}
+    //diff-remove-start
+    <div className="padding-y-4 padding-x-2 text-center">
+    //diff-remove-end
     //diff-add-start
     <GridContainer className="padding-y-4 padding-x-2 text-center">
-    //diff-add-end
       <Grid row>
         <Grid col="fill">
+        //diff-add-end
           {/* All your main page content (headings, lists, etc.) goes here */}
           <h1 className="font-heading-xl text-center margin-0">Hi, Captain</h1>
           <h2 className="font-heading-lg text-center margin-top-4 margin-bottom-2">
             Recent Trips
           </h2>
           {/* Example: trips.map(...) or conditional messages */}
+    //diff-remove-start
+    </div>
+    //diff-remove-end
+    //diff-add-start
         </Grid>
       </Grid>
-    //diff-add-start
     </GridContainer>
     //diff-add-end
 
@@ -111,15 +121,15 @@ Currently, the "Start New Trip" button on the home page doesn't do anything. We 
 
 React Router provides the `useNavigate` hook for programmatic navigation. Let's look at how it's already set up in your component:
 
-**1. Import Statement (already present):**
+**1. Import Statement:**
 
-```jsx title="src/pages/Home.jsx" showLineNumbers=4
+```jsx title="src/pages/Home.jsx"
 import { useNavigate } from "react-router-dom";
 ```
 
-**2. Hook Initialization (already present):**
+**2. Hook Initialization:**
 
-```jsx title="src/pages/Home.jsx" showLineNumbers=29
+```jsx title="src/pages/Home.jsx"
 const navigate = useNavigate();
 ```
 
@@ -129,17 +139,9 @@ The `useNavigate` hook returns a function that we store in the `navigate` variab
 
 Now we'll use the `navigate` function to make the "Start New Trip" button functional. Find the `Button` component for "Start New Trip".
 
-**Add this `onClick` handler code:**
+**Add the `onClick` handler code:**
 
-```jsx
-onClick={() => {
-  navigate("/start");
-}}
-```
-
-**The complete `Button` component with the new `onClick` handler will look like this:**
-
-```jsx title="src/pages/Home.jsx" showLineNumbers=299
+```jsx title="src/pages/Home.jsx"
 <Button
   type="button"
   className="bg-primary hover:bg-primary-darker width-full"

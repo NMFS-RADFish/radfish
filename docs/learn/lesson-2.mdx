@@ -1,6 +1,14 @@
-import CodeBlock from "@theme/CodeBlock";
-
 # Lesson 2: Start Trip Form Inputs
+
+<details>
+  <summary>🏳️ Haven't completed the previous lesson?</summary>
+
+  No worries! You can pickup from here:
+
+  ```bash
+  git checkout tags/lesson-2
+  ```
+</details>
 
 This lesson focuses on building the first step of the trip logging form, the "Start Trip" page. We'll use components from the U.S. Web Design System (USWDS) library (`@trussworks/react-uswds`) to add inputs for the trip date, start time, and start weather.
 
@@ -12,7 +20,7 @@ We need a way for the user to select the date of their fishing trip. We'll use t
 
 First, open `src/pages/StartTrip.jsx` and update the import statement from `@trussworks/react-uswds` to include `DatePicker`. Your existing import will be modified as follows:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=5
+```jsx title="src/pages/StartTrip.jsx"
 import {
   Button,
   //diff-add-start
@@ -22,22 +30,30 @@ import {
   //diff-add-start
   FormGroup,
   //diff-add-end
-  Grid,
-  GridContainer,
   //diff-add-start
   Label,
   //diff-add-end
-  StepIndicator,
-  StepIndicatorStep,
 } from "@trussworks/react-uswds";
+import Layout from "../components/Layout";
 ```
+
+:::info Layout Component
+
+Notice that we're importing a `Layout` component. This is a custom component that handles the common page structure for all our trip logging pages. It provides:
+
+- **Grid Container**: Wraps content with consistent padding and responsive width
+- **Step Indicator**: Shows the user's progress through the 4-step trip logging process
+- **Consistent Structure**: Ensures all pages have the same layout without duplicating code
+
+Each page uses this component with a `currentStep` prop (e.g., `<Layout currentStep="Start Trip">`) to highlight the appropriate step in the indicator. This approach keeps our code DRY (Don't Repeat Yourself) and makes maintenance easier.
+:::
 
 **Understanding the USWDS Components:**
 
 Before we start building the form, let's understand what each of these imported components does:
 
 - **`Form`**: Main container for form elements with submission handling and styling
-- **`FormGroup`**: Wrapper that groups form elements for proper spacing and accessibility
+- **`FormGroup`**: Wrapper that groups related form elements (label, input, hints, errors) for proper spacing and accessibility. Each input field needs its own FormGroup wrapper.
 - **`Label`**: Creates accessible form labels with support for required indicators
 - **`DatePicker`**: Calendar interface for date selection with formatting and validation
 
@@ -47,8 +63,8 @@ These components work together to create accessible, well-structured forms that 
 
 **Add the `FormGroup`, `Label`, and `DatePicker` input within the `Form` component:**
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=217
-<Form onSubmit={handleSubmit} large>
+```jsx title="src/pages/StartTrip.jsx"
+<Form onSubmit={handleSubmit} large className="margin-top-3">
   // diff-add-start
   <FormGroup>
     <Label
@@ -62,7 +78,7 @@ These components work together to create accessible, well-structured forms that 
     <DatePicker
       id="tripDate"
       name="tripDate"
-      defaultValue={formData.tripDate}
+      defaultValue={tripData.tripDate}
       onChange={handleDateChange}
       aria-describedby="trip-date-hint"
       required
@@ -81,17 +97,17 @@ Let's look at two key aspects of how React manages state with this form:
 
 1. **Initial State with `defaultValue`**:
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=239
-   defaultValue={formData.tripDate}
+   ```jsx title="src/pages/StartTrip.jsx"
+   defaultValue={tripData.tripDate}
    ```
 
    - The component initializes form data using React's useState hook:
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=56
-   const [formData, setFormData] = useState({
-     tripDate: "",
-     startWeather: "",
-     startTime: "",
+   ```jsx title="src/pages/StartTrip.jsx"
+   const [tripData, setTripData] = useState({
+    tripDate: undefined,
+    startWeather: undefined,
+    startTime: undefined,
    });
    ```
 
@@ -101,16 +117,16 @@ Let's look at two key aspects of how React manages state with this form:
 
 2. **Updating State with `onChange`**:
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=240
+   ```jsx title="src/pages/StartTrip.jsx"
    onChange = { handleDateChange };
    ```
 
    - The `onChange` attribute is a required prop for controlled inputs. It is called whenever the input's value changes (on every keystroke or selection). Without this handler, React would revert the input to its original value after each change.
    - When a user selects a date, the `handleDateChange` function is called
 
-   ```jsx title="src/pages/StartTrip.jsx" showLineNumbers=132
-   const handleDateChange = (value) => {
-     setFormData((prevData) => ({ ...prevData, tripDate: value || "" }));
+   ```jsx title="src/pages/StartTrip.jsx"
+   const handleDateChange = (date) => {
+     setTripData((prevData) => ({ ...prevData, tripDate: date || "" }));
    };
    ```
 
@@ -125,17 +141,13 @@ Next, we'll add an input for the trip's start time using the `TimePicker` compon
 
 Update the import statement from `@trussworks/react-uswds` to include `TimePicker`. Your existing import will be modified as follows:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=5
+```jsx title="src/pages/StartTrip.jsx"
 import {
   Button,
   DatePicker,
   Form,
   FormGroup,
-  Grid,
-  GridContainer,
   Label,
-  StepIndicator,
-  StepIndicatorStep,
   //diff-add-start
   TimePicker,
   //diff-add-end
@@ -146,33 +158,44 @@ import {
 
 Let's add the `TimePicker` input below the `DatePicker` form group:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=249
-// diff-add-start
-<FormGroup>
-  <Label htmlFor="startTime" className="input-time-label" requiredMarker>
-    Time
-  </Label>
-  <TimePicker
-    id="startTime"
-    name="startTime"
-    defaultValue={formData.startTime}
-    onChange={handleTimeChange}
-    minTime="00:00"
-    maxTime="23:45"
-    step={15}
-    aria-describedby="start-time-hint"
-  />
-  <span id="start-time-hint" className="usa-sr-only">
-    Please enter or select the time you started fishing.
-  </span>
-</FormGroup>
-// diff-add-end
+```jsx title="src/pages/StartTrip.jsx"
+      <span id="trip-date-hint" className="usa-sr-only">
+        Please enter or select the date of your fishing trip.
+      </span>
+    </FormGroup>
+    // diff-add-start
+    <FormGroup>
+      <Label
+        htmlFor="startTime"
+        className="input-time-label"
+        requiredMarker
+      >
+        Time
+      </Label>
+      <TimePicker
+        id="startTime"
+        name="startTime"
+        defaultValue={tripData.startTime}
+        onChange={handleTimeChange}
+        minTime="00:00"
+        maxTime="23:45"
+        step={15}
+        aria-describedby="start-time-hint"
+        required
+      />
+      <span id="start-time-hint" className="usa-sr-only">
+        Please enter or select the time you started fishing.
+      </span>
+    </FormGroup>
+    // diff-add-end
+  </Form>
+</Layout>
 ```
 
 **Explanation:**
 
 - Similar to the `DatePicker`, we use `FormGroup` and `Label` for structure and accessibility
-- `defaultValue={formData.startTime}` binds the input to the `startTime` field in our state
+- `defaultValue={tripData.startTime}` binds the input to the `startTime` field in our state
 - `onChange={handleTimeChange}` calls our specific handler function to update the state
 - `minTime`, `maxTime`, and `step={15}` configure the available time options (from 00:00 to 23:45 in 15-minute increments)
 
@@ -184,20 +207,16 @@ Finally, we need a dropdown menu for the user to select the weather conditions a
 
 Update the import statement from `@trussworks/react-uswds` to include `Select`. Your existing import will be modified as follows:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=5
+```jsx title="src/pages/StartTrip.jsx"
 import {
   Button,
   DatePicker,
   Form,
   FormGroup,
-  Grid,
-  GridContainer,
   Label,
   //diff-add-start
   Select,
   //diff-add-end
-  StepIndicator,
-  StepIndicatorStep,
   TimePicker,
 } from "@trussworks/react-uswds";
 ```
@@ -206,42 +225,51 @@ import {
 
 Add the following code below the `TimePicker` form group:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=272
-// diff-add-start
-<FormGroup>
-  <Label htmlFor="startWeather" requiredMarker>
-    Weather
-  </Label>
-  <Select
-    id="startWeather"
-    name="startWeather"
-    value={formData.startWeather}
-    onChange={handleInputChange}
-    aria-describedby="start-weather-hint"
-  >
-    <option value="">-Select-</option>
-    <option value="Sunny">Sunny</option>
-    <option value="Cloudy">Cloudy</option>
-    <option value="Rainy">Rainy</option>
-  </Select>
-  <span id="start-weather-hint" className="usa-sr-only">
-    Please select the weather conditions at the start of your fishing trip.
-  </span>
-</FormGroup>
-// diff-add-end
+```jsx title="src/pages/StartTrip.jsx"
+      <span id="start-time-hint" className="usa-sr-only">
+        Please enter or select the time you started fishing.
+      </span>
+    </FormGroup>
+    // diff-add-start
+    <FormGroup>
+      <Label
+        htmlFor="startWeather"
+        requiredMarker
+      >
+        Weather
+      </Label>
+      <Select
+        id="startWeather"
+        name="startWeather"
+        value={tripData.startWeather}
+        onChange={handleInputChange}
+        aria-describedby="start-weather-hint"
+        required
+      >
+        <option value="">-Select-</option>
+        <option value="Sunny">Sunny</option>
+        <option value="Cloudy">Cloudy</option>
+        <option value="Rainy">Rainy</option>
+      </Select>
+      <span id="start-weather-hint" className="usa-sr-only">
+        Please select the weather conditions at the start of your fishing trip.
+      </span>
+    </FormGroup>
+    // diff-add-end
+  </Form>
+</Layout>
 ```
 
 **Explanation:**
 
-- `value={formData.startWeather}` binds the selected option to the `startWeather` field in the state.
+- `value={tripData.startWeather}` binds the selected option to the `startWeather` field in the state.
 - `onChange={handleInputChange}` uses the standard input handler (already present) because the `Select` component behaves like a standard HTML select element in this regard.
 - We define the available weather options using standard HTML `<option>` tags within the `Select` component. The first option has an empty `value` to represent the default, unselected state.
 
 The complete **Form** will look like this:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=228
-// diff-add-start
-<Form onSubmit={handleSubmit} large>
+```jsx title="src/pages/StartTrip.jsx"
+<Form onSubmit={handleSubmit} large className="margin-top-3">
   <FormGroup>
     <Label
       htmlFor="tripDate"
@@ -254,7 +282,7 @@ The complete **Form** will look like this:
     <DatePicker
       id="tripDate"
       name="tripDate"
-      defaultValue={formData.tripDate}
+      defaultValue={tripData.tripDate}
       onChange={handleDateChange}
       aria-describedby="trip-date-hint"
       required
@@ -264,33 +292,42 @@ The complete **Form** will look like this:
     </span>
   </FormGroup>
   <FormGroup>
-    <Label htmlFor="startTime" className="input-time-label" requiredMarker>
+    <Label
+      htmlFor="startTime"
+      className="input-time-label"
+      requiredMarker
+    >
       Time
     </Label>
     <TimePicker
       id="startTime"
       name="startTime"
-      defaultValue={formData.startTime}
+      defaultValue={tripData.startTime}
       onChange={handleTimeChange}
       minTime="00:00"
       maxTime="23:45"
       step={15}
       aria-describedby="start-time-hint"
+      required
     />
     <span id="start-time-hint" className="usa-sr-only">
       Please enter or select the time you started fishing.
     </span>
   </FormGroup>
   <FormGroup>
-    <Label htmlFor="startWeather" requiredMarker>
+    <Label
+      htmlFor="startWeather"
+      requiredMarker
+    >
       Weather
     </Label>
     <Select
       id="startWeather"
       name="startWeather"
-      value={formData.startWeather}
+      value={tripData.startWeather}
       onChange={handleInputChange}
       aria-describedby="start-weather-hint"
+      required
     >
       <option value="">-Select-</option>
       <option value="Sunny">Sunny</option>
@@ -302,8 +339,11 @@ The complete **Form** will look like this:
     </span>
   </FormGroup>
 </Form>
-// diff-add-end
 ```
+
+:::info FormGroup Pattern
+Notice how each input field gets its own `FormGroup` wrapper. This is the standard USWDS pattern that ensures proper spacing between fields and groups all related elements (label, input, and hints) together.
+:::
 
 ## Step 4: Testing Form Data Collection
 
@@ -313,19 +353,20 @@ Before we learn how to save data to storage in the next lesson, let's first see 
 
 Locate the `handleSubmit` function. Replace the existing submission logic with the following code that will log the form data to the console:
 
-```jsx title="src/pages/StartTrip.jsx" showLineNumbers=183
-if (Object.keys(newErrors).length === 0) {
-  let navigateToId = currentTripId;
-  //diff-add-start
-  console.log("Form Data:", {
-    tripDate: formData.tripDate,
-    startWeather: formData.startWeather,
-    startTime: formData.startTime,
-    status: "in-progress",
-    step: 2,
-  });
-  //diff-add-end
-}
+```jsx title="src/pages/StartTrip.jsx"
+const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    //diff-add-start
+    console.log("Trip Data:", {
+      tripDate: tripData.tripDate,
+      startWeather: tripData.startWeather,
+      startTime: tripData.startTime,
+      status: "in-progress",
+      step: 2,
+    });
+    //diff-add-end
+};
 ```
 
 **Explanation:**

@@ -1,16 +1,47 @@
 # Lesson 6: Computed Fields, Table Component, and Offline Detection
 
+<details>
+  <summary>🏳️ Haven't completed the previous lesson?</summary>
+
+  No worries! You can pickup from here:
+
+  ```bash
+  git checkout tags/lesson-6
+  ```
+</details>
+
 In this lesson, we will build a review page that fetches trip and catch data from RADFish stores, aggregates catch statistics by species, and displays the results using the RADFish Table component. We'll also implement offline detection using the `useOfflineStatus` hook to provide dynamic UI feedback based on network connectivity.
 
 ## Step 1: Access RADFish stores and fetch trip/catch data
 
 We need to fetch the trip and catch data from their respective RADFish stores to display on the review page. This data loading happens inside a `useEffect` hook, which is React's way of performing side effects like data fetching when a component mounts or when certain values change.
 
-### 1.1: Understanding useEffect for Data Loading
+### 1.1: Import Required Utilities and Constants
+
+Before we can access RADFish collections and format our data, we need to import the necessary utilities and constants.
+
+Open `src/pages/ReviewSubmit.jsx` and add these imports to your existing import statements:
+
+```jsx title="src/pages/ReviewSubmit.jsx"
+import { useApplication } from "@nmfs-radfish/react-radfish";
+import { Button } from "@trussworks/react-uswds";
+import Layout from "../components/Layout";
+import {
+  formatDate,
+  format24HourTo12Hour,
+  aggregateCatchesBySpecies,
+  //diff-add-start
+  STORE_NAMES,
+  COLLECTION_NAMES,
+  //diff-add-end
+} from "../utils";
+```
+
+### 1.2: Understanding useEffect for Data Loading
 
 The data fetching code is wrapped inside a `useEffect` hook that runs when the component first loads:
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=37
+```jsx title="src/pages/ReviewSubmit.jsx"
 useEffect(() => {
   const loadTripData = async () => {
     setLoading(true);
@@ -26,31 +57,36 @@ useEffect(() => {
     }
 
     try {
-      //diff-add-start
       // Access RADFish collections
-      const tripStore = app.stores["trip"];
-      const Form = tripStore.getCollection("Form");
-      const Catch = tripStore.getCollection("Catch");
+      //diff-add-start
+      const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
+      const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
+      const catchCollection = tripStore.getCollection(COLLECTION_NAMES.CATCH_COLLECTION);
+      //diff-add-end
 
       // Fetch the trip details
-      const trips = await Form.find({ id: tripId });
+      //diff-add-start
+      const tripsDataFromCollection = await tripCollection.find({ id: tripId });
+      //diff-add-end
 
       // Handle trip not found
-      if (trips.length === 0) {
+      //diff-add-start
+      if (tripsDataFromCollection.length === 0) {
         setError(`Trip with ID ${tripId} not found`);
         navigate("/"); // Redirect home if trip doesn't exist
         return;
       }
 
-      const selectedTrip = trips[0];
+      const selectedTrip = tripsDataFromCollection[0];
       setTrip(selectedTrip); // Store fetched trip data in state
-
+      //diff-add-end
       // Fetch all catches associated with this trip
-      const tripCatches = await Catch.find({ tripId: selectedTrip.id });
+      //diff-add-start
+      const tripCatches = await catchCollection.find({ tripId: selectedTrip.id });
       //diff-add-end
 
-      //diff-add-start
       // Store catches for API submission
+      //diff-add-start
       setCatches(tripCatches);
       //diff-add-end
 
@@ -89,12 +125,12 @@ useEffect(() => {
     - [React useEffect Documentation](https://react.dev/reference/react/useEffect) - Comprehensive guide to using useEffect for side effects
     - [Synchronizing with Effects](https://react.dev/learn/synchronizing-with-effects) - Learn when and how to use Effects in React
 
-### 1.2: RADFish Data Access Pattern
+### 1.3: RADFish Data Access Pattern
 
 The highlighted code demonstrates the core data access pattern in RADFish applications:
 
-1. **Store Access**: `app.stores["trip"]` gets the RADFish store that contains our trip and catch data
-2. **Collection References**: We obtain references to both the `Form` (trip data) and `Catch` (individual catch records) collections
+1. **Store Access**: `app.stores[STORE_NAMES.TRIP_STORE]` gets the RADFish store using constants for better maintainability
+2. **Collection References**: We obtain references to both the trip data and catch collections using `COLLECTION_NAMES` constants
 3. **Trip Lookup**: `Form.find({ id: tripId })` searches for the specific trip using the ID passed from the previous page
 4. **Error Handling**: If no trip is found, we set an error message and redirect to prevent displaying invalid data
 5. **Data Storage**: The found trip is stored in React state (`setTrip`) for use throughout the component
@@ -104,8 +140,8 @@ The highlighted code demonstrates the core data access pattern in RADFish applic
 
 After fetching the raw catch data, we need to process it to calculate summary statistics for display. This involves grouping catches by species and calculating totals and averages.
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=65
-        const selectedTrip = trips[0];
+```jsx title="src/pages/ReviewSubmit.jsx"
+        const selectedTrip = tripsDataFromCollection[0];
         setTrip(selectedTrip); // Store fetched trip data in state
 
         // Fetch all catches associated with this trip
@@ -157,7 +193,7 @@ Before we can display the aggregated data, we need to import the `Table` compone
 
 Open `src/pages/ReviewSubmit.jsx` and update your RADFish imports to include the `Table` component:
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=4
+```jsx title="src/pages/ReviewSubmit.jsx"
 import {
   useApplication,
   //diff-add-start
@@ -181,7 +217,7 @@ To learn more about the Table component, see the [RADFish Table documentation](h
 
 Now that we have imported the Table component, we can use it to display the aggregated catch data in a structured and user-friendly way.
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=349
+```jsx title="src/pages/ReviewSubmit.jsx"
 <div className="padding-0">
   {aggregatedCatches.length > 0 ? (
     //diff-remove-start
@@ -189,7 +225,9 @@ Now that we have imported the Table component, we can use it to display the aggr
     //diff-remove-end
     //diff-add-start
     <Table
+    //diff-add-end
       // Map aggregated data to the format expected by the Table component
+      //diff-add-start
       data={aggregatedCatches.map((item, index) => ({
         id: index, // Use index as ID for the table row
         species: item.species,
@@ -197,14 +235,18 @@ Now that we have imported the Table component, we can use it to display the aggr
         totalWeight: `${item.totalWeight} lbs`, // Add units
         avgLength: `${item.avgLength} in`, // Add units
       }))}
+      //diff-add-end
       // Define table columns: key corresponds to data keys, label is header text
+      //diff-add-start
       columns={[
         { key: "species", label: "Species", sortable: true },
         { key: "count", label: "Count", sortable: true },
         { key: "totalWeight", label: "Total Weight", sortable: true },
         { key: "avgLength", label: "Avg. Length", sortable: true },
       ]}
+      //diff-add-end
       // Enable striped rows for better readability
+      //diff-add-start
       striped
     />
 //diff-add-end
@@ -240,7 +282,7 @@ Now let's test how the application automatically adapts to network changes using
 
 The Review page uses RADFish's `useOfflineStatus` hook to detect network changes and adapt the UI accordingly.
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=4
+```jsx title="src/pages/ReviewSubmit.jsx"
 import {
   useApplication,
   Table,
@@ -250,11 +292,8 @@ import {
 } from "@nmfs-radfish/react-radfish";
 import {
   Button,
-  StepIndicator,
-  StepIndicatorStep,
-  GridContainer,
-  Grid,
 } from "@trussworks/react-uswds";
+import { Layout } from "../components/Layout";
 
 function ReviewSubmit() {
   const navigate = useNavigate();
@@ -267,7 +306,7 @@ function ReviewSubmit() {
 
 **Footer Button Display Logic:**
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=215
+```jsx title="src/pages/ReviewSubmit.jsx"
 const getFooterProps = () => {
   // Default props
   const defaultProps = {
@@ -313,17 +352,20 @@ const getFooterProps = () => {
 
 **Submission Logic:**
 
-```jsx title="src/pages/ReviewSubmit.jsx" showLineNumbers=201
-  const handleSubmit = async () => {
-    if (!trip) return; // Guard clause if trip data isn't loaded
-
-    const tripStore = app.stores["trip"];
-    const Form = tripStore.getCollection("Form");
+```jsx title="src/pages/ReviewSubmit.jsx"
+const handleSubmit = async () => {
+  if (!trip) return; // Guard clause if trip data isn't loaded
     
+  //diff-add-start
+  const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
+  const tripCollection = tripStore.getCollection(COLLECTION_NAMES.TRIP_COLLECTION);
+  //diff-add-end
+
+  try {
     //diff-add-start
     const finalStatus = isOffline ? "Not Submitted" : "submitted";
 
-    await Form.update({
+    await tripCollection.update({
       id: trip.id,
       status: finalStatus,
       step: 4,
@@ -331,6 +373,12 @@ const getFooterProps = () => {
 
     navigate(isOffline ? "/offline-confirm" : "/online-confirm");
     //diff-add-end
+
+  } catch (error) {
+    console.error("Error submitting trip:", error);
+    setError("Failed to submit trip. Please try again.");
+  }
+};
 
   };
 ```
@@ -368,10 +416,26 @@ const getFooterProps = () => {
    ```
 
 3. **Test offline functionality**:
-   - Complete a trip and navigate to Review page
-   - Toggle offline/online in dev tools
-   - Reload the page while offline - it should still work
-   - Submit a trip while offline - it saves locally as "Not Submitted"
+   1. Complete a trip and navigate to Review page
+   2. Toggle offline/online in dev tools
+   3. Reload the page while offline - it should still work
+   4. Submit a trip while offline - it saves locally as "Not Submitted"
+   5. Click the **Save** button to submit the trip while offline
+   6. You should see the offline confirmation page:
+   
+   ![Offline Confirmation](./src/assets/lesson-6_step-4.3-offline-confirm.png)
+   
+   7. Click the **Home** button to return to the homepage
+   8. You should now see your trip with status "READY TO SUBMIT":
+   
+   ![Ready to Submit Status](./src/assets/lesson-6_step-4.3-ready-to-submit.png)
+
+:::tip Clear Site Data for Testing
+If you encounter unexpected behavior during offline testing, consider clearing your browser's site data. To delete all records:
+
+1. Navigate to IndexedDB → `learn-radfish`
+2. Click on the "Delete database" button (Chrome) or "Clear all data" button (Firefox)
+:::
 
 ## Conclusion
 
