@@ -354,7 +354,7 @@ const getFooterProps = () => {
 
 ```jsx title="src/pages/ReviewSubmit.jsx"
 const handleSubmit = async () => {
-  if (!trip) return; // Guard clause if trip data isn't loaded
+  if (!trip) return;
     
   //diff-add-start
   const tripStore = app.stores[STORE_NAMES.TRIP_STORE];
@@ -379,8 +379,6 @@ const handleSubmit = async () => {
     setError("Failed to submit trip. Please try again.");
   }
 };
-
-  };
 ```
 
 **Summary:**

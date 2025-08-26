@@ -120,6 +120,8 @@ Then, inside the `StartTrip` component, add the hooks and state:
 ```jsx title="src/pages/StartTrip.jsx"
 function StartTrip() {
   const navigate = useNavigate();
+  // --- Navigation ---
+  // React Router navigation hook for programmatic routing
   //diff-remove-start
   const tripId = "";
   //diff-remove-end
@@ -153,6 +155,9 @@ If we're editing an existing trip, we need to load its data and populate the for
 Add this code after your state declarations:
 
 ```jsx title="src/pages/StartTrip.jsx"
+// Loading state - used to show loading message while fetching trip data
+const [isLoading, setIsLoading] = useState(false);
+
 // Load existing trip data if editing
 //diff-add-start
 useEffect(() => {
