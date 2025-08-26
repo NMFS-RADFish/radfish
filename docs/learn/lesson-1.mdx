@@ -1,0 +1,170 @@
+import CodeBlock from "@theme/CodeBlock";
+
+# Lesson 1: Page Structure and Navigation
+
+Welcome to the RADFish tutorial! In this first lesson, we'll structure our main page using USWDS grid components and then implement navigation within the app by making the "Start New Trip" button functional.
+
+## Prerequisites
+
+Before you start, make sure you have the following installed:
+
+- **Node.js** (v20.17.0 or later)
+- **npm** (v10.8.2 or later)
+- **git** (v2.0 or later)
+
+You can verify your installations by running these commands in your terminal:
+
+```bash
+node --version
+npm --version
+git --version
+```
+
+## Getting Started
+
+Clone the repository to your local machine and navigate to the project directory:
+
+```bash
+git clone https://github.com/NMFS-RADFish/learn-radfish.git
+cd learn-radfish
+```
+
+Now let's build the application and serve it locally to see its current state.
+
+1. **Install Dependencies:** Open your terminal in the project root directory and run:
+   ```bash
+   npm install
+   ```
+
+2. **Start the Development Server:** Run the following command to start the application:
+   ```bash
+   npm run start
+   ```
+   This command will start the development server and make the application available at [http://localhost:3000](http://localhost:3000). Open this URL in your browser.
+
+## Step 1: Structure the Page with USWDS Grid Components
+
+We'll begin by structuring our `HomePage` using `GridContainer` and `Grid` components from the U.S. Web Design System (USWDS). This is a common practice in RADFish applications to ensure consistent layout, responsiveness, and alignment with USWDS standards. These components help center content and manage its maximum width.
+
+For more detailed information on the grid components we are using, see these resources:
+
+- **[Trussworks React USWDS Grid documentation](https://trussworks.github.io/react-uswds/?path=/docs/components-grid--docs)** - Detailed information on the React components (`GridContainer`, `Grid`) from `@trussworks/react-uswds`
+- **[Official USWDS Layout Grid documentation](https://designsystem.digital.gov/utilities/layout-grid/)** - Understanding the foundational CSS grid system and principles upon which these components are built
+
+### 1.1: Import Grid Components
+
+In `src/pages/Home.jsx`, update your import statement from `@trussworks/react-uswds` to also include `GridContainer`. Your existing import for `Button` and `Grid` will be modified as follows:
+
+```jsx title="src/pages/Home.jsx" showLineNumbers=5
+import "../index.css";
+import React, { useState, useEffect } from "react";
+import { useApplication, useOfflineStatus } from "@nmfs-radfish/react-radfish";
+import { useNavigate } from "react-router-dom";
+//diff-remove-start
+import { Button, Grid } from "@trussworks/react-uswds";
+//diff-remove-end
+//diff-add-start
+import { Button, GridContainer, Grid } from "@trussworks/react-uswds";
+//diff-add-end
+```
+
+### 1.2: Apply the Grid Structure
+
+Next, modify the `return` statement of your `HomePage` component to incorporate the USWDS grid. You will wrap your main page content (everything inside the main `<>...</>` fragment, except for the sticky footer) with these components.
+
+**Add the `GridContainer` structure around your main page content:**
+
+```jsx title="src/pages/Home.jsx"
+return (
+  <>
+    {/* Main Content - Basic structure without USWDS grid components */}
+    //diff-remove-start
+    <div className="padding-y-4 padding-x-2 text-center">
+    //diff-remove-end
+    //diff-add-start
+    <GridContainer className="padding-y-4 padding-x-2 text-center">
+      <Grid row>
+        <Grid col="fill">
+        //diff-add-end
+          {/* All your main page content (headings, lists, etc.) goes here */}
+          <h1 className="font-heading-xl text-center margin-0">Hi, Captain</h1>
+          <h2 className="font-heading-lg text-center margin-top-4 margin-bottom-2">
+            Recent Trips
+          </h2>
+          {/* Example: trips.map(...) or conditional messages */}
+    //diff-remove-start
+    </div>
+    //diff-remove-end
+    //diff-add-start
+        </Grid>
+      </Grid>
+    </GridContainer>
+    //diff-add-end
+
+    {/* Sticky footer remains outside the GridContainer */}
+    <footer className="position-fixed bottom-0 ...">
+      {/* ... footer content ... */}
+    </footer>
+  </>
+);
+```
+
+**Why `GridContainer`?**
+
+The `GridContainer` component from USWDS is crucial for maintaining a consistent layout. It centers your content on the page and applies a maximum width (e.g., 1024px on desktop by default), preventing content from stretching uncomfortably wide on larger screens. The `Grid row` serves as a necessary container for grid columns, and `Grid col="fill"` allows the column to expand and take up the available space within that row.
+
+## Step 2: Implement "Start New Trip" Navigation
+
+Currently, the "Start New Trip" button on the home page doesn't do anything. We need to make it navigate the user to the first step of the trip logging process, which will be at the `/start` route. We'll use the `useNavigate` hook from `react-router-dom` for this.
+
+### Understanding React Router Navigation
+
+React Router provides the `useNavigate` hook for programmatic navigation. Let's look at how it's already set up in your component:
+
+**1. Import Statement:**
+
+```jsx title="src/pages/Home.jsx"
+import { useNavigate } from "react-router-dom";
+```
+
+**2. Hook Initialization:**
+
+```jsx title="src/pages/Home.jsx"
+const navigate = useNavigate();
+```
+
+The `useNavigate` hook returns a function that we store in the `navigate` variable. This function allows us to programmatically change the current route (URL) in our application.
+
+### 2.1: Add the Navigation Handler
+
+Now we'll use the `navigate` function to make the "Start New Trip" button functional. Find the `Button` component for "Start New Trip".
+
+**Add the `onClick` handler code:**
+
+```jsx title="src/pages/Home.jsx"
+<Button
+  type="button"
+  className="bg-primary hover:bg-primary-darker width-full"
+  //diff-add-start
+  onClick={() => {
+    navigate("/start");
+  }}
+  //diff-add-end
+>
+  Start New Trip
+</Button>
+```
+
+**Explanation:**
+
+- We're adding an `onClick` event handler to the `Button`.
+- Inside the handler, we call the `navigate` function (which we get from the `useNavigate()` hook provided earlier in the component).
+- We pass the string `"/start"` to `navigate`, telling React Router to change the URL to `/start` when the button is clicked. This will cause the `App` component to render the `StartTrip` page component associated with that route.
+
+**Test Navigation:**
+
+- Click the "Start New Trip" button. You should now be navigated to a new page (which is currently blank or basic, as we haven't built the `StartTrip` form yet).
+
+## Conclusion
+
+In this lesson, you learned how to structure your page using USWDS `GridContainer` and `Grid` components for a consistent layout. You also implemented the first navigation feature, linking the home page button to the start of the trip logging workflow using React Router. The application now has a better-structured main page and a functional starting point for logging a new trip.
