@@ -37,6 +37,12 @@ function HomepageHeader() {
           >
             About RADFish
           </Link>
+          <Link
+            className="button button--secondary"
+            to="/learn/introduction"
+          >
+            Learn RADFish
+          </Link>
         </div>
       </div>
     </header>
