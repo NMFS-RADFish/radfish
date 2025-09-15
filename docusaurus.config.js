@@ -534,9 +534,9 @@ ${content}`,
           },
           {
             type: "docSidebar",
-            sidebarId: "learn",
+            sidebarId: "tutorial",
             position: "left",
-            label: "Learn",
+            label: "Tutorial",
           },
           {
             type: "docSidebar",
