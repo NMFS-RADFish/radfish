@@ -532,12 +532,12 @@ ${content}`,
             position: "left",
             label: "Developer Documentation",
           },
-          // {
-          //   type: "docSidebar",
-          //   sidebarId: "learn",
-          //   position: "left",
-          //   label: "Learn",
-          // },
+          {
+            type: "docSidebar",
+            sidebarId: "tutorial",
+            position: "left",
+            label: "Tutorial",
+          },
           {
             type: "docSidebar",
             sidebarId: "designSystem",
