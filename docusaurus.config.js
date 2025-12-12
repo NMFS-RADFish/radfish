@@ -86,7 +86,10 @@ const config = {
           "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
         outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
         documents: ["computed-form-fields/README.md"], // the file to download
-        modifyContent(filename, content) {
+        modifyContent(
+          /** @type {string} */ filename,
+          /** @type {string} */ content
+        ) {
           return {
             filename: readmeToNamedMd(filename),
             content: `---
@@ -124,7 +127,10 @@ ${content}`,
           "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
         outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
         documents: ["conditional-form-fields/README.md"], // the file to download
-        modifyContent(filename, content) {
+        modifyContent(
+          /** @type {string} */ filename,
+          /** @type {string} */ content
+        ) {
           return {
             filename: readmeToNamedMd(filename),
             content: `---
@@ -162,7 +168,10 @@ ${content}`,
           "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
         outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
         documents: ["field-validators/README.md"], // the file to download
-        modifyContent(filename, content) {
+        modifyContent(
+          /** @type {string} */ filename,
+          /** @type {string} */ content
+        ) {
           return {
             filename: readmeToNamedMd(filename),
             content: `---
@@ -200,7 +209,10 @@ ${content}`,
           "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
         outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
         documents: ["network-status/README.md"], // the file to download
-        modifyContent(filename, content) {
+        modifyContent(
+          /** @type {string} */ filename,
+          /** @type {string} */ content
+        ) {
           return {
             filename: readmeToNamedMd(filename),
             content: `---
@@ -238,7 +250,10 @@ ${content}`,
           "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
         outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
         documents: ["mock-api/README.md"], // the file to download
-        modifyContent(filename, content) {
+        modifyContent(
+          /** @type {string} */ filename,
+          /** @type {string} */ content
+        ) {
           return {
             filename: readmeToNamedMd(filename),
             content: `---
@@ -276,7 +291,10 @@ ${content}`,
           "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
         outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
         documents: ["on-device-storage/README.md"], // the file to download
-        modifyContent(filename, content) {
+        modifyContent(
+          /** @type {string} */ filename,
+          /** @type {string} */ content
+        ) {
           return {
             filename: readmeToNamedMd(filename),
             content: `---
@@ -314,7 +332,10 @@ ${content}`,
           "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
         outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
         documents: ["multistep-form/README.md"], // the file to download
-        modifyContent(filename, content) {
+        modifyContent(
+          /** @type {string} */ filename,
+          /** @type {string} */ content
+        ) {
           return {
             filename: readmeToNamedMd(filename),
             content: `---
@@ -352,7 +373,10 @@ ${content}`,
           "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
         outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
         documents: ["server-sync/README.md"], // the file to download
-        modifyContent(filename, content) {
+        modifyContent(
+          /** @type {string} */ filename,
+          /** @type {string} */ content
+        ) {
           return {
             filename: readmeToNamedMd(filename),
             content: `---
@@ -390,7 +414,10 @@ ${content}`,
           "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
         outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
         documents: ["react-query/README.md"], // the file to download
-        modifyContent(filename, content) {
+        modifyContent(
+          /** @type {string} */ filename,
+          /** @type {string} */ content
+        ) {
           return {
             filename: readmeToNamedMd(filename),
             content: `---
@@ -428,7 +455,10 @@ ${content}`,
           "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
         outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
         documents: ["persisted-form/README.md"], // the file to download
-        modifyContent(filename, content) {
+        modifyContent(
+          /** @type {string} */ filename,
+          /** @type {string} */ content
+        ) {
           return {
             filename: readmeToNamedMd(filename),
             content: `---
@@ -466,7 +496,10 @@ ${content}`,
           "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
         outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
         documents: ["simple-table/README.md"], // the file to download
-        modifyContent(filename, content) {
+        modifyContent(
+          /** @type {string} */ filename,
+          /** @type {string} */ content
+        ) {
           return {
             filename: readmeToNamedMd(filename),
             content: `---
@@ -504,7 +537,10 @@ ${content}`,
           "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/",
         outDir: "docs/developer-documentation/examples-and-templates/examples/", // the base directory to output to.
         documents: ["form-structure/README.md"], // the file to download
-        modifyContent(filename, content) {
+        modifyContent(
+          /** @type {string} */ filename,
+          /** @type {string} */ content
+        ) {
           return {
             filename: readmeToNamedMd(filename),
             content: `---
@@ -575,18 +611,18 @@ ${content}`,
             line: "diff-add",
             block: {
               start: "diff-add-start",
-              end: "diff-add-end"
-            }
+              end: "diff-add-end",
+            },
           },
           {
             className: "code-block-diff-remove-line",
             line: "diff-remove",
             block: {
               start: "diff-remove-start",
-              end: "diff-remove-end"
-            }
-          }
-        ]
+              end: "diff-remove-end",
+            },
+          },
+        ],
       },
     }),
 };
@@ -596,6 +632,6 @@ export default config;
 // This function path stub to a README.md file
 // and returns the .md renamed as the parent folder.
 // eg. "network-status/README.md" --> "network-status.md"
-function readmeToNamedMd(filename) {
+function readmeToNamedMd(/** @type {string} */ filename) {
   return filename.split("/")[0].concat(".md");
 }
