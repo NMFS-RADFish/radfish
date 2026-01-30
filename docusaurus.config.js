@@ -65,19 +65,6 @@ const config = {
     [
       "docusaurus-plugin-remote-content",
       {
-        // options here
-        name: "computed-form-fields-image-content", // used by CLI, must be path safe
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/NMFS-RADFish/boilerplate/main/examples/computed-form-fields/src/assets/", // the base url for the markdown (gets prepended to all of the documents when fetching)
-        outDir:
-          "docs/developer-documentation/examples-and-templates/examples/src/assets", // the base directory to output to.
-        documents: ["computed-form-fields.png"], // the file names to download
-        requestConfig: { responseType: "arraybuffer" },
-      },
-    ],
-    [
-      "docusaurus-plugin-remote-content",
-      {
         // Computed Form Fields
         // Remote content configuration to fetch repo README.md for
         // https://github.com/NMFS-RADFish/boilerplate/tree/main/examples/computed-form-fields#readme
