@@ -225,20 +225,17 @@ Keep theme colors and component overrides in `theme.scss`. Use `src/styles/style
 
 ### App Metadata
 
-In `vite.config.js`, configure the app name and description via the plugin's second argument:
+In `vite.config.js`, configure the app name and description via the plugin options:
 
 ```javascript
 import { radFishThemePlugin } from "./plugins/vite-plugin-radfish-theme.js";
 
-const configOverrides = {
-  app: {
-    name: "My App Name",
-    shortName: "MyApp",
-    description: "App description for PWA",
-  },
-};
-
-radFishThemePlugin("noaa-theme", configOverrides)
+radFishThemePlugin({
+  theme: "noaa-theme",
+  name: "My App Name",
+  shortName: "MyApp",
+  description: "App description for PWA",
+})
 ```
 
 The first argument is the theme folder name under `themes/`.
@@ -302,8 +299,9 @@ In development, assets are served from the theme directory. On build, they are c
 5. Update `vite.config.js` to use the new theme:
 
    ```javascript
-   radFishThemePlugin("my-agency", {
-     app: { name: "My Agency App" }
+   radFishThemePlugin({
+     theme: "my-agency",
+     name: "My Agency App",
    })
    ```
 
