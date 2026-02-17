@@ -10,8 +10,6 @@ This example demonstrates how to detect a user's network connectivity. If the us
 
 The `useOfflineStatus` hook provides an `isOffline` utility that detects the user's network connectivity. It uses the `navigator` browser API. Refer to the [MDN Navigator Docs](https://developer.mozilla.org/en-US/docs/Web/API/Navigator) for limitations.
 
-Learn more about RADFish examples at the official [documentation](https://nmfs-radfish.github.io/radfish/developer-documentation/examples-and-templates#examples). Refer to the [RADFish GitHub repo](https://nmfs-radfish.github.io/radfish/) for more information and code samples.
-
 ## Preview
 
 This example will render as shown in this screenshot:

@@ -8,8 +8,6 @@ id: simple-table
 
 This example shows you how to use the `<Table>` component to display tabular data.
 
-Learn more about RADFish examples at the official [documentation](https://nmfs-radfish.github.io/radfish/developer-documentation/examples-and-templates#examples). Refer to the [RADFish GitHub repo](https://nmfs-radfish.github.io/radfish/) for more information and code samples.
-
 ## Table Overview
 
 The `<Table>` component is flexible and customizable. It lets you define column configurations, enable sorting, and paginate large datasets. In this example, we use mock data representing different fish species with attributes such as status (draft/submitted), UUID, species name, image, and price.

@@ -8,8 +8,6 @@ id: form-structure
 
 This example shows you how to build a non-trivial form. It uses core components provided by [Trussworks react-uswds](https://github.com/trussworks/react-uswds). It is __not__ intended to show a full form implementation, such as sending a request on submit.
 
-Learn more about RADFish examples at the official [documentation](https://nmfs-radfish.github.io/radfish/developer-documentation/examples-and-templates#examples). Refer to the [RADFish GitHub repo](https://nmfs-radfish.github.io/radfish/) for more information and code samples.
-
 ## Preview
 This example will render as shown in this screenshot:
 

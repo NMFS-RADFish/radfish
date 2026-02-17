@@ -13,8 +13,6 @@ This example does __not__ include any backend persistence via IndexedDB. This is
 - `[GET] /species` returns a list of 4 species.
 - `[POST] /species` returns the original list, with an additional species added (this is hard coded for simplicity).
 
-Learn more about RADFish examples at the official [documentation](https://nmfs-radfish.github.io/radfish/developer-documentation/examples-and-templates#examples). Refer to the [RADFish GitHub repo](https://nmfs-radfish.github.io/radfish/) for more information and code samples.
-
 ## Preview
 This example will render as shown in this screenshot:
 

@@ -8,8 +8,6 @@ id: field-validators
 
 This example shows you how to enforce field validation logic on certain fields within your form. The validator ensures that no numbers are allowed within the **Full Name** input field.
 
-Learn more about RADFish examples at the official [documentation](https://nmfs-radfish.github.io/radfish/developer-documentation/examples-and-templates#examples). Refer to the [RADFish GitHub repo](https://nmfs-radfish.github.io/radfish/) for more information and code samples.
-
 ## Preview
 This example will render as shown in this screenshot:
 

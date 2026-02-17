@@ -8,8 +8,6 @@ id: computed-form-fields
 
 This example shows you how to build a form with computed form fields. Computed form fields automatically calculate a value based on a separate read-only field. For example, if a user inputs a quantity, a computed form field can multiply that number by a price to give a total cost. 
 
-Learn more about RADFish examples at the official [documentation](https://nmfs-radfish.github.io/radfish/developer-documentation/examples-and-templates#examples). Refer to the [RADFish GitHub repo](https://nmfs-radfish.github.io/radfish/) for more information and code samples.
-
 ## Preview
 This example will render as shown in this screenshot:
 

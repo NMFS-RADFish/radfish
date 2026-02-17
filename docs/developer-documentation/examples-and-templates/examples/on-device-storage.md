@@ -21,8 +21,6 @@ Use cases include:
 - Form data persistence across sessions
 - Structured data with validation
 
-Learn more about RADFish examples at the official [documentation](https://nmfs-radfish.github.io/radfish/developer-documentation/examples-and-templates#examples). Refer to the [RADFish GitHub repo](https://nmfs-radfish.github.io/radfish/) for more information and code samples.
-
 ## Preview
 This example will render as shown in this screenshot:
 

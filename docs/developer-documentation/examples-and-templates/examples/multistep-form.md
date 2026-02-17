@@ -17,8 +17,6 @@ This example demonstrates how to create a multi-step form with persistent state 
 
 The form uses RADFish's IndexedDB storage to persist both the current step and all form data. When users revisit the form, they see their previously entered data and resume at their saved step.
 
-Learn more about RADFish examples at the official [documentation](https://nmfs-radfish.github.io/radfish/developer-documentation/examples-and-templates#examples). Refer to the [RADFish GitHub repo](https://nmfs-radfish.github.io/radfish/) for more information and code samples.
-
 ## Preview
 This example will render as shown in this screenshot:
 

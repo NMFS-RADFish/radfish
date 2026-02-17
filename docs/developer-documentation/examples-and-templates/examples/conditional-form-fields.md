@@ -8,8 +8,6 @@ id: conditional-form-fields
 
 This example shows you how to create a dynamic form with conditional fields. The visibility of certain input fields depends on the values of other fields.  Specifically, when the `fullName` field is filled out, the `nickname` field becomes visible. If the `fullName` field is empty, the `nickname` field is hidden and removed from the `formState`.
 
-Learn more about RADFish examples at the official [documentation](https://nmfs-radfish.github.io/radfish/developer-documentation/examples-and-templates#examples). Refer to the [RADFish GitHub repo](https://nmfs-radfish.github.io/radfish/) for more information and code samples.
-
 ## Preview
 This example will render as shown in this screenshot:
 
