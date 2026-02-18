@@ -136,10 +136,3 @@ const config = {
 };
 
 export default config;
-
-// This function path stub to a README.md file
-// and returns the .md renamed as the parent folder.
-// eg. "network-status/README.md" --> "network-status.md"
-function readmeToNamedMd(/** @type {string} */ filename) {
-  return filename.split("/")[0].concat(".md");
-}
